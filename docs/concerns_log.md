@@ -2,9 +2,10 @@
 
 | # | Concern | Evidence | Possible impact | Current mitigation | Next validation step |
 |---|---|---|---|---|---|
-| C1 | No mature 365-day label | Max age 169 days; `D365_SPEND` = lifetime-to-date | Any LTV365 is an extrapolation | Proxy model, clearly labeled; uncertainty shown | Build label table from installs ≥ 365 days old |
-| C2 | Very few payers (~23) | Payer counts | Unstable spend estimates, wide uncertainty | Simple, regularized models; pooled curves | Larger sample / full population |
-| C3 | Late-arriving / restated data | May–Jun rows updated 2026-09-03 | Non-reproducible historical scores | Snapshot inputs per run; freshness check | Confirm restatement policy with data eng |
-| C4 | Revenue fields offset by one day | 83% next-row match | Double counting LTV-to-date | Use `LIFETIME_REVENUE` + same-day `REVENUE` explicitly | Confirm refresh timing |
-| C5 | Cheater / settlement policy untestable | All flags "no" | Actions on ineligible players in production | Filter implemented anyway | Test on data with flagged players |
-| C6 | Stratified sample | 100 installs per month | Totals ≠ population | Report rates, not totals, where possible | Get sampling weights |
+| C1 | No mature 365-day label | Oldest player 169 days; `D365_SPEND` = lifetime spend so far | Any LTV365 is an extrapolation | Proxy: revenue to date + modelled remaining revenue, clearly labelled, with uncertainty | Label table from installs at least 365 days old |
+| C2 | Very few payers | 23 of 700 players | Unstable spend estimates | Simple, regularised models; pooled curves; confidence shown | Full population or more history |
+| C3 | Forward-looking columns next to features | `D<n>_RETURNER` = played n days after D; rows rewritten for 91 days | Inflated offline accuracy | As-of policy + registry exclusions, enforced in code and tests | Confirm column definitions with data engineering |
+| C4 | Daily and lifetime revenue offset by a day | 90% next-row match | Revenue to date off by a day | Revenue to date = `LIFETIME_REVENUE` + `REVENUE` | Confirm refresh timing |
+| C5 | Exclusion policy untestable | Cheater and settlement flags never set | Actions on ineligible players | Filter built and unit-tested on synthetic flags | Test on data with flagged players |
+| C6 | Stratified sample | 100 installs per month | Totals ≠ population | Report rates; label totals as sample totals | Sampling weights from SciPlay |
+| C7 | Rolling columns used as given | Window end not documented (A9) | Small leakage risk | Accepted by decision | Confirm with data engineering |

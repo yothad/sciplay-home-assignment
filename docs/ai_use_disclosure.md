@@ -1,7 +1,7 @@
 # AI use disclosure
 
-| Tool | What it produced | How I reviewed / tested it |
+| Tool | What it produced | How I reviewed and tested it |
 |---|---|---|
-| Claude (Anthropic) | Initial data profiling scripts and summary of findings; plan; repo scaffolding (pyproject, docs skeleton) | Re-ran profiling, checked key numbers by hand; _to be updated_ |
+| Claude (Anthropic) | Data profiling, the audit, registry and as-of modules, the Part 1 notebook builder, tests, documentation drafts and the results deck | Every decision was discussed and approved by me before it was recorded (grain rollup, split, definitions, friction scope, assumptions A1–A12, churn cut-off). Key numbers were re-checked against the data; the as-of policy and registry are covered by 18 pytest tests; the notebook is rebuilt from code and runs without errors |
 
-_Update as the work progresses._
+_Updated as the work progresses._

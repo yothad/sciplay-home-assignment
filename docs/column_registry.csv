@@ -1,0 +1,419 @@
+column,category,source,field_group,role,as_of,null_meaning,use,model_feature,null_share,n_unique,rule,evidence,note
+DATE,Identifiers,file,Dates & timestamps,timestamp,end of day D,n/a,key,False,0.0,180.0,row date,,Row date D
+PLAYER_ID,Identifiers,file,Keys & identifiers,identifier,static (set at install),n/a,key,False,0.0,700.0,keys,,
+PLATFORM_ID,Identifiers,file,Keys & identifiers,identifier,static (set at install),n/a,key,False,0.0,6.0,keys,,
+GAME_ID,Identifiers,file,Keys & identifiers,identifier,static (set at install),n/a,key,False,0.0,1.0,keys,,
+ACCOUNTING_DATE,Excluded,file,Dates & timestamps,timestamp,end of day D,n/a,exclude: redundant,False,0.0,7.0,accounting date,,Month of D
+ACTIVE_30D_PAYER_DAU,Observed measures,file,Revenue & payers,daily measure,end of day D,zero: no event that day,feature,True,0.0,2.0,daily measures,,
+ACTIVE_90D_PAYER_DAU,Observed measures,file,Revenue & payers,daily measure,end of day D,zero: no event that day,feature,True,0.0,2.0,daily measures,,
+BET_DENOM,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.1314487632508834,21.0,daily measures,,
+BUY_COINS_AWARD_IMPRESSIONS,Excluded,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,exclude: no information,False,0.9981154299175501,1.0,daily measures,,Single value
+BUY_COINS_CLICKED_BUYS,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.9719670200235572,8.0,daily measures,,
+BUY_COINS_IMPRESSIONS,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.10129564193168433,12.0,daily measures,,
+BUY_COINS_PURCHASE_COMPLETES,Excluded,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,exclude: no information,False,0.9981154299175501,1.0,daily measures,,Single value
+BUY_COINS_PURCHASE_FAILED,Excluded,file,Errors & friction,daily measure,end of day D,zero: no event that day,exclude: no information,False,0.001177856301531213,1.0,friction,,Single value
+BUY_COINS_REVENUE,Observed measures,file,Revenue & payers,daily measure,end of day D,zero: no event that day,feature,True,0.9981154299175501,6.0,daily measures,,
+CANCEL_PURCHASES,Observed measures,file,Errors & friction,daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,12.0,friction,,Signal for the friction list
+CHEATS_DETECTED,Dimensions,file,Compliance flags,dimension,as of D (window end to verify),unknown,eligibility filter,False,0.001177856301531213,1.0,compliance,,Exclude cheaters and legal settlements from lists; never set in the sample (Q6)
+CHURNERS,Excluded,file,Cohort milestones & outcomes,label-like,future (after D),n/a,exclude: no information,False,0.8499411071849234,1.0,future fields,,Single value
+COUNTRY,Dimensions,file,Geography,dimension,static (set at install),unknown,feature + segment / reporting,True,0.0143698468786808,44.0,acquisition & geography,,
+CRASHES,Observed measures,file,Errors & friction,daily measure,end of day D,zero: no event that day,feature,True,0.014605418138987044,15.0,friction,,Signal for the friction list
+D0_CONVERTER,Excluded,file,Cohort milestones & outcomes,label-like,back-filled after D,n/a,exclude: leakage,False,0.0,2.0,milestone flags,,"Forward-looking label: D<n>_RETURNER = played exactly n days after D (Q3, Q5)"
+D1,Excluded,file,Cohort milestones & outcomes,label-like,back-filled after D,n/a,exclude: leakage,False,0.0,2.0,milestone flags,positive on 213 rows before day 1,"Forward-looking label: D<n>_RETURNER = played exactly n days after D (Q3, Q5)"
+D1_RETURNER,Excluded,file,Cohort milestones & outcomes,label-like,back-filled after D,n/a,exclude: leakage,False,0.0,2.0,milestone flags,positive on 213 rows before day 1,"Forward-looking label: D<n>_RETURNER = played exactly n days after D (Q3, Q5)"
+D14,Excluded,file,Cohort milestones & outcomes,label-like,back-filled after D,n/a,exclude: leakage,False,0.0,2.0,milestone flags,positive on 54 rows before day 14,"Forward-looking label: D<n>_RETURNER = played exactly n days after D (Q3, Q5)"
+D14_CONVERTER,Excluded,file,Cohort milestones & outcomes,label-like,back-filled after D,n/a,exclude: leakage,False,0.0,2.0,milestone flags,positive on 76 rows before day 14,"Forward-looking label: D<n>_RETURNER = played exactly n days after D (Q3, Q5)"
+D14_RETURNER,Excluded,file,Cohort milestones & outcomes,label-like,back-filled after D,n/a,exclude: leakage,False,0.0,2.0,milestone flags,positive on 394 rows before day 14,"Forward-looking label: D<n>_RETURNER = played exactly n days after D (Q3, Q5)"
+D21,Excluded,file,Cohort milestones & outcomes,label-like,back-filled after D,n/a,exclude: leakage,False,0.0,2.0,milestone flags,positive on 43 rows before day 21,"Forward-looking label: D<n>_RETURNER = played exactly n days after D (Q3, Q5)"
+D21_RETURNER,Excluded,file,Cohort milestones & outcomes,label-like,back-filled after D,n/a,exclude: leakage,False,0.0,2.0,milestone flags,positive on 445 rows before day 21,"Forward-looking label: D<n>_RETURNER = played exactly n days after D (Q3, Q5)"
+D3,Excluded,file,Cohort milestones & outcomes,label-like,back-filled after D,n/a,exclude: leakage,False,0.0,2.0,milestone flags,positive on 91 rows before day 3,"Forward-looking label: D<n>_RETURNER = played exactly n days after D (Q3, Q5)"
+D3_CONVERTER,Excluded,file,Cohort milestones & outcomes,label-like,back-filled after D,n/a,exclude: leakage,False,0.0,2.0,milestone flags,positive on 19 rows before day 3,"Forward-looking label: D<n>_RETURNER = played exactly n days after D (Q3, Q5)"
+D3_RETURNER,Excluded,file,Cohort milestones & outcomes,label-like,back-filled after D,n/a,exclude: leakage,False,0.0,2.0,milestone flags,positive on 196 rows before day 3,"Forward-looking label: D<n>_RETURNER = played exactly n days after D (Q3, Q5)"
+D30,Excluded,file,Cohort milestones & outcomes,label-like,back-filled after D,n/a,exclude: leakage,False,0.0,2.0,milestone flags,positive on 36 rows before day 30,"Forward-looking label: D<n>_RETURNER = played exactly n days after D (Q3, Q5)"
+D30_CONVERTER,Excluded,file,Cohort milestones & outcomes,label-like,back-filled after D,n/a,exclude: leakage,False,0.0,2.0,milestone flags,positive on 151 rows before day 30,"Forward-looking label: D<n>_RETURNER = played exactly n days after D (Q3, Q5)"
+D30_PAYER_BIN,Excluded,file,Segments & bins,label-like,back-filled after D,n/a,exclude: leakage,False,0.0,6.0,milestone flags,,"Forward-looking label: D<n>_RETURNER = played exactly n days after D (Q3, Q5)"
+D30_RETURNER,Excluded,file,Cohort milestones & outcomes,label-like,back-filled after D,n/a,exclude: leakage,False,0.0,2.0,milestone flags,positive on 457 rows before day 30,"Forward-looking label: D<n>_RETURNER = played exactly n days after D (Q3, Q5)"
+D30_SPEND,Excluded,file,Cohort milestones & outcomes,label-like,as of D (window end to verify),not applicable: no event yet,exclude: not a valid target,False,0.9118963486454652,137.0,spend windows,positive on 135 rows before day 30,"Lifetime-to-date spend, not a fixed-window outcome (Q1)"
+D60_RETURNER,Excluded,file,Cohort milestones & outcomes,label-like,back-filled after D,n/a,exclude: leakage,False,0.0,2.0,milestone flags,positive on 445 rows before day 60,"Forward-looking label: D<n>_RETURNER = played exactly n days after D (Q3, Q5)"
+D7,Excluded,file,Cohort milestones & outcomes,label-like,back-filled after D,n/a,exclude: leakage,False,0.0,2.0,milestone flags,positive on 71 rows before day 7,"Forward-looking label: D<n>_RETURNER = played exactly n days after D (Q3, Q5)"
+D7_CONVERTER,Excluded,file,Cohort milestones & outcomes,label-like,back-filled after D,n/a,exclude: leakage,False,0.0,2.0,milestone flags,positive on 41 rows before day 7,"Forward-looking label: D<n>_RETURNER = played exactly n days after D (Q3, Q5)"
+D7_RETURNER,Excluded,file,Cohort milestones & outcomes,label-like,back-filled after D,n/a,exclude: leakage,False,0.0,2.0,milestone flags,positive on 302 rows before day 7,"Forward-looking label: D<n>_RETURNER = played exactly n days after D (Q3, Q5)"
+D90_RETURNER,Excluded,file,Cohort milestones & outcomes,label-like,back-filled after D,n/a,exclude: leakage,False,0.0,2.0,milestone flags,positive on 216 rows before day 90,"Forward-looking label: D<n>_RETURNER = played exactly n days after D (Q3, Q5)"
+DAU_TYPE,Dimensions,file,Segments & bins,dimension,as of D (window end to verify),unknown,segment / reporting,False,0.0,3.0,segments,,Bucketed from other fields; use the source measures in models
+DAYS_SINCE_INSTALL,Observed measures,file,Activity & engagement,snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.0,168.0,snapshots,,
+DAYS_SINCE_LAST_LOGIN,Observed measures,file,Activity & engagement,snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.16537102473498233,67.0,snapshots,,
+DAYS_SINCE_LAST_PURCHASE,Observed measures,file,Revenue & payers,snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.9041224970553593,56.0,snapshots,,
+DAYS_UNTIL_NEXT_PURCHASE,Excluded,file,Cohort milestones & outcomes,label-like,future (after D),n/a,exclude: leakage,False,0.9764428739693758,23.0,future fields,,Describes what happens after D
+DEFAULT_BET,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.5107184923439341,350.0,daily measures,,
+DEVICE_HARDWARE,Dimensions,file,"Device, app & performance",dimension,end of day D,unknown,feature + segment / reporting,True,0.0143698468786808,367.0,device dims,,
+DEVICE_OS_VERSION,Dimensions,file,"Device, app & performance",dimension,end of day D,unknown,feature + segment / reporting,True,0.0143698468786808,50.0,device dims,,
+DEVICE_TYPE,Dimensions,file,"Device, app & performance",dimension,end of day D,unknown,feature + segment / reporting,True,0.0143698468786808,3.0,device dims,,
+DIVE_AND_CATCH_AWARD_IMPRESSIONS,Excluded,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,exclude: no information,False,0.001177856301531213,1.0,daily measures,,Single value
+DIVE_AND_CATCH_CLICKED_BUYS,Excluded,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,exclude: no information,False,0.001177856301531213,1.0,daily measures,,Single value
+DIVE_AND_CATCH_IMPRESSIONS,Excluded,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,exclude: no information,False,0.001177856301531213,1.0,daily measures,,Single value
+DIVE_AND_CATCH_PURCHASE_COMPLETES,Excluded,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,exclude: no information,False,0.001177856301531213,1.0,daily measures,,Single value
+DIVE_AND_CATCH_REVENUE,Excluded,file,Revenue & payers,daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,daily measures,,All null
+END_APP_VERSION,Dimensions,file,"Device, app & performance",dimension,end of day D,unknown,feature + segment / reporting,True,0.0,23.0,device dims,,
+END_LEVEL,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.0,468.0,daily measures,,
+END_LEVEL_TRACK,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.014134275618374558,2.0,daily measures,,
+ENDING_BANKROLL,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.00023557126030624264,4144.0,daily measures,,
+ENDING_RUBY_BANKROLL,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.08551236749116607,2973.0,daily measures,,
+ERROR,Observed measures,file,Errors & friction,daily measure,end of day D,zero: no event that day,feature,True,0.9717314487632509,14.0,friction,,Signal for the friction list
+ERROR_HANDLED,Excluded,file,Errors & friction,daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,friction,,All null
+ERROR_UNHANDLED,Observed measures,file,Errors & friction,daily measure,end of day D,zero: no event that day,feature,True,0.9943462897526502,4.0,friction,,Signal for the friction list
+FACEBOOK_CONNECT_CLICKED,Excluded,file,Social & notifications,daily measure,end of day D,zero: no event that day,exclude: no information,False,0.001177856301531213,1.0,daily measures,,Single value
+FACEBOOK_CONNECT_SUCCESS,Observed measures,file,Social & notifications,daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,2.0,daily measures,,
+FAILED_PURCHASE,Observed measures,file,Errors & friction,daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,4.0,friction,,Signal for the friction list
+FB_LOGGEDIN,Observed measures,file,Social & notifications,daily measure,end of day D,zero: no event that day,feature,True,0.003297997644287397,8.0,daily measures,,
+FB_LOGIN,Observed measures,file,Social & notifications,daily measure,end of day D,zero: no event that day,feature,True,0.003297997644287397,4.0,daily measures,,
+FEATURED_SPINS,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.13191990577149587,416.0,daily measures,,
+FEATURED_TOTAL_WAGER,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.7985865724381626,814.0,daily measures,,
+FEATURESLOT_IMPRESSION,Excluded,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,exclude: no information,False,0.001177856301531213,1.0,daily measures,,Single value
+FIRST_LOAD,Observed measures,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,feature,True,0.032273262661955245,2043.0,daily measures,,
+FIRST_PURCHASE_DATE,Observed measures,file,Dates & timestamps,timestamp,as of D (window end to verify),not applicable: no event yet,derive feature (e.g. days since),False,0.9041224970553593,20.0,event dates,,Turn into days since the event
+FREE_COIN_INFLOW,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.045936395759717315,4010.0,daily measures,,
+FTD,Excluded,file,Revenue & payers,daily measure,end of day D,zero: no event that day,exclude: no information,False,0.9945818610129564,1.0,daily measures,,Single value
+GAME_LOADS,Observed measures,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,feature,True,0.032273262661955245,23.0,daily measures,,
+HIGH_LIMIT_SPIN,Excluded,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,exclude: no information,False,0.13191990577149587,1.0,daily measures,,Single value
+HIGH_LIMIT_TOTAL_WAGER,Excluded,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,daily measures,,All null
+HIGH_LIMITCLICKED_ENTER,Excluded,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,exclude: no information,False,0.001177856301531213,1.0,daily measures,,Single value
+HLPJ_JACKPOT_WINS,Excluded,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,daily measures,,All null
+HOT_OFFER_AWARD_IMPRESSIONS,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,4.0,daily measures,,
+HOT_OFFER_CLICKED_BUYS,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,9.0,daily measures,,
+HOT_OFFER_IMPRESSIONS,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,149.0,daily measures,,
+HOT_OFFER_PURCHASE_COMPLETES,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,4.0,daily measures,,
+HOT_OFFER_PURCHASE_FAILED,Excluded,file,Errors & friction,daily measure,end of day D,zero: no event that day,exclude: no information,False,0.001177856301531213,1.0,friction,,Single value
+HOT_OFFER_REVENUE,Observed measures,file,Revenue & payers,daily measure,end of day D,zero: no event that day,feature,True,0.9875147232037691,39.0,daily measures,,
+HOURLY_BONUS,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.2021201413427562,16.0,daily measures,,
+I14_REVENUE,Observed measures,file,Revenue & payers,daily measure,end of day D,zero: no event that day,feature,True,0.9969375736160189,13.0,daily measures,,
+I3_REVENUE,Observed measures,file,Revenue & payers,daily measure,end of day D,zero: no event that day,feature,True,0.9976442873969376,10.0,daily measures,,
+I30_REVENUE,Observed measures,file,Revenue & payers,daily measure,end of day D,zero: no event that day,feature,True,0.9962308598351001,16.0,daily measures,,
+I7_REVENUE,Observed measures,file,Revenue & payers,daily measure,end of day D,zero: no event that day,feature,True,0.9974087161366313,11.0,daily measures,,
+IN_GAME_EVENT_MAXNODE_REACHED,Excluded,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,daily measures,,All null
+INCENTIVIZED_NOTIFS,Observed measures,file,Social & notifications,daily measure,end of day D,zero: no event that day,feature,True,0.8942285041224971,13.0,daily measures,,
+INFLOW_COINS_CS,Excluded,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,daily measures,,All null
+INFLOW_COINS_GENERIC,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.9745583038869258,108.0,daily measures,,
+INFLOW_DAILY_COINS,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.7780918727915195,735.0,daily measures,,
+INFLOW_FB_COINS,Excluded,file,Social & notifications,daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,daily measures,,All null
+INFLOW_FREE_PLAY_COINS,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.43250883392226147,1343.0,daily measures,,
+INFLOW_FREE_TO_SPIN,Excluded,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,daily measures,,All null
+INFLOW_GENERICLEVELUP_COINS,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.9762073027090695,101.0,daily measures,,
+INFLOW_GIFTCOLLECTED_COINS,Excluded,file,Social & notifications,daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,daily measures,,All null
+INFLOW_HLPJ_JACKPOT_COINS,Excluded,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,daily measures,,All null
+INFLOW_IN_GAME_COINS,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.670906949352179,1335.0,daily measures,,
+INFLOW_INVITE_COINS,Excluded,file,Social & notifications,daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,daily measures,,All null
+INFLOW_ISLAND_HOPPING_COINS,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.8546525323910483,601.0,daily measures,,
+INFLOW_JACKPOT_COINS,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.9957597173144876,18.0,daily measures,,
+INFLOW_LEVELUP_COINS,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.31731448763250886,2893.0,daily measures,,
+INFLOW_NOTIFICATION_TEAK_COINS,Observed measures,file,Social & notifications,daily measure,end of day D,zero: no event that day,feature,True,0.8972909305064782,197.0,daily measures,,
+INFLOW_NOTIFICATION_LINK,Excluded,file,Social & notifications,daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,daily measures,,All null
+INFLOW_NPC,Excluded,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,daily measures,,All null
+INFLOW_OOC_COIN_VALUE_COINS,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.8162544169611308,446.0,daily measures,,
+INFLOW_ORC_COINS,Excluded,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,daily measures,,All null
+INFLOW_PURCHASED_COINS,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.970789163722026,116.0,daily measures,,
+INFLOW_RUBIES,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.2734982332155477,1859.0,daily measures,,
+INFLOW_TIMED_COINS,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.2021201413427562,1102.0,daily measures,,
+INFLOW_TIMED_MEGA_COINS,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.7976442873969376,350.0,daily measures,,
+INFLOW_TOTAL_COINS,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.045936395759717315,4010.0,daily measures,,
+INFLOW_TOURNAMENT_COINS,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.8534746760895171,622.0,daily measures,,
+INSTALL_DATE,Dimensions,file,Dates & timestamps,timestamp,static (set at install),n/a,derive feature (e.g. days since),False,0.0,700.0,install dates,,Age = D - install date
+INSTALL_FLAG,Dimensions,file,Acquisition,dimension,static (set at install),unknown,feature + segment / reporting,True,0.0,2.0,acquisition & geography,,
+IS_CHEATER_DETECTED,Dimensions,file,Compliance flags,dimension,as of D (window end to verify),unknown,eligibility filter,False,0.0,1.0,compliance,,Exclude cheaters and legal settlements from lists; never set in the sample (Q6)
+ISLAND_HOPPING_BONUS_FILLED_STATE,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,2.0,daily measures,,
+ISLAND_HOPPING_BONUS_FILLING_STATE,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,2.0,daily measures,,
+ISLAND_HOPPING_EARNED_STATE,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,2.0,daily measures,,
+ISLAND_HOPPING_EARNING_STATE,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,2.0,daily measures,,
+ISLAND_HOPPING_ENDING_STATE,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.9484098939929329,5.0,daily measures,,
+ISLAND_HOPPING_LOCKED_STATE,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,2.0,daily measures,,
+ISLAND_HOPPING_MAX_STREAK_BONUS,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.9472320376914016,71.0,daily measures,,
+ISLAND_HOPPING_MIN_STREAK_BONUS,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.9472320376914016,70.0,daily measures,,
+ISLAND_HOPPING_PLAYING_DAU,Excluded,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,exclude: no information,False,0.001177856301531213,1.0,daily measures,,Single value
+ISLAND_HOPPING_UNLOCKED_PLAYER,Excluded,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,exclude: no information,False,0.001177856301531213,1.0,daily measures,,Single value
+JACKPOT_CLICKED_PLAY,Excluded,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,exclude: no information,False,0.001177856301531213,1.0,daily measures,,Single value
+JACKPOT_INTRO,Excluded,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,exclude: no information,False,0.001177856301531213,1.0,daily measures,,Single value
+JACKPOT_WIN,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,3.0,daily measures,,
+LAST_LOGIN_DATE,Observed measures,file,Dates & timestamps,timestamp,as of D (window end to verify),not applicable: no event yet,derive feature (e.g. days since),False,0.16537102473498233,179.0,event dates,,Turn into days since the event
+LAST_PURCHASE_DATE,Observed measures,file,Dates & timestamps,timestamp,as of D (window end to verify),not applicable: no event yet,derive feature (e.g. days since),False,0.9041224970553593,88.0,event dates,,Turn into days since the event
+LEVEL_BIN,Dimensions,file,Segments & bins,dimension,as of D (window end to verify),unknown,segment / reporting,False,0.0,8.0,segments,,Bucketed from other fields; use the source measures in models
+LEVEL_UPS,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.31731448763250886,102.0,daily measures,,
+LIFETIME_PAYERS,Observed measures,file,Revenue & payers,snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.0,2.0,snapshots,,
+LOAD_LOGGED_IN,Observed measures,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,feature,True,0.019787985865724382,25.0,daily measures,,
+LOAD_SECONDS_COUNT,Observed measures,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,feature,True,0.032273262661955245,23.0,daily measures,,
+LOAD_STARTER,Observed measures,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,feature,True,0.003297997644287397,6.0,daily measures,,
+LOBBY_LOADER,Observed measures,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,feature,True,0.003297997644287397,2.0,daily measures,,
+LOBBY_LOADS,Observed measures,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,feature,True,0.003297997644287397,50.0,daily measures,,
+LOGIN_TYPE_APPLE,Observed measures,file,Social & notifications,daily measure,end of day D,zero: no event that day,feature,True,0.014134275618374558,2.0,daily measures,,
+LOGIN_TYPE_FACEBOOK,Observed measures,file,Social & notifications,daily measure,end of day D,zero: no event that day,feature,True,0.014134275618374558,2.0,daily measures,,
+LOGIN_TYPE_GUEST,Observed measures,file,Social & notifications,daily measure,end of day D,zero: no event that day,feature,True,0.014134275618374558,2.0,daily measures,,
+LOW_COINS,Excluded,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,exclude: no information,False,0.001177856301531213,1.0,daily measures,,Single value
+LT_PAYER_BIN,Dimensions,file,Segments & bins,dimension,as of D (window end to verify),unknown,segment / reporting,False,0.0,6.0,segments,,Bucketed from other fields; use the source measures in models
+MAX_BETS,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.8365135453474676,180.0,snapshots,,
+MAX_ORC_CYCLE,Excluded,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,exclude: no information,False,1.0,0.0,snapshots,,All null
+MAX_WEEKLY_SPEND,Observed measures,file,Revenue & payers,snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.9045936395759717,47.0,snapshots,,
+MEDIAN_BET,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.1314487632508834,1843.0,daily measures,,
+MEDIAN_FPS,Observed measures,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,feature,True,0.13121319199057715,618.0,daily measures,,
+MEDIAN_LOAD_TIME,Observed measures,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,feature,True,0.032273262661955245,4100.0,daily measures,,
+MIN_BETS,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.13191990577149587,573.0,daily measures,,
+NEW_SLOT_SPIN,Excluded,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,exclude: no information,False,0.13191990577149587,1.0,daily measures,,Single value
+NEW_SLOT_TOTAL_WAGER,Excluded,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,daily measures,,All null
+NEXT_LOGIN_DATE,Excluded,file,Cohort milestones & outcomes,label-like,future (after D),n/a,exclude: leakage,False,0.16702002355712603,178.0,future fields,,Describes what happens after D
+NONINCENTIVIZED_NOTIFS,Observed measures,file,Social & notifications,daily measure,end of day D,zero: no event that day,feature,True,0.927208480565371,19.0,daily measures,,
+NUM_AUTO_SPIN,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.6932862190812721,505.0,daily measures,,
+OOC_CLICKED_BUYS,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,9.0,daily measures,,
+OOC_COIN_VALUE_COLLECTS,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.8162544169611308,360.0,daily measures,,
+OOC_IMPRESSIONS,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,133.0,daily measures,,
+OOC_PURCHASE_COMPLETES,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,8.0,daily measures,,
+OOC_PURCHASE_FAILED,Excluded,file,Errors & friction,daily measure,end of day D,zero: no event that day,exclude: no information,False,0.001177856301531213,1.0,friction,,Single value
+OOC_REVENUE,Observed measures,file,Revenue & payers,daily measure,end of day D,zero: no event that day,feature,True,0.9802120141342756,51.0,daily measures,,
+ORC_BILLBOARD_CLICKS,Excluded,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,exclude: no information,False,0.001177856301531213,1.0,daily measures,,Single value
+ORC_COLLECT_IMPRESSIONS,Excluded,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,exclude: no information,False,0.001177856301531213,1.0,daily measures,,Single value
+ORC_SPINS,Excluded,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,exclude: no information,False,0.13191990577149587,1.0,daily measures,,Single value
+ORC_SUPPORTED_SLOT,Excluded,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,exclude: no information,False,0.001177856301531213,1.0,daily measures,,Single value
+ORC_WIDGET_CLICKS,Excluded,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,exclude: no information,False,0.001177856301531213,1.0,daily measures,,Single value
+OUTFLOW_COINS,Excluded,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,daily measures,,All null
+OUTFLOW_RUBIES,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.7241460541813899,807.0,daily measures,,
+PAID_COIN_INFLOW,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.970789163722026,116.0,daily measures,,
+PAYERS,Excluded,file,Revenue & payers,daily measure,end of day D,zero: no event that day,exclude: no information,False,0.970789163722026,1.0,daily measures,,Single value
+PUSH_ENABLED_DAU,Observed measures,file,Social & notifications,daily measure,end of day D,zero: no event that day,feature,True,0.014134275618374558,2.0,daily measures,,
+QUALIFYING_JACKPOT_SPIN,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.9027090694935218,277.0,daily measures,,
+QUALIFYING_JACKPOT_TOTAL_WAGER,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.9027090694935218,398.0,daily measures,,
+RATE_US_CLAIMED,Observed measures,file,Social & notifications,daily measure,end of day D,zero: no event that day,feature,True,0.9858657243816255,57.0,daily measures,,
+RATE_US_IMPRESSIONS,Observed measures,file,Social & notifications,daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,2.0,daily measures,,
+RATE_US_RATED,Observed measures,file,Social & notifications,daily measure,end of day D,zero: no event that day,feature,True,0.9639575971731449,133.0,daily measures,,
+RATE_US_RATED_COUNT,Excluded,file,Social & notifications,daily measure,end of day D,zero: no event that day,exclude: no information,False,0.9639575971731449,1.0,daily measures,,Single value
+REACTIVATED,Dimensions,file,Acquisition,dimension,static (set at install),unknown,feature + segment / reporting,True,0.0,2.0,acquisition & geography,,
+RECOMMENDED_CLICKED_UPDATE,Excluded,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,exclude: no information,False,0.001177856301531213,1.0,daily measures,,Single value
+RECOMMENDED_IMPRESSION,Observed measures,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,2.0,daily measures,,
+REGULAR_SPIN,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.13191990577149587,906.0,daily measures,,
+REGULAR_TOTAL_WAGER,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.26336866902237926,3059.0,daily measures,,
+REQUIRED_CLICKED_UPDATE,Excluded,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,exclude: no information,False,0.001177856301531213,1.0,daily measures,,Single value
+REQUIRED_IMPRESSION,Excluded,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,exclude: no information,False,0.001177856301531213,1.0,daily measures,,Single value
+REVENUE,Observed measures,file,Revenue & payers,daily measure,end of day D,zero: no event that day,feature,True,0.970789163722026,76.0,daily measures,,
+RUBY_BANKROLL,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.08551236749116607,3069.0,daily measures,,
+RUBY_REEF_SLOT_SPIN,Excluded,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,exclude: no information,False,0.13191990577149587,1.0,daily measures,,Single value
+RUBY_REEF_SLOT_TOTAL_WAGER,Excluded,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,daily measures,,All null
+RUBYREEF_CLICKED,Excluded,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,exclude: no information,False,0.001177856301531213,1.0,daily measures,,Single value
+SENIORITY,Dimensions,file,Segments & bins,dimension,as of D (window end to verify),unknown,segment / reporting,False,0.0,6.0,segments,,Bucketed from other fields; use the source measures in models
+SERVER_VERSION_END,Dimensions,file,"Device, app & performance",dimension,end of day D,unknown,feature + segment / reporting,True,0.0,24.0,device dims,,
+SERVER_VERSION_START,Dimensions,file,"Device, app & performance",dimension,end of day D,unknown,feature + segment / reporting,True,0.0,22.0,device dims,,
+SESSION_MINS,Observed measures,file,Activity & engagement,daily measure,end of day D,zero: no event that day,feature,True,0.0009422850412249705,4161.0,daily measures,,
+SESSIONS,Observed measures,file,Activity & engagement,daily measure,end of day D,zero: no event that day,feature,True,0.0009422850412249705,42.0,daily measures,,
+SLOT_DOWNLOAD_COMPLETES,Observed measures,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,46.0,daily measures,,
+SLOT_DOWNLOAD_STARTS,Observed measures,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,47.0,daily measures,,
+SLOT_LOAD_COMPLETES,Observed measures,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,47.0,daily measures,,
+SLOT_LOAD_STARTS,Observed measures,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,47.0,daily measures,,
+SLOT_WIN_COINS,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.1321554770318021,3601.0,daily measures,,
+SPECIAL_AWARD,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.9988221436984688,5.0,daily measures,,
+SPENDER_14,Excluded,file,Cohort milestones & outcomes,label-like,back-filled after D,n/a,exclude: leakage,False,0.0,2.0,milestone flags,,"Forward-looking label: D<n>_RETURNER = played exactly n days after D (Q3, Q5)"
+SPENDER_21,Excluded,file,Cohort milestones & outcomes,label-like,back-filled after D,n/a,exclude: leakage,False,0.0,2.0,milestone flags,,"Forward-looking label: D<n>_RETURNER = played exactly n days after D (Q3, Q5)"
+SPENDER_30,Excluded,file,Cohort milestones & outcomes,label-like,back-filled after D,n/a,exclude: leakage,False,0.0,2.0,milestone flags,,"Forward-looking label: D<n>_RETURNER = played exactly n days after D (Q3, Q5)"
+SPENDER_7,Excluded,file,Cohort milestones & outcomes,label-like,back-filled after D,n/a,exclude: leakage,False,0.0,2.0,milestone flags,,"Forward-looking label: D<n>_RETURNER = played exactly n days after D (Q3, Q5)"
+SPIN_LATENCY,Observed measures,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,feature,True,0.1321554770318021,3684.0,daily measures,,
+SPINNER,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.13191990577149587,2.0,daily measures,,
+SPINS_COMPLETED,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.1321554770318021,1020.0,daily measures,,
+SPINS_STARTED,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.13191990577149587,1003.0,daily measures,,
+START_APP_VERSION,Dimensions,file,"Device, app & performance",dimension,end of day D,unknown,feature + segment / reporting,True,0.0,24.0,device dims,,
+START_LEVEL,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.0,462.0,daily measures,,
+START_LEVEL_TRACK,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.014134275618374558,2.0,daily measures,,
+STARTING_BANKROLL,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.00023557126030624264,3610.0,daily measures,,
+TECH_VERSION_END,Dimensions,file,"Device, app & performance",dimension,end of day D,unknown,feature + segment / reporting,True,0.014134275618374558,2.0,device dims,,
+TECH_VERSION_START,Dimensions,file,"Device, app & performance",dimension,end of day D,unknown,feature + segment / reporting,True,0.014134275618374558,2.0,device dims,,
+TOTAL_AVG_FPS,Observed measures,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,feature,True,0.1321554770318021,3050.0,daily measures,,
+TOTAL_BET_AMOUNT,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.13191990577149587,3582.0,daily measures,,
+TOTAL_FREE_COINS,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.045936395759717315,4010.0,daily measures,,
+TOTAL_LOAD_SECONDS,Observed measures,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,feature,True,0.032273262661955245,181.0,daily measures,,
+OOC_CALCULATED,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.4414605418138987,129.0,daily measures,,
+TOTAL_SPIN_LENGTH,Observed measures,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,feature,True,0.1321554770318021,1847.0,daily measures,,
+TOTAL_WARNING_ERROR,Observed measures,file,Errors & friction,daily measure,end of day D,zero: no event that day,feature,True,0.014605418138987044,237.0,friction,,Signal for the friction list
+TOTAL_WIN_AMOUNT,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.1321554770318021,3605.0,daily measures,,
+TOTAL_WINS,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.14746760895170788,557.0,daily measures,,
+TOURNAMENT_COMPLETES,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,41.0,daily measures,,
+TOURNAMENT_STARTS,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,40.0,daily measures,,
+TOURNAMENT_WIN_DIALOG_IMPRESSIONS,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,20.0,daily measures,,
+TRANSACTIONS,Observed measures,file,Revenue & payers,daily measure,end of day D,zero: no event that day,feature,True,0.970789163722026,9.0,daily measures,,
+UPGRADED_FLAG,Dimensions,file,"Device, app & performance",dimension,end of day D,unknown,feature + segment / reporting,True,0.0,2.0,device dims,,
+ZENDESK_TICKETS,Observed measures,file,Errors & friction,daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,2.0,friction,,Signal for the friction list
+CREATE_BATCH_ID,Excluded,file,Pipeline metadata,metadata,processing time,n/a,exclude: no information,False,0.0,1.0,pipeline metadata,,Single value
+CREATE_USER_NAME,Excluded,file,Pipeline metadata,metadata,processing time,n/a,exclude: no information,False,1.0,0.0,pipeline metadata,,All null
+CREATE_DATETIME,Excluded,file,Pipeline metadata,metadata,processing time,n/a,freshness checks only,False,0.0,180.0,pipeline metadata,,Rows are rewritten until 91 days after D (Q3)
+LAST_UPDATE_BATCH_ID,Excluded,file,Pipeline metadata,metadata,processing time,n/a,exclude: no information,False,0.0,1.0,pipeline metadata,,Single value
+LAST_UPDATE_USER_NAME,Excluded,file,Pipeline metadata,metadata,processing time,n/a,exclude: no information,False,1.0,0.0,pipeline metadata,,All null
+LAST_UPDATE_DATETIME,Excluded,file,Pipeline metadata,metadata,processing time,n/a,freshness checks only,False,0.0,65.0,pipeline metadata,,Rows are rewritten until 91 days after D (Q3)
+STORES_PURCHASE_BILLED,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,10.0,daily measures,,
+STORES_PURCHASE_STARTED,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,15.0,daily measures,,
+STORES_VERIFY_PURCHASE_FAILURE,Observed measures,file,Errors & friction,daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,2.0,friction,,Signal for the friction list
+STORES_IMPRESSION,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,203.0,daily measures,,
+INFLOW_DAILY_JEWEL_COINS,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.31755005889281507,2782.0,daily measures,,
+PEARL_OUTFLOW_RUBIES,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.0447585394581861,767.0,daily measures,,
+PEARL_INFLOW_COINS,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.0447585394581861,2231.0,daily measures,,
+INFLOW_BAD_BEATS_COINS,Excluded,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,daily measures,,All null
+TOTAL_PEARL_COLLECTED,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,205.0,daily measures,,
+TOTAL_PEARL_AWARDED,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,594.0,daily measures,,
+DAILY_JEWEL_TASKS_COMPLETED,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,1030.0,daily measures,,
+DAILY_JEWEL_TASKS_COLLECTED,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,654.0,daily measures,,
+DAILY_JEWEL_PRIZE_DAY_COMPLETED,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.7422850412249705,5.0,daily measures,,
+IN_GAME_EVENT_MINNODE_REACHED,Excluded,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,daily measures,,All null
+IN_GAME_EVENT_COMPLETIONS,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,205.0,daily measures,,
+IS_IN_GAME_EVENT_PLAYED,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,199.0,daily measures,,
+BAD_BEATS_REVENUE,Excluded,file,Revenue & payers,daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,daily measures,,All null
+RUBY_REFILL_REVENUE,Excluded,file,Revenue & payers,daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,daily measures,,All null
+REVEAL_YOUR_DEAL_REVENUE,Excluded,file,Revenue & payers,daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,daily measures,,All null
+SOURCE,Dimensions,file,Acquisition,dimension,static (set at install),unknown,feature + segment / reporting,True,0.0,15.0,acquisition & geography,,
+SOURCE_TYPE,Dimensions,file,Acquisition,dimension,static (set at install),unknown,feature + segment / reporting,True,0.0,6.0,acquisition & geography,,
+ADGROUP_NAME,Excluded,file,Acquisition,dimension,static (set at install),unknown,exclude: no information,False,1.0,0.0,acquisition & geography,,All null
+CREATIVE_NAME,Excluded,file,Acquisition,dimension,static (set at install),unknown,exclude: no information,False,1.0,0.0,acquisition & geography,,All null
+CAMPAIGN_NAME,Excluded,file,Acquisition,dimension,static (set at install),unknown,exclude: no information,False,1.0,0.0,acquisition & geography,,All null
+INSTALL_TYPE,Excluded,file,Acquisition,dimension,static (set at install),unknown,exclude: no information,False,1.0,0.0,acquisition & geography,,All null
+INSTALL_SOURCE,Excluded,file,Acquisition,dimension,static (set at install),unknown,exclude: no information,False,1.0,0.0,acquisition & geography,,All null
+VIP_SEGMENT,Excluded,file,Segments & bins,dimension,as of D (window end to verify),unknown,exclude: no information,False,0.0,1.0,segments,,Single value
+REGION,Dimensions,file,Geography,dimension,static (set at install),unknown,feature + segment / reporting,True,0.0143698468786808,6.0,acquisition & geography,,
+FREE_TO_PLAY_IMPRESSIONS,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,104.0,daily measures,,
+FREE_TO_PLAY_CLICKS,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,103.0,daily measures,,
+STORES_ICON_CLICKED,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,10.0,daily measures,,
+STORES_ITEM_CLICKED,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,15.0,daily measures,,
+STORES_PURCHASE_COMPLETED,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,10.0,daily measures,,
+ASSET_BUNDLE_START,Excluded,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,daily measures,,All null
+ASSET_BUNDLE_COMPLETE,Excluded,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,daily measures,,All null
+ASSET_BUNDLE_FAIL,Excluded,file,Errors & friction,daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,friction,,All null
+END_LIFETIME_SPINS,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.0,2920.0,snapshots,,
+START_LIFETIME_SPINS,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.0,2702.0,snapshots,,
+AVG_SPIN_LATENCY_AUTO_SPINS,Observed measures,file,"Device, app & performance",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.6932862190812721,1298.0,snapshots,,
+AVG_SPIN_LATENCY_REGULAR_SPINS,Observed measures,file,"Device, app & performance",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.15382803297997644,3584.0,snapshots,,
+AVG_SPIN_LENGTH_AUTO_SPINS,Observed measures,file,"Device, app & performance",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.6932862190812721,35.0,snapshots,,
+AVG_SPIN_LENGTH_REGULAR_SPINS,Observed measures,file,"Device, app & performance",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.15382803297997644,39.0,snapshots,,
+AVG_SPIN_LENGTH_WIN_SPINS,Observed measures,file,"Device, app & performance",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.14746760895170788,68.0,snapshots,,
+AVG_SPIN_LENGTH_LOOSING_SPINS,Observed measures,file,"Device, app & performance",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.1380447585394582,15.0,snapshots,,
+PLAYDAYS_LEFT_IN_BANKROLL,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.06219081272084806,592.0,daily measures,,
+SG_BIN,Dimensions,file,Segments & bins,dimension,as of D (window end to verify),unknown,segment / reporting,False,0.0,5.0,segments,,Bucketed from other fields; use the source measures in models
+AVG_WAGER,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.1321554770318021,3130.0,snapshots,,
+MAX_BET_AMOUNT,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.13191990577149587,1947.0,snapshots,,
+MIN_BET_AMOUNT,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.13191990577149587,1714.0,daily measures,,
+MAX_BANKROLL,Observed measures,file,"Game economy (coins, bankroll)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.00023557126030624264,4203.0,snapshots,,
+MIN_BANKROLL,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.00023557126030624264,3155.0,daily measures,,
+MEDIAN_SPIN_LENGTH,Observed measures,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,feature,True,0.1314487632508834,2769.0,daily measures,,
+LIFETIME_REVENUE,Observed measures,file,Revenue & payers,snapshot (rolling/lifetime),start of day D (excludes D),not applicable: no event yet,feature,True,0.0,116.0,lifetime revenue,,Today's REVENUE lands in tomorrow's value (Q2)
+D365_SPEND,Excluded,file,Cohort milestones & outcomes,label-like,as of D (window end to verify),not applicable: no event yet,exclude: not a valid target,False,0.9041224970553593,115.0,spend windows,positive on 407 rows before day 365,"Lifetime-to-date spend, not a fixed-window outcome (Q1)"
+D7_ACTIVE_DAYS,Excluded,file,Activity & engagement,snapshot (rolling/lifetime),unclear: window may extend past D,n/a,exclude until verified,False,0.0,2.0,first-N-days windows,positive on 683 rows before day 7,Rebuild from daily rows instead
+D14_ACTIVE_DAYS,Excluded,file,Activity & engagement,snapshot (rolling/lifetime),unclear: window may extend past D,n/a,exclude until verified,False,0.0,2.0,first-N-days windows,positive on 1093 rows before day 14,Rebuild from daily rows instead
+D30_ACTIVE_DAYS,Excluded,file,Activity & engagement,snapshot (rolling/lifetime),unclear: window may extend past D,n/a,exclude until verified,False,0.0,2.0,first-N-days windows,positive on 1754 rows before day 30,Rebuild from daily rows instead
+LT_MAX_WEEK_REV,Observed measures,file,Revenue & payers,snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.8987043580683156,49.0,snapshots,,
+LT_SPENDER_BUCKET,Dimensions,file,Segments & bins,dimension,as of D (window end to verify),unknown,segment / reporting,False,0.8987043580683156,4.0,segments,,Bucketed from other fields; use the source measures in models
+D7_PURCHASE_DAYS,Excluded,file,Activity & engagement,snapshot (rolling/lifetime),unclear: window may extend past D,n/a,exclude until verified,False,0.0,2.0,first-N-days windows,positive on 42 rows before day 7,Rebuild from daily rows instead
+D14_PURCHASE_DAYS,Excluded,file,Activity & engagement,snapshot (rolling/lifetime),unclear: window may extend past D,n/a,exclude until verified,False,0.0,2.0,first-N-days windows,positive on 77 rows before day 14,Rebuild from daily rows instead
+D30_PURCHASE_DAYS,Excluded,file,Activity & engagement,snapshot (rolling/lifetime),unclear: window may extend past D,n/a,exclude until verified,False,0.0,2.0,first-N-days windows,positive on 152 rows before day 30,Rebuild from daily rows instead
+D7_SPINS_DAYS,Excluded,file,Activity & engagement,snapshot (rolling/lifetime),unclear: window may extend past D,n/a,exclude until verified,False,0.0,2.0,first-N-days windows,positive on 1244 rows before day 7,Rebuild from daily rows instead
+D14_SPINS_DAYS,Excluded,file,Activity & engagement,snapshot (rolling/lifetime),unclear: window may extend past D,n/a,exclude until verified,False,0.0,2.0,first-N-days windows,positive on 1650 rows before day 14,Rebuild from daily rows instead
+D30_SPINS_DAYS,Excluded,file,Activity & engagement,snapshot (rolling/lifetime),unclear: window may extend past D,n/a,exclude until verified,False,0.0,2.0,first-N-days windows,positive on 2306 rows before day 30,Rebuild from daily rows instead
+LIFETIME_TRANSACTIONS,Observed measures,file,Revenue & payers,snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.0,56.0,snapshots,,
+LIFETIME_SPINS_DAYS,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.0,117.0,snapshots,,
+SPLASH_SALE_IMPRESSIONS,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,149.0,daily measures,,
+AVG_WAGER_LAST_7_ENGAGED,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.19740871613663133,3034.0,snapshots,,
+AVG_WAGER_LAST_14_ENGAGED,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.19740871613663133,3055.0,snapshots,,
+TOTAL_OOC,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.4414605418138987,129.0,daily measures,,
+CONSECUTIVE_SPINS_DAYS,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.1321554770318021,116.0,snapshots,,
+CONSECUTIVE_ACTIVE_DAYS,Observed measures,file,Activity & engagement,snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.0,116.0,snapshots,,
+CONSECUTIVE_PURCHASE_DAYS,Observed measures,file,Revenue & payers,snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.0,6.0,snapshots,,
+DAYS_SINCE_LAST_SPIN,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.18115429917550058,68.0,snapshots,,
+AVG_LAST_5_PURCHASES,Observed measures,file,Revenue & payers,snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.8987043580683156,81.0,snapshots,,
+AVG_LAST_10_PURCHASES,Observed measures,file,Revenue & payers,snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.8987043580683156,100.0,snapshots,,
+LIFETIME_LOGINS_DAYS,Observed measures,file,Activity & engagement,snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.00023557126030624264,116.0,snapshots,,
+SUM_BET_MULTIPLIERS,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.1321554770318021,3263.0,daily measures,,
+IS_CHEATER,Dimensions,file,Compliance flags,dimension,as of D (window end to verify),unknown,eligibility filter,False,0.0,1.0,compliance,,Exclude cheaters and legal settlements from lists; never set in the sample (Q6)
+DTC_REVENUE,Observed measures,file,Revenue & payers,daily measure,end of day D,zero: no event that day,feature,True,0.970789163722026,2.0,daily measures,,
+DTC_TRANSACTIONS,Observed measures,file,Revenue & payers,daily measure,end of day D,zero: no event that day,feature,True,0.970789163722026,2.0,daily measures,,
+DTC_LIFETIME_TRANSACTIONS,Excluded,file,Revenue & payers,snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,exclude: no information,False,1.0,0.0,snapshots,,All null
+DTC_LAST_PURCHASE_DATE,Excluded,file,Dates & timestamps,timestamp,as of D (window end to verify),not applicable: no event yet,exclude: no information,False,1.0,0.0,event dates,,All null
+TOTAL_SPEND_LAST_4W_SEGMENT,Dimensions,file,Segments & bins,dimension,as of D (window end to verify),unknown,segment / reporting,False,0.0,8.0,segments,,Bucketed from other fields; use the source measures in models
+LAST_4W_REVENUE,Observed measures,file,Revenue & payers,snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.0,132.0,snapshots,,
+LAST_4W_TRANSACTIONS,Observed measures,file,Revenue & payers,snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.0,36.0,snapshots,,
+LAST_4W_SPEND_DAYS,Observed measures,file,Revenue & payers,snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.0,13.0,snapshots,,
+LAST_8W_REVENUE,Observed measures,file,Revenue & payers,snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.0,133.0,snapshots,,
+LAST_8W_TRANSACTIONS,Observed measures,file,Revenue & payers,snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.0,45.0,snapshots,,
+LAST_8W_SPEND_DAYS,Observed measures,file,Revenue & payers,snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.0,20.0,snapshots,,
+LAST_12W_REVENUE,Observed measures,file,Revenue & payers,snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.0,125.0,snapshots,,
+LAST_12W_TRANSACTIONS,Observed measures,file,Revenue & payers,snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.0,55.0,snapshots,,
+LAST_12W_SPEND_DAYS,Observed measures,file,Revenue & payers,snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.0,25.0,snapshots,,
+F2P_USAGE,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.0,5.0,daily measures,,
+DAILY_BONUS,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.0447585394581861,3.0,daily measures,,
+PURCHASE_STARTS,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,15.0,daily measures,,
+PURCHASE_FAILURES,Observed measures,file,Errors & friction,daily measure,end of day D,zero: no event that day,feature,True,0.9988221436984688,2.0,friction,,Signal for the friction list
+PURCHASE_CANCELS,Observed measures,file,Errors & friction,daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,12.0,friction,,Signal for the friction list
+PURCHASE_COMPLETED,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.001177856301531213,10.0,daily measures,,
+INITIAL_LOBBY_LOAD_STARTED,Observed measures,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,feature,True,0.003297997644287397,26.0,daily measures,,
+INITIAL_LOBBY_LOAD_COMPLETED,Observed measures,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,feature,True,0.003297997644287397,24.0,daily measures,,
+SLOT_ID,Identifiers,file,Keys & identifiers,identifier,static (set at install),n/a,key,False,0.13121319199057715,202.0,keys,,
+DAYS_SINCE_OOC,Observed measures,file,"Store, offers & purchase funnel",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.2911660777385159,85.0,snapshots,,
+FIRST_DAILY_EVENT,Observed measures,file,Dates & timestamps,timestamp,end of day D,not applicable: no event yet,derive feature (e.g. days since),False,0.0009422850412249705,4241.0,daily event times,,First and last event time of day D
+LAST_DAILY_EVENT,Observed measures,file,Dates & timestamps,timestamp,end of day D,not applicable: no event yet,derive feature (e.g. days since),False,0.0009422850412249705,4241.0,daily event times,,First and last event time of day D
+SPIN_LENGTH_LN,Observed measures,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,feature,True,0.1321554770318021,3684.0,daily measures,,
+SPIN_LATENCY_LN,Observed measures,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,feature,True,0.1321554770318021,3684.0,daily measures,,
+INITIAL_SECONDS_TO_GAME_LOAD_LN,Observed measures,file,"Device, app & performance",daily measure,end of day D,zero: no event that day,feature,True,0.032273262661955245,4091.0,daily measures,,
+SPINNER_SEGMENT,Dimensions,file,Segments & bins,dimension,as of D (window end to verify),unknown,segment / reporting,False,0.0,10.0,segments,,Bucketed from other fields; use the source measures in models
+SPINS_FAILED,Excluded,file,Errors & friction,daily measure,end of day D,zero: no event that day,exclude: no information,False,0.9985865724381625,1.0,friction,,Single value
+STARTING_SLIB,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.19740871613663133,1775.0,daily measures,,
+ENDING_SLIB,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.036277974087161366,2113.0,daily measures,,
+AVG_WAGER_LAST_7_ENGAGED_INCLUSIVE,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.036277974087161366,3639.0,snapshots,,
+LOGIN_SEGMENTATION,Dimensions,file,Segments & bins,dimension,as of D (window end to verify),unknown,segment / reporting,False,0.00023557126030624264,4.0,segments,,Bucketed from other fields; use the source measures in models
+FIRST_INSTALL_DATE,Dimensions,file,Dates & timestamps,timestamp,static (set at install),n/a,derive feature (e.g. days since),False,0.0,173.0,install dates,,Age = D - install date
+PLATFORM_AGNOSTIC_LAST_LOGIN_DATE,Observed measures,file,Dates & timestamps,timestamp,as of D (window end to verify),not applicable: no event yet,derive feature (e.g. days since),False,0.16537102473498233,179.0,event dates,,Turn into days since the event
+REACTIVATION_3_DATE,Observed measures,file,Dates & timestamps,timestamp,as of D (window end to verify),not applicable: no event yet,derive feature (e.g. days since),False,0.5500588928150766,156.0,event dates,,Turn into days since the event
+REACTIVATION_7_DATE,Observed measures,file,Dates & timestamps,timestamp,as of D (window end to verify),not applicable: no event yet,derive feature (e.g. days since),False,0.7071849234393404,121.0,event dates,,Turn into days since the event
+REACTIVATION_14_DATE,Observed measures,file,Dates & timestamps,timestamp,as of D (window end to verify),not applicable: no event yet,derive feature (e.g. days since),False,0.8489988221436985,81.0,event dates,,Turn into days since the event
+REACTIVATION_28_DATE,Observed measures,file,Dates & timestamps,timestamp,as of D (window end to verify),not applicable: no event yet,derive feature (e.g. days since),False,0.9159010600706714,48.0,event dates,,Turn into days since the event
+TIMED_MEGA_BONUS_COUNT,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.7976442873969376,2.0,daily measures,,
+ATTRIBUTION_TYPE,Dimensions,file,Acquisition,dimension,static (set at install),unknown,feature + segment / reporting,True,0.0,4.0,acquisition & geography,,
+SOURCE_FIRST,Dimensions,file,Acquisition,dimension,static (set at install),unknown,feature + segment / reporting,True,0.0,16.0,acquisition & geography,,
+SOURCE_TYPE_FIRST,Dimensions,file,Acquisition,dimension,static (set at install),unknown,feature + segment / reporting,True,0.0,5.0,acquisition & geography,,
+CHURNERS_3,Excluded,file,Cohort milestones & outcomes,label-like,future (after D),n/a,exclude: no information,False,0.752414605418139,1.0,future fields,,Single value
+CHURNERS_7,Excluded,file,Cohort milestones & outcomes,label-like,future (after D),n/a,exclude: no information,False,0.8179034157832744,1.0,future fields,,Single value
+CHURNERS_14,Excluded,file,Cohort milestones & outcomes,label-like,future (after D),n/a,exclude: no information,False,0.8492343934040048,1.0,future fields,,Single value
+CHURNERS_30,Excluded,file,Cohort milestones & outcomes,label-like,future (after D),n/a,exclude: no information,False,0.8817432273262662,1.0,future fields,,Single value
+LOGIN_DAYS_SINCE_OOC,Observed measures,file,"Store, offers & purchase funnel",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.2911660777385159,61.0,snapshots,,
+PLATFORM_AGNOSTIC_LAST_7_DAYS_PLAYED,Observed measures,file,Activity & engagement,snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.0,8.0,snapshots,,
+PLATFORM_AGNOSTIC_LAST_28_DAYS_PLAYED,Observed measures,file,Activity & engagement,snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.0,29.0,snapshots,,
+TOTAL_BET_AMOUNT_LAST_28_ENGAGED,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.036277974087161366,3683.0,daily measures,,
+SPINS_COMPLETED_LAST_28_ENGAGED,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.036277974087161366,2825.0,daily measures,,
+AVG_WAGER_LAST_28_ENGAGED,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.036277974087161366,3675.0,snapshots,,
+SCIPAY_REVENUE,Excluded,file,Revenue & payers,daily measure,end of day D,zero: no event that day,exclude: no information,False,0.970789163722026,1.0,daily measures,,Single value
+SCIPAY_TRANSACTIONS,Excluded,file,Revenue & payers,daily measure,end of day D,zero: no event that day,exclude: no information,False,0.970789163722026,1.0,daily measures,,Single value
+SCIPAY_LIFETIME_TRANSACTIONS,Excluded,file,Revenue & payers,snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,exclude: no information,False,1.0,0.0,snapshots,,All null
+SCIPAY_LAST_PURCHASE_DATE,Excluded,file,Dates & timestamps,timestamp,as of D (window end to verify),not applicable: no event yet,exclude: no information,False,1.0,0.0,event dates,,All null
+IS_LEGAL_SETTLEMENT,Dimensions,file,Compliance flags,dimension,as of D (window end to verify),unknown,eligibility filter,False,0.0,1.0,compliance,,Exclude cheaters and legal settlements from lists; never set in the sample (Q6)
+AVG_WAGER_LAST_28_ENGAGED_SPINS_ABOVE25,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.06666666666666667,2938.0,snapshots,,
+LOGIN_DAYS_SINCE_LAST_SPIN,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.04263839811542992,10.0,snapshots,,
+OS_VERSION,Dimensions,file,"Device, app & performance",dimension,end of day D,unknown,feature + segment / reporting,True,0.0143698468786808,47.0,device dims,,
+SUM_LN_BET_AMOUNT,Observed measures,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,feature,True,0.1338044758539458,3595.0,daily measures,,
+PURCHASE_SLIB,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.8987043580683156,116.0,daily measures,,
+AVG_DAILY_VALUABLE_SPINS_LAST_7_ENGAGED,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.18916372202591283,783.0,snapshots,,
+AVG_DAILY_VALUABLE_SPINS_LAST_28_ENGAGED,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.18916372202591283,754.0,snapshots,,
+PLATFORM_AGNOSTIC_LIFETIME_SPINS_DAYS,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.036277974087161366,116.0,snapshots,,
+DTC_NET_FEE_REVENUE,Observed measures,file,Revenue & payers,daily measure,end of day D,zero: no event that day,feature,True,0.970789163722026,2.0,daily measures,,
+AVG_WAGER_14D,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.04711425206124853,3521.0,snapshots,,
+AVG_BETS_14D,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.04711425206124853,3577.0,snapshots,,
+AVG_SPINS_14D,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.04711425206124853,1050.0,snapshots,,
+AVG_WAGER_NL,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.04711425206124853,3579.0,snapshots,,
+AVG_BETS_NL,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.04711425206124853,3585.0,snapshots,,
+AVG_SPINS_NL,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.04711425206124853,1100.0,snapshots,,
+AVG_WAGER_EWMA,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.04711425206124853,3592.0,snapshots,,
+AVG_BETS_EWMA,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.04711425206124853,3591.0,snapshots,,
+AVG_SPINS_EWMA,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.04711425206124853,905.0,snapshots,,
+AVG_BETS_LAST_28_ENGAGED,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.036277974087161366,3683.0,snapshots,,
+AVG_SPINS_LAST_28_ENGAGED,Observed measures,file,"Gameplay (spins, bets, features)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.036277974087161366,1072.0,snapshots,,
+STARTING_SLIB_14DAY,Observed measures,file,"Game economy (coins, bankroll)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.2977620730270907,1487.0,snapshots,,
+ENDING_SLIB_14DAY,Observed measures,file,"Game economy (coins, bankroll)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.2977620730270907,1579.0,snapshots,,
+STARTING_SLIB_NL,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.2977620730270907,1464.0,daily measures,,
+ENDING_SLIB_NL,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.2977620730270907,1565.0,daily measures,,
+STARTING_SLIB_EWMA,Observed measures,file,"Game economy (coins, bankroll)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.2977620730270907,1626.0,snapshots,,
+ENDING_SLIB_EWMA,Observed measures,file,"Game economy (coins, bankroll)",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.2977620730270907,1818.0,snapshots,,
+PURCHASE_SLIB_14D,Observed measures,file,"Store, offers & purchase funnel",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.9276796230859835,70.0,snapshots,,
+PURCHASE_SLIB_NL,Observed measures,file,"Store, offers & purchase funnel",daily measure,end of day D,zero: no event that day,feature,True,0.9276796230859835,69.0,daily measures,,
+PURCHASE_SLIB_EWMA,Observed measures,file,"Store, offers & purchase funnel",snapshot (rolling/lifetime),as of D (window end to verify),not applicable: no event yet,feature,True,0.9276796230859835,73.0,snapshots,,
+revenue_to_date,Derived features,computed,Computed,snapshot (rolling/lifetime),end of day D,n/a,feature,True,,,computed,,LIFETIME_REVENUE (start of D) + REVENUE (day D)
+age_days,Derived features,computed,Computed,snapshot (rolling/lifetime),end of day D,n/a,feature,True,,,computed,,D - install date
+days_since_last_seen,Derived features,computed,Computed,snapshot (rolling/lifetime),end of day D,n/a,feature,True,,,computed,,D - date of the player's last row on or before D
+active_on_score_date,Derived features,computed,Computed,snapshot (rolling/lifetime),end of day D,n/a,feature,True,,,computed,,Has a row on D
+n_platforms,Derived features,computed,Computed,daily measure,end of day D,n/a,feature,True,,,computed,,Platforms played on day D
+MAIN_PLATFORM_ID,Derived features,computed,Computed,dimension,end of day D,n/a,feature + segment / reporting,True,,,computed,,Platform with the most sessions on day D
+install_cohort,Derived features,computed,Computed,dimension,static (set at install),n/a,segment / reporting,False,,,computed,,Install month
+revenue_next_30d,Targets,computed,Computed,label-like,future (after D),zero: no event that day,training label,False,,,computed,,"Revenue from D+1 to D+30; no row = $0 (A1, A2). Only for D at least 30 days before the data end"
+ltv365,Targets,computed,Computed,label-like,future (after D),n/a,model output,False,,,computed,,Revenue to date + predicted revenue up to day 365 after install

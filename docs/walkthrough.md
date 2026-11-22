@@ -14,11 +14,26 @@ Deck: **SciPlay walkthrough – 20 minutes** (17 slides). Backup for questions: 
 
 ## Before the call
 
+Run these in the repo folder.
+
+**Setup, once:**
+
 ```bash
-uv sync && cp .env.example .env                 # data/raw/sample_data.csv in place
-uv run pytest -q                                 # 97 tests
-uv run python -m sciplay.run_all --deliver --app # prepare, load model, score, lists, delivery, dashboard
+uv sync                          # install Python 3.12 and the pinned packages
+copy .env.example .env           # Windows (Mac/Linux: cp .env.example .env)
+#   put the CSV at data/raw/sample_data.csv
 ```
+
+**Run everything and open the dashboard** (about 1 minute, then http://localhost:8501):
+
+```bash
+uv run python -m sciplay.run_all --deliver --app
+```
+
+This prepares the data (health gate), loads the shipped LTV model, scores 9 Oct – 4 Nov, builds the daily lists,
+replays the hourly delivery into `data/store/outbox/`, and starts the app.
+
+**Optional:** `uv run pytest -q` (97 tests). App only, later: `uv run streamlit run app/Overview.py`.
 
 Have open: the walkthrough deck, the dashboard, `data/store/outbox/2026-11-04/`, `docs/concerns_log.md`.
 

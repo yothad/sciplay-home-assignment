@@ -131,3 +131,12 @@ def test_real_run_edge_cases(tmp_path, monkeypatch):
     late = R.run("2026-11-03", data, db_path=db)                        # late data: published, flagged
     assert late["status"] == "ok_data_incomplete"
     assert R.read("2026-11-03", db)["data_incomplete"].eq(1).all()
+
+
+def test_order_is_money_first_priority_then_ltv_then_score():
+    from sciplay.lists.rules import order_players
+    df = pd.DataFrame({"player_id": [1, 2, 3, 4, 5],
+                       "priority": ["medium", "high", "medium", "medium", "low"],
+                       "predicted_ltv_365": [5.0, 1.0, 50.0, 5.0, 999.0],
+                       "underperformance_score": [90.0, 10.0, 20.0, 95.0, 100.0]})
+    assert list(order_players(df)["player_id"]) == [2, 3, 4, 1, 5]

@@ -8,6 +8,7 @@ import pandas as pd
 
 from sciplay.delivery import config as C
 from sciplay.lists import config as L
+from sciplay.lists.rules import order_players
 
 
 def deep_link(date: str, list_type: str | None = None, player_id: int | None = None) -> str:
@@ -40,7 +41,8 @@ def ticket(r: dict, game_id: str) -> dict:
 def slack_event(ev, date: str, game_id: str, freshness: str) -> dict:
     lines = [f"*{ev.text}*"]
     for p in ev.players[: C.MAX_PLAYERS_PER_MESSAGE]:
-        lines.append(f"• Player {p['player_id']} · {p['priority']} · gap ${p['opportunity_gap']:,.2f} · "
+        ltv = "" if pd.isna(p["predicted_ltv_365"]) else f"LTV ${p['predicted_ltv_365']:,.2f} · "
+        lines.append(f"• Player {p['player_id']} · {p['priority']} · {ltv}gap ${p['opportunity_gap']:,.2f} · "
                      f"{p['reason_text'].split(' | ')[0]}")
     return {
         "channel": C.DATA_CHANNEL if ev.kind == "data_incomplete" else C.slack_channel(game_id),
@@ -56,8 +58,9 @@ def slack_event(ev, date: str, game_id: str, freshness: str) -> dict:
 def slack_escalation(rows: pd.DataFrame, list_type: str, date: str, game_id: str) -> dict:
     lines = [(f"*Escalation to {C.OWNER_LEADS[list_type]}: {len(rows)} medium/high-priority players on "
              f"{list_type} with no action for {C.ESCALATE_AFTER_DAYS}+ days*")]
-    for _, r in rows.sort_values("opportunity_gap", ascending=False).head(C.MAX_PLAYERS_PER_MESSAGE).iterrows():
-        lines.append(f"• Player {r['player_id']} · {r['priority']} · on the list since {r['on_list_since']} · "
+    for _, r in order_players(rows).head(C.MAX_PLAYERS_PER_MESSAGE).iterrows():   # money first
+        ltv = "" if pd.isna(r["predicted_ltv_365"]) else f"LTV ${r['predicted_ltv_365']:,.2f} · "
+        lines.append(f"• Player {r['player_id']} · {r['priority']} · {ltv}on the list since {r['on_list_since']} · "
                      f"{r['reason_text'].split(' | ')[0]}")
     if len(rows) > C.MAX_PLAYERS_PER_MESSAGE:
         lines.append(f"… and {len(rows) - C.MAX_PLAYERS_PER_MESSAGE} more in the dashboard")

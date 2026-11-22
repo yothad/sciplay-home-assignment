@@ -66,12 +66,9 @@ def build(sig: pd.DataFrame, D, version: str, data_incomplete: bool, cfg=L) -> p
                      "reason_text": " | ".join(t for _, t in rs),
                      "recommended_action": rules.recommended_action(codes, lt[pid]), "ltv_source": r["source"],
                      "data_incomplete": int(data_incomplete), "model_rules_version": version, "created_at": now})
-    order = {"high": 0, "medium": 1, "low": 2}
     out = pd.DataFrame(rows, columns=COLUMNS)
     if len(out):
-        out = out.sort_values(["list_type", "priority", "opportunity_gap", "underperformance_score"],
-                              key=lambda s: s.map(order) if s.name == "priority" else
-                              (s.map({n: i for i, n in enumerate(L.PRECEDENCE)}) if s.name == "list_type" else -s))
+        out = pd.concat([rules.order_players(out[out["list_type"] == n]) for n in L.PRECEDENCE])
     return out.reset_index(drop=True)
 
 

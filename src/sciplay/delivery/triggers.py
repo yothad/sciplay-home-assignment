@@ -9,6 +9,7 @@ import pandas as pd
 
 from sciplay.delivery import config as C
 from sciplay.lists import config as L
+from sciplay.lists.rules import order_players
 
 
 @dataclass
@@ -129,5 +130,5 @@ def group(evs: list[Event]) -> list[Event]:
             g.key = f"{g.members[0].rsplit('|', 1)[0]}|group|{len(g.members)}|{hashlib.sha1('|'.join(sorted(g.members)).encode()).hexdigest()[:8]}"
             g.text = g.text.replace("New high-priority player", f"{len(g.members)} new high-priority players") \
                            .replace("Large value at risk", f"{len(g.members)} players with large value at risk")
-            g.players.sort(key=lambda p: -p["opportunity_gap"])
+            g.players = order_players(pd.DataFrame(g.players)).to_dict("records")
     return sorted(out.values(), key=lambda g: ORDER.index(g.kind))

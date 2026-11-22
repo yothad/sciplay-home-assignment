@@ -17,6 +17,7 @@ from sciplay.delivery import run as DR
 from sciplay.delivery import store as S
 from sciplay.delivery import triggers as TR
 from sciplay.lists import config as L
+from sciplay.lists.rules import order_players
 from sciplay.lists import run as LR
 
 START, END = "2026-11-03 06:00", "2026-11-05 18:00"
@@ -62,8 +63,7 @@ def feedback(at: datetime, db=None) -> list[dict]:
     taken = set(acts["player_id"]) if len(acts) else set()
     for p in plan:
         cand = st[(st["list_type"] == p[1]) & st["state"].isin(["open", "new"]) & ~st["player_id"].isin(taken)]
-        cand = cand.assign(pr=cand["priority"].map({"high": 0, "medium": 1, "low": 2}))
-        cand = cand.sort_values(["pr", "opportunity_gap", "underperformance_score"], ascending=[True, False, False])
+        cand = order_players(cand)                            # owners work the list top-down
         if len(cand):
             pid = int(cand["player_id"].iloc[0])
             taken.add(pid)

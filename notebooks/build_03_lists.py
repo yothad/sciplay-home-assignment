@@ -25,7 +25,7 @@ cells = [
         "4. Backtest: do the signals point at players who then play or spend less?\n"
         "5. Opportunity gap and priority tiers\n"
         "6. The daily flow and output contract\n"
-        "7. Two dates: 29 Oct and 4 Nov\n"
+        "7. Two consecutive dates: 3 and 4 Nov\n"
         "8. One player who changes list and priority\n"
         "9. History: entry, exit, duration"
     ),
@@ -127,14 +127,14 @@ cells = [
         "runs_log[['score_date', 'status', 'eligible', 'listed', 'list_sizes', 'ineligible']].tail(5)"
     ),
     # ------------------------------------------------------------------ 7
-    md("## 7. Two dates: 29 Oct and 4 Nov"),
+    md("## 7. Two consecutive dates: 3 and 4 Nov (the delivery simulation uses the same days)"),
     code(
-        "for D in ['2026-10-29', '2026-11-04']:\n"
+        "for D in ['2026-11-03', '2026-11-04']:\n"
         "    l = R.read(D)\n"
         "    print(D, '-', len(l), 'players listed')\n"
         "    display(l.groupby(['list_type', 'priority']).size().unstack(fill_value=0)\n"
         "            .reindex(L.PRECEDENCE).reindex(columns=['high', 'medium', 'low'], fill_value=0))\n"
-        "R.read('2026-11-04')[['player_id', 'list_type', 'priority', 'underperformance_score', 'predicted_ltv_365',\n"
+        "R.read('2026-11-04')[['player_id', 'list_type', 'priority', 'predicted_ltv_365', 'underperformance_score',\n"
         "                     'ltv_to_date', 'opportunity_gap', 'reason_text', 'recommended_action']].head(10).round(2)"
     ),
     code("print('Changes on 4 Nov vs 3 Nov:')\nH.changes('2026-11-04')"),

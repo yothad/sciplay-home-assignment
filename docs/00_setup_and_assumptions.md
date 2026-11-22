@@ -193,3 +193,5 @@ Answer inline; answered questions move into the decision log.
 | 2026-11-22 | Event alerts grouped per list, max 5 per channel per day; retries ×3 with one idempotency key | Alert fatigue; safe re-runs |
 | 2026-11-22 | AI summary: prompt template + desired result + pydantic validation + template fallback; no LLM API connected | Brief: paid model not required |
 | 2026-11-22 | Holdout written as a suggestion only | Needs a studio decision |
+| 2026-11-22 | Order in the dashboard, tickets and messages: priority → predicted LTV365 → score; the score stays behaviour-only | Money first; LTV already drives the priority through the gap |
+| 2026-11-22 | Two-dates example: 3 and 4 Nov (consecutive, the same days as the delivery simulation), was 29 Oct | Consistent story |

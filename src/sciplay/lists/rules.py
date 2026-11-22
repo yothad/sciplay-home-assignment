@@ -140,3 +140,16 @@ def recommended_action(codes: list[str], list_type: str) -> str:
     prefix = LIST_PREFIX[list_type]
     main = next(c for c in codes if c.startswith(prefix))
     return ACTIONS[main]
+
+
+PRIORITY_RANK = {"high": 0, "medium": 1, "low": 2}
+
+
+def order_players(df: pd.DataFrame) -> pd.DataFrame:
+    """Display and message order: money first. Priority (high to low), then predicted LTV365 (high to low,
+    unscored last), then underperformance score (high to low)."""
+    if df.empty:
+        return df
+    key = df.assign(_p=df["priority"].map(PRIORITY_RANK), _v=df["predicted_ltv_365"].astype(float).fillna(-1.0),
+                    _s=df["underperformance_score"].astype(float))
+    return df.loc[key.sort_values(["_p", "_v", "_s"], ascending=[True, False, False], kind="stable").index]

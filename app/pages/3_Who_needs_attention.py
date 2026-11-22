@@ -6,12 +6,13 @@ import streamlit as st
 from sciplay.app import lists_view as lv
 from sciplay.app import ui
 from sciplay.lists import config as L
+from sciplay.lists.rules import order_players
 
 data = ui.setup("Who needs attention")
 f = ui.sidebar(data, with_filters=False)
 st.caption("One primary list per player, by precedence: **Technical or payment friction → Revenue decline → Engagement "
            "decline**. Each player is compared with their own baseline, peers of the same age, or their LTV forecast. "
-           "Thresholds are starting values (config).")
+           "Thresholds are starting values (config). Sorted money first: **priority, then predicted LTV365, then score**.")
 
 log = lv.run_log(f.score_date)
 lists = lv.lists(f.score_date)
@@ -30,9 +31,8 @@ ui.tile(c[3], "Value at risk", lists["opportunity_gap"].sum(), "money",
 ui.tile(c[4], "Eligible players", int(log["eligible"]),
         help="Not a cheater or legal settlement, at least 3 days old, seen in the last 30 days")
 
-order = {"high": 0, "medium": 1, "low": 2}
-cols = ["player_id", "priority", "underperformance_score", "opportunity_gap", "predicted_ltv_365", "ltv_to_date",
-        "reason_text", "recommended_action"]
+cols = ["player_id", "priority", "predicted_ltv_365", "underperformance_score", "opportunity_gap", "ltv_to_date",
+        "reason_text", "recommended_action"]                 # in sort order: money first
 linked = st.query_params.get("list")                     # deep link: the alert's list opens first
 tab_order = ([linked] if linked in L.PRECEDENCE else []) + [n for n in L.PRECEDENCE if n != linked]
 if linked in L.PRECEDENCE:
@@ -44,8 +44,7 @@ for tab, name in zip(tabs, tab_order):
         if sub.empty:
             st.info("Nobody on this list today.")
             continue
-        sub = sub.sort_values(["priority", "opportunity_gap", "underperformance_score"],
-                              key=lambda s: s.map(order) if s.name == "priority" else -s)
+        sub = order_players(sub)                         # money first: priority, LTV365, then score
         st.dataframe(sub[cols], hide_index=True, width="stretch", column_config={
             "player_id": "Player", "priority": "Priority",
             "underperformance_score": st.column_config.NumberColumn("Score (0–100)", format="%d"),

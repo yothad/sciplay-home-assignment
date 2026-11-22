@@ -143,6 +143,9 @@ _Data as of 2026-11-03 · rules-6fa388be. Player IDs are in the tickets and the 
 payment friction with no action for 2+ days", then one line per player (priority, on the list since, top reason) and an
 "Open list" button.
 
+**Order.** Players in tickets, Slack messages, escalations and the dashboard are listed money first: priority, then
+predicted LTV365, then score.
+
 **Deep links.** `Who_needs_attention?date=…&list=…` opens the dashboard on that date with the alert's list as the first
 tab; `Player_detail?date=…&player=…` opens the player. Covered by a dashboard test.
 
@@ -265,11 +268,11 @@ happens (`is_demo = 1`): each day Player support resolves two friction tickets, 
 | 4 Nov 08:00 | Held Slack alert sent; morning email (34 still open, 2 new) times out twice, sent on attempt 3; a re-run of 08:00 sends nothing |
 | 4 Nov 10:00–16:00 | 4 tickets closed as handled, incl. yesterday's VIP call: "purchase made" |
 | 4 Nov 18:00 | 24 medium/high players with no action by day 2 → 3 escalation messages (friction 4, revenue 4, engagement 16); evening email |
-| 5 Nov 06:00 | 4 Nov list lands: 5 tickets opened, 2 closed (players left the list) |
+| 5 Nov 06:00 | 4 Nov list lands: 5 tickets opened, 1 closed (player left the list) |
 | 5 Nov 08:00 | Morning email: 25 still open, 7 new |
-| 5 Nov 18:00 | 16 escalated; evening email: 3 closed, 10 in progress, 25 open |
+| 5 Nov 18:00 | 17 escalated (friction 3, revenue 3, engagement 11); evening email: 4 closed, 10 in progress, 25 open |
 
-End state: 23 tickets: 10 closed as handled, 2 closed because the player left the list, 11 open.
+End state: 23 tickets: 11 closed as handled, 1 closed because the player left the list, 11 open. Owners work each list top-down in the money-first order (priority, LTV365, score).
 
 ## 10. Before production
 

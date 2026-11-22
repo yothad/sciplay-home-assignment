@@ -33,6 +33,12 @@ A low raw value alone never triggers a list: every trigger is relative to a base
 | `model_rules_version` | LTV model version + hash of the rule config |
 | `created_at` | When the row was written |
 
+**Where LTV enters.** The underperformance score is behaviour only (how far play, spend or friction is from the
+player's baseline), so it is comparable across payers and non-payers. LTV enters through money: the opportunity gap
+(revised vs baseline value) sets the priority tier, the behind-forecast and valuable-non-payer triggers use the
+forecast, and the **order** in the dashboard, tickets and messages is money first: **priority, then predicted LTV365,
+then score** (`rules.order_players`).
+
 `list_runs` logs each run: status (`ok`, `ok_data_incomplete`, `no_data`), eligible players, list sizes, ineligible players by reason, failed checks.
 
 ## Flow
@@ -71,11 +77,11 @@ Average per day: friction 8, revenue decline 6, engagement decline 26 of ~159 el
 
 Engagement and revenue signals point at players who then play and spend less: flagged engagement players were much more likely to stop playing (41% vs 27%) and played 4.5 days instead of 11 (directional; ~167 and ~44 flagged player-days). Friction does not predict decline and is not meant to: it finds a problem to fix.
 
-## Two dates and one player
+## Two consecutive dates and one player
 
 | Date | Friction | Revenue decline | Engagement decline |
 |---|---|---|---|
-| 29 Oct | 7 (6 medium, 1 low) | 7 (3 high, 4 medium) | 29 (27 medium, 2 low) |
+| 3 Nov | 8 (7 medium, 1 low) | 9 (4 high, 4 medium, 1 low) | 25 (22 medium, 3 low) |
 | 4 Nov | 11 (8 medium, 3 low) | 8 (3 high, 5 medium) | 24 (20 medium, 4 low) |
 
 **Player 224283** (installed 7 Sep; $14.46 on 19 Sep; played almost daily to 9 Oct, then nothing until 3 Nov; bought again on 4 Nov):

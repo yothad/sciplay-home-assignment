@@ -14,6 +14,7 @@ import argparse
 import subprocess
 import sys
 import time
+import warnings
 
 import pandas as pd
 
@@ -92,6 +93,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--deliver", action="store_true", help="replay hourly delivery 3-5 Nov (resets delivery tables)")
     ap.add_argument("--app", action="store_true", help="start the dashboard at the end")
     a = ap.parse_args(argv)
+    warnings.filterwarnings("ignore", category=pd.errors.PerformanceWarning)   # pandas noise, not a problem
     t = time.time()
     _step("prepare data", prepare)
     _step("LTV model", lambda: model(a.retrain))

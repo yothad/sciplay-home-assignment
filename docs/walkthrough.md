@@ -10,7 +10,7 @@ The presentation must:
 - show the main tests and one failure handled safely;
 - say what changes before production and what evidence or decisions are still needed.
 
-Deck: **SciPlay walkthrough – 20 minutes** (18 slides). Backup for questions: the full results deck.
+Deck: **SciPlay walkthrough – 20 minutes** (20 slides). Backup for questions: the full results deck.
 
 ## Before the call
 
@@ -42,8 +42,9 @@ Have open: the walkthrough deck, the dashboard, `data/store/outbox/2026-11-04/`,
 | Min | Slides | Show | Say |
 |---|---|---|---|
 | 0–1 | Title, agenda | – | Five parts, one pipeline; the agenda follows the brief |
-| 1–4 | Demo | Terminal: `run_all`; dashboard Overview, Segments (payer group) and Data health on 4 Nov; Player detail 33840 | Score date drives every tile; the 1–4 Nov spike is flagged; totals reconciled with SQL; how one player's value is calculated |
-| 4–6 | Architecture | `src/sciplay/` | Refresh → health gate → LTV scores → daily lists → hourly delivery; the dashboard reads only stored outputs; bad data is never published |
+| 1–3 | Definitions; as-of policy | – | Units and meaning of revenue, revenue to date, LTV365, active player, payer, underperformance, score, opportunity gap, priority, eligibility. A score for day D uses only rows and columns known by the end of D; forward-looking columns excluded, with the evidence |
+| 3–5 | Demo | Terminal: `run_all`; dashboard Overview, Segments (payer group) and Data health on 4 Nov; Player detail 33840 | Score date drives every tile; the 1–4 Nov spike is flagged; totals reconciled with SQL; how one player's value is calculated |
+| 5–6 | Architecture | `src/sciplay/` | Refresh → health gate → LTV scores → daily lists → hourly delivery; the dashboard reads only stored outputs; bad data is never published |
 | 6–8 | Maturity; target and timing; features | – | When each forecast can be trusted: 30-day labels final ~4 months after install, 90-day ~6, 365-day ~15 (~27 months of data for a 365-day model). No 365-day label (oldest player 169 days), so a 30-day target from the first 3 days, × 2.49 as a stated assumption. 359 features → 114 candidates → 18 in the model; device columns dropped and why |
 | 8–11 | Why LightGBM; error example; results | – | Same pipeline for LightGBM and a GLM; picked by deviance on later training months, rule fixed in advance. On error it ties "revenue so far" (four real players show why); it wins on ranking (91% of test revenue in its $20+ band). |
 | 11–14 | Lists; dashboard | Who needs attention, Revenue decline tab | Three lists, one per player by precedence; priority by the dollar gap; sorted money first; reasons and the owning team's action; player 224283 moving between lists |

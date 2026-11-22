@@ -30,7 +30,8 @@ cells = [
         "9. Explanations (SHAP) and reason codes\n"
         "10. Uncertainty and confidence\n"
         "11. Players too old for the model: the update rule\n"
-        "12. The output table"
+        "12. The output table\n"
+        "13. Hard cases and how much of the value is assumed"
     ),
     code(
         "import pandas as pd\n"
@@ -347,6 +348,33 @@ cells = [
         "display(scores.groupby('source').agg(players=('player_id', 'size'), ltv_to_date=('ltv_to_date', 'sum'),\n"
         "                                     predicted_ltv_365=('predicted_ltv_365', 'sum')).round(0))\n"
         "scores[scores.source == 'model_d3'].head(3).T"
+    ),
+
+    # ------------------------------------------------------------------ 13
+    md(
+        "## 13. Hard cases and how much of the value is assumed\n\n"
+        "| Issue | How it is handled |\n|---|---|\n"
+        "| **Non-payers** (97%) | Kept as $0 labels; Tweedie objective for many zeros plus a few large values; early activity separates engaged non-payers from one-day players |\n"
+        "| **Censored outcomes** | Only complete 30-day windows are trained or tested on; no row = $0; the 365-day value is never treated as observed |\n"
+        "| **Skewed revenue** | Tweedie objective; top spenders kept; bootstrap ranges on every test metric; the multiplier is an assumption, not estimated from two players |\n"
+        "| **Sparse labels** | 6 training players spend in days 3–29: strong regularisation, selection on training folds, the simple rule as benchmark, no synthetic oversampling |\n"
+        "| **Cold start** | Under 3 days of data: no forecast (n/a); from day 3 the model |\n\n"
+        "Quantifying the limitation: how much of the LTV365 on the dashboard is money already spent, the validated "
+        "30-day forecast, or the assumption."
+    ),
+    code(
+        "sc = scores[scores.source != 'cold_start']\n"
+        "comp = []\n"
+        "for src, g in sc.groupby('source'):\n"
+        "    total = g.predicted_ltv_365.sum(); spent = g.ltv_to_date.sum()\n"
+        "    validated = (g.predicted_ltv_30 - g.ltv_to_date).sum() if src == 'model_d3' else 0.0\n"
+        "    comp.append({'source': src, 'players': len(g), 'LTV365': total, 'already spent': spent / total,\n"
+        "                 'validated forecast': validated / total, 'assumption': (total - spent - validated) / total})\n"
+        "pd.DataFrame(comp).round(3)"
+    ),
+    md(
+        "83% of the LTV365 shown on 4 Nov is revenue already spent (older players). For players scored by the model, "
+        "9% is spent, 31% is the validated 30-day forecast and **60% is the × 2.49 assumption**."
     ),
 
 ]

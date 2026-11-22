@@ -15,6 +15,7 @@ Steps
               the published data (unless --force), stops the run: the dashboard keeps
               yesterday's tables.
   5. Publish  Staged files replace the published ones.
+  6. LTV      Score the new date with the active LTV model (stored in SQLite); never blocks publishing.
   6. Log      Every run is appended to data/store/refresh_log.jsonl.
 
 Exit codes: 0 published, 1 blocked by the health gate, 2 no new data, 3 no input.
@@ -73,6 +74,7 @@ class RunResult:
     failed_checks: list[str] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
     message: str = ""
+    ltv: str = ""  # result of scoring LTV for the new data end (never blocks publishing)
 
 
 def _stamp() -> str:
@@ -128,7 +130,7 @@ def _log(paths: Paths, result: RunResult) -> None:
 
 
 def refresh(paths: Paths | None = None, file: Path | None = None, force: bool = False,
-            base_file: Path | None = None) -> RunResult:
+            base_file: Path | None = None, ltv: bool = True) -> RunResult:
     paths = paths or Paths.default()
     base_file = base_file if base_file is not None else get_settings().raw_data_path
     res = RunResult(status="", exit_code=0, started_at=datetime.now(timezone.utc).isoformat(timespec="seconds"))
@@ -171,8 +173,23 @@ def refresh(paths: Paths | None = None, file: Path | None = None, force: bool = 
     shutil.rmtree(paths.staging, ignore_errors=True)
     res.status, res.exit_code = "published", 0
     res.message = f"Published data through {res.data_end}" + (f" with {len(res.warnings)} warning(s)" if res.warnings else "")
+    res.ltv = score_ltv(paths, newest) if ltv else "skipped"
     _log(paths, res)
     return res
+
+
+def score_ltv(paths: Paths, date: pd.Timestamp) -> str:
+    """Score LTV for the newly published date with the active model; a failure is logged, not fatal."""
+    from sciplay.config import REPO_ROOT
+    if not (REPO_ROOT / "models" / "ltv" / "active.json").exists():
+        return "no trained LTV model: run python -m sciplay.ltv.train"
+    try:
+        from sciplay.ltv import score as S, train as T
+        data = T.load_data(paths.processed)
+        out = S.score(date, data, db_path=paths.log.parent / get_settings().store_db_path.name)
+        return f"scored {len(out)} players for {pd.Timestamp(date).date()}"
+    except Exception as exc:  # the dashboard data is already published; LTV can be rerun on its own
+        return f"LTV scoring failed: {exc}"
 
 
 def main(argv: list[str] | None = None) -> int:

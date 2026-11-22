@@ -65,3 +65,21 @@ def test_metrics_dollar_recall_and_calibration():
     m = M.metrics(y, p)
     assert m["dollar_recall"] == pytest.approx(10 / 40) and m["payer_recall"] == 0.5
     assert m["pred_over_actual"] == pytest.approx(5.8 / 40)
+
+
+def test_training_is_reproducible():
+    rng = np.random.default_rng(0)
+    X = pd.DataFrame(rng.normal(size=(200, 4)), columns=["revenue_first_k", "a", "b", "c"])
+    y = pd.Series(np.where(rng.random(200) < 0.1, rng.gamma(2, 10, 200), 0.0))
+    setting = {"num_leaves": 4, "min_child_samples": 20, "tweedie_variance_power": 1.2}
+    p1 = M.fit(X, y, setting, n_estimators=50).predict(X)
+    p2 = M.fit(X, y, setting, n_estimators=50).predict(X)
+    assert np.array_equal(p1, p2)
+
+
+def test_score_ltv_never_blocks_a_refresh(tmp_path):
+    from sciplay.pipeline.refresh import Paths, score_ltv
+    paths = Paths(incoming=tmp_path, extracts=tmp_path, processed=tmp_path / "missing", staging=tmp_path,
+                  log=tmp_path / "store" / "log.jsonl")
+    msg = score_ltv(paths, pd.Timestamp("2026-11-04"))
+    assert isinstance(msg, str)          # a message, never an exception

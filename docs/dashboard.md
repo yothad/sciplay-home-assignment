@@ -84,6 +84,7 @@ uv run python -m sciplay.pipeline.refresh
 | Build | The prepare step writes all tables to a staging folder |
 | Gate | Health checks on the newest date; any failed check, or no newer date, stops the run and the dashboard keeps yesterday's tables |
 | Publish | Staged files replace the published ones; the app reloads on the next browser refresh |
+| LTV | The new date is scored with the active LTV model into `ltv_scores` (SQLite); a failure is logged, never blocks publishing |
 | Log | Every run appended to `data/store/refresh_log.jsonl` |
 
 Exit codes: 0 published, 1 blocked by the gate, 2 no new data, 3 no input. Tested in `tests/test_refresh.py`. In production the same steps would run as a scheduled job in a data orchestration pipeline (for example Airflow or Dagster) with storage in the cloud.

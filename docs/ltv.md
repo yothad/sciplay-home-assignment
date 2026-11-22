@@ -95,6 +95,26 @@ Left out (79 columns): the file's own rolling windows, lifetime/consecutive coun
 
 91 days = observed rewrite lag (90% of rows). "Trust" = enough payers in held-out cohorts for stable calibration; working rule ≥ 200 payers (proposal). Production label table: `gross_revenue_d30` per player, written once its window has passed.
 
+## 7b. Non-payers, censoring, skew, sparse labels, cold start
+
+| Issue | How it is handled |
+|---|---|
+| **Non-payers** (97% of players) | Kept in training as $0 labels; Tweedie objective built for many zeros plus a few large values; early activity separates engaged non-payers from one-day players |
+| **Censored outcomes** | Only players with a complete 30-day window are trained or tested on; no row on a day = $0 (did not play); the 365-day value is never treated as observed |
+| **Skewed revenue** | Tweedie objective; top spenders kept (their 30-day values are not extreme); bootstrap ranges on every test metric; the multiplier is an assumption, not estimated from two players |
+| **Sparse labels** (6 training players spend in days 3–29) | Strong regularisation (4 leaves, ≥ 40 players per leaf), selection on training folds, the simple rule as benchmark, no synthetic oversampling; results reported as directional |
+| **Cold start** | Under 3 days of data: no forecast (n/a); from day 3 the model |
+
+## 7c. How much of the value is observed, validated or assumed (4 Nov)
+
+| Players | LTV365 shown | Already spent | Validated forecast (rest of the 30 days) | Assumption (× 2.49 beyond day 30, or update-rule projection) |
+|---|---|---|---|---|
+| Day-3 model (132) | $131.85 | $12.05 (9%) | $40.81 (31%) | $78.99 (60%) |
+| Update rule (518) | $4,885.97 | $4,176.09 (85%) | – | $709.88 (15%) |
+| All | $5,017.83 | 83% | 1% | 16% |
+
+Most of the money on the dashboard is revenue already spent; for new players most of LTV365 is the assumption.
+
 ## 8. Model selection (training folds only)
 
 Two candidates through the same pipeline (features, pre-filter, 4 rounds × 8 settings, SHAP): **LightGBM** (Tweedie), the model to run at scale, and a **regularised Tweedie GLM** (simpler challenger). Scored by Tweedie deviance on remaining revenue (days 3–29) on two forward folds (May → June, May–June → July). Only 4 validation players spent in days 3–29.
@@ -105,6 +125,8 @@ Device, app and performance columns (load times, latency, FPS, spin length, devi
 |---|---|---|---|---|---|
 | **LightGBM** | 3 | 18 | **2.18** | $0.42 | 0.74 |
 | Tweedie GLM | 4 | 10 | 2.44 | $0.60 | 1.08 |
+
+*Deviance* (Tweedie deviance) is the error measure the model itself minimises, built for revenue that is mostly $0 with a few large values; lower is better. It is not variance, and unlike average error per player a model cannot score well on it by predicting $0 for everyone.
 
 **LightGBM wins by the rule set in advance** (12% lower deviance, beyond the 5% tie margin); within noise with 4 validation payers. Settings: 4 leaves, ≥ 40 players per leaf, Tweedie power 1.2, 135 trees. A smarter search (e.g. Optuna) would replace the fixed grid with more data. Top drivers: bet sizes, daily jewel tasks, auto-spins, bankroll, sessions — "plays a lot, at higher stakes". Early spend matters little for *remaining* revenue: most players who spent in days 3–29 had not paid in days 0–2.
 

@@ -39,11 +39,11 @@ FACTS:
 """
 
 DESIRED_RESULT_EXAMPLE = {
-    "headline": "43 players need attention today, $1,234.56 of value at risk.",
+    "headline": "43 on the lists: 30 still open from yesterday, 6 new overnight.",
     "bullets": [
         "Revenue decline: 8 players (3 high priority), the largest share of value at risk.",
         "Technical or payment friction: 11 players, 2 more than yesterday.",
-        "Most common reason: fewer active days than usual (18 players).",
+        "Since last evening: 4 handled by owners, 5 left the lists.",
     ],
     "data_status": "complete",
 }
@@ -69,7 +69,7 @@ REASON_LABELS = {  # short label per reason code, used in summaries and checked 
 
 
 def facts(date: str, game_id: str, today: pd.DataFrame, yday: pd.DataFrame, overdue_n: int,
-          data_status: str = "complete") -> dict:
+          data_status: str = "complete", state: pd.DataFrame | None = None, handled_since: int = 0) -> dict:
     lists = {}
     for name in L.PRECEDENCE:
         t, y = today[today["list_type"] == name], yday[yday["list_type"] == name]
@@ -81,6 +81,11 @@ def facts(date: str, game_id: str, today: pd.DataFrame, yday: pd.DataFrame, over
             "value_at_risk_total": f"${today['opportunity_gap'].sum():,.2f}",
             "new_since_yesterday": int((~today["player_id"].isin(yday["player_id"])).sum()) if len(yday) else len(today),
             "overdue_escalated": int(overdue_n), "lists": lists,
+            "still_open_from_yesterday": int((state["state"] == "open").sum()) if state is not None else 0,
+            "in_progress": int((state["state"] == "in_progress").sum()) if state is not None else 0,
+            "new_overnight": int((state["state"] == "new").sum()) if state is not None else 0,
+            "left_lists_overnight": int((~yday["player_id"].isin(today["player_id"])).sum()) if len(yday) else 0,
+            "handled_since_last_evening": int(handled_since),
             "top_reasons": [{"label": REASON_LABELS.get(k, k.replace("_", " ")), "players": int(v)} for k, v in codes.items()],
             "data_status": data_status}
 
@@ -123,15 +128,15 @@ def template(f: dict) -> DigestSummary:
     if f["data_status"] != "complete":
         head = f"Data incomplete for {f['date']}: lists are provisional."
     else:
-        head = f"{f['players_total']} players need attention today, {f['value_at_risk_total']} of value at risk."
+        head = (f"{f['players_total']} on the lists: {f['still_open_from_yesterday']} still open from yesterday, "
+                f"{f['new_overnight']} new overnight.")
     bullets = []
     for name, d in f["lists"].items():
         hi = f" ({d['high']} high priority)" if d["high"] else ""
         bullets.append(f"{name}: {d['players']} players{hi}, {d['change_vs_yesterday']:+d} vs yesterday, "
                        f"{d['value_at_risk']} at risk.")
-    if f["top_reasons"]:
-        r = f["top_reasons"][0]
-        bullets.append(f"Most common reason: {r['label']} ({r['players']} players).")
+    bullets.append(f"Since last evening: {f['handled_since_last_evening']} handled by owners, "
+                   f"{f['left_lists_overnight']} left the lists; {f['value_at_risk_total']} of value at risk.")
     return DigestSummary.model_validate({"headline": head, "bullets": bullets[:4], "data_status": f["data_status"]},
                                         context={"facts": f})
 

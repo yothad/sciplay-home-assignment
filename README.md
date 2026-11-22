@@ -32,8 +32,8 @@ Pipeline and app commands will be added here as they are built:
 | Train the LTV model (select on training folds, then fit, bootstrap, grade on test) | `uv run python -m sciplay.ltv.train select` then `uv run python -m sciplay.ltv.train finalize` |
 | Score LTV for a date (or a range) | `uv run python -m sciplay.ltv.score --date 2026-11-04` (`--from 2026-10-09 --to 2026-11-04`) |
 | Generate daily lists for a date (or a range) | `uv run python -m sciplay.lists.run --date 2026-11-04` (`--from 2026-10-09 --to 2026-11-04`) |
-| Deliver the lists (dry run to `data/store/outbox`) | `uv run python -m sciplay.delivery.run --date 2026-11-04` (`--slot refresh/morning/evening`) |
-| Delivery demo, 3–4 Nov with simulated owner actions | `uv run python -m sciplay.delivery.simulate` |
+| Deliver the lists, hourly run (dry run to `data/store/outbox`) | `uv run python -m sciplay.delivery.run` (replay: `--from "2026-11-03 06:00" --to "2026-11-05 18:00"`) |
+| Delivery demo, hourly 3 Nov 06:00 – 5 Nov 18:00 with simulated feedback | `uv run python -m sciplay.delivery.simulate` |
 | Start dashboard | `uv run streamlit run app/Overview.py` |
 | Run everything | _TBD_ |
 

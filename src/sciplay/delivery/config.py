@@ -25,10 +25,13 @@ def slack_channel(game_id: str) -> str:
     return f"#{game_id}-player-alerts"
 
 
+# Runs every hour. Lists are rebuilt only when a new daily extract lands; every hour the run sends what is not
+# sent yet, reads feedback, closes handled tickets and checks escalations.
 MORNING_HOUR, EVENING_HOUR = 8, 18       # email slots (studio local time)
 QUIET_START, QUIET_END = 21, 8           # no team messages in this window (data alerts excepted)
-ESCALATE_AFTER_DAYS = 2                  # medium or high priority, no action by the evening of the 2nd day on the list
-GO_LIVE = "2026-11-03"                   # first day teams receive the lists; days before it don't count as "no action"
+ESCALATE_AFTER_DAYS = 2                  # medium/high priority, no action by the evening of the 2nd day it was delivered
+GO_LIVE = "2026-11-02"                   # first list date teams receive (delivered 3 Nov); earlier days don't count
+DATA_LANDS_HOUR = 6                      # the list for day D lands at 06:00 on D+1 (used when replaying past days)
 RESOLVED_COOLDOWN_DAYS = 7               # a ticket resolved by its owner is not reopened for 7 days (signals use 7-day windows)
 ESCALATE_PRIORITIES = ("high", "medium")
 MAX_PLAYERS_PER_MESSAGE = 10            # more than that: "... and N more in the dashboard"

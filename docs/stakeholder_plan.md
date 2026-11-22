@@ -9,9 +9,19 @@ Code: `src/sciplay/delivery/` (config, triggers, payloads, summary, store, run, 
 and the deep-link test in `tests/test_dashboard.py`.
 
 ```bash
-uv run python -m sciplay.delivery.run --date 2026-11-04            # refresh + morning + evening slots
-uv run python -m sciplay.delivery.simulate                        # 2-day demo with simulated owner actions
+uv run python -m sciplay.delivery.run                                         # one hourly run, now (scheduler calls this)
+uv run python -m sciplay.delivery.run --from "2026-11-03 06:00" --to "2026-11-05 18:00"   # replay past hours
+uv run python -m sciplay.delivery.simulate                                    # hourly replay with simulated feedback
 ```
+
+## 0. Cadence: every hour
+
+The job runs **every hour** so players who need attention are found and pushed quickly. The data is a daily
+extract (the list for day D lands about 06:00 on D+1), so lists are rebuilt only when a new extract lands; the other
+hours send whatever is not sent yet (no duplicates), read the feedback recorded since the last run, close handled
+tickets, release alerts held overnight and check escalations. Finding players faster than daily needs intraday data
+(see section 10): mainly for friction (failed purchases, crashes, support tickets as they happen); revenue and
+engagement decline use 7–28 day windows and would not change.
 
 ## 1. Architecture
 
@@ -23,7 +33,7 @@ daily refresh (Part 2) ──> LTV scores (Part 3) ──> daily_lists + list_ru
                (events, escalation, data incomplete)          (ticket JSON, Slack blocks, email markdown,
                                    │                             deep links, summary via summary.py)
                                    └──────────────────────┬───────────────────────┘
-                                                        run.py  (slots: refresh 06:00 · morning 08:00 · evening 18:00)
+                                                        run.py  (every hour; emails 08:00 and 18:00)
                                        idempotency key · retries · quiet hours · daily alert limit · audit
                                                           │
                      ┌────────────────────┬───────────────┴────────┬─────────────────────┐
@@ -50,14 +60,15 @@ daily refresh (Part 2) ──> LTV scores (Part 3) ──> daily_lists + list_ru
 
 ## 3. Daily digest and event triggers
 
-**Morning email (08:00, "what is open now")**: summary paragraph (template or validated LLM wording), a table per
-list with owner, players, high / medium / low, change vs yesterday and value at risk, new players since yesterday, top
-reasons, alerts held overnight, data freshness and a deep link.
+**Morning email (08:00): what is left from yesterday + what is new overnight.** Summary (template or validated LLM
+wording); a table per list with owner, players, still open, new, in progress, handled, high priority and value at
+risk; still open from yesterday (no action yet) with the longest open; new overnight; closed overnight (players who
+left the lists on their own, actions since last evening); top reasons; alerts held overnight; freshness; deep link.
 
-**Evening email (18:00, "what was taken care of")**: players acted on today (owner, action, outcome), still open per
-list, overdue / escalated per list, alerts that were over the daily limit.
+**Evening email (18:00): what was taken care of.** Actions today (owner, action, outcome) and tickets closed as
+handled; in progress (acted on, outcome pending); still open; overdue and escalated; alerts over the daily limit.
 
-**Event triggers** (checked right after each refresh, `triggers.py`; thresholds in `delivery/config.py`):
+**Event triggers** (checked once, when a new list lands, `triggers.py`; thresholds in `delivery/config.py`):
 
 | Trigger | Rule | Message |
 |---|---|---|
@@ -70,25 +81,28 @@ list, overdue / escalated per list, alerts that were over the daily limit.
 
 ## 4. Example payloads (from the dry run, 3–4 Nov)
 
-**Morning email, 3 Nov** (subject: `[test] Players to act on today · 2026-11-03 · 42 players, $352 at risk`)
+**Morning email, 4 Nov 08:00** (list of 3 Nov; subject: `[test] Morning · 2026-11-04 · 34 still open, 2 new, $352 at risk`)
 
 ```markdown
-# Sample studio · players to act on today · 2026-11-03
+# Sample studio · morning · 2026-11-04
 
-**42 players need attention today, $352.46 of value at risk.**
+**42 on the lists: 34 still open from yesterday, 2 new overnight.**
 
 - Technical or payment friction: 8 players, -1 vs yesterday, $0.00 at risk.
 - Revenue decline: 9 players (4 high priority), +1 vs yesterday, $352.18 at risk.
 - Engagement decline: 25 players, -2 vs yesterday, $0.28 at risk.
-- Most common reason: away longer than usual (20 players).
+- Since last evening: 0 handled by owners, 4 left the lists; $352.46 of value at risk.
 
-| List | Owner | Players | High | Medium | Low | Change vs yesterday | Value at risk |
-|---|---|---|---|---|---|---|---|
-| Technical or payment friction | Player support | 8 | 0 | 7 | 1 | -1 | $0.00 |
-| Revenue decline | Live-ops / CRM (VIP hosts) | 9 | 4 | 4 | 1 | +1 | $352.18 |
-| Engagement decline | Live-ops / CRM | 25 | 0 | 22 | 3 | -2 | $0.28 |
+| List | Owner | Players | Still open | New | In progress | Handled | High | Value at risk |
+|---|---|---|---|---|---|---|---|---|
+| Technical or payment friction | Player support | 8 | 7 | 0 | 0 | 1 | 0 | $0.00 |
+| Revenue decline | Live-ops / CRM (VIP hosts) | 9 | 6 | 1 | 1 | 1 | 4 | $352.18 |
+| Engagement decline | Live-ops / CRM | 25 | 21 | 1 | 3 | 0 | 0 | $0.28 |
 
-**New since yesterday:** 2 players. **Top reasons:** away longer than usual (20), fewer sessions than usual (19), ...
+**Still open from yesterday (no action yet):** 34 (friction 7, revenue 6, engagement 21); longest open: 2 days.
+**New overnight:** 2 (revenue 1, engagement 1).
+**Closed overnight:** 4 left the lists on their own; 0 handled by owners since last evening.
+**Top reasons:** away longer than usual (20), fewer sessions than usual (19), fewer active days than usual (17), ...
 
 **Alerts held overnight (quiet hours) or over the daily alert limit:**
 - New high-priority player on Revenue decline
@@ -96,6 +110,9 @@ list, overdue / escalated per list, alerts that were over the daily limit.
 Open the lists: http://localhost:8501/Who_needs_attention?date=2026-11-03
 _Data as of 2026-11-03 · rules-6fa388be. Player IDs are in the tickets and the dashboard, not in this email._
 ```
+
+**Evening email, 3 Nov 18:00** (subject: `[test] End of day · 2026-11-03 · 3 closed, 4 in progress, 37 open, 0 overdue`):
+7 actions today, 3 tickets closed as handled (2 friction resolved, 1 VIP "no response"); 4 in progress; 37 still open.
 
 **Slack event (held at 06:00, sent at 08:00)**
 
@@ -133,8 +150,8 @@ tab; `Player_detail?date=…&player=…` opens the player. Covered by a dashboar
 
 | Concern | Design |
 |---|---|
-| Deduplication | Every message has an idempotency key (`date|event|list|player`, `ticket|<id>`, `date|email_morning|game`). A key already `sent` is never sent again, so re-running a slot or the whole day is safe. Player events inside a grouped message are recorded per player, so a player is alerted once per event even when the list is rebuilt |
-| Tickets | Opened once per player stay on a list; while open only the priority is updated; closed when the player leaves the list or the owner resolves it; not reopened for 7 days after resolution (signals use 7-day windows) |
+| Deduplication | Runs every hour; every message has an idempotency key (`date|event|list|player`, `ticket|<id>`, `date|email_morning|game`). A key already `sent` is never sent again, so re-running a slot or the whole day is safe. Player events inside a grouped message are recorded per player, so a player is alerted once per event even when the list is rebuilt |
+| Tickets | Opened once per player stay on a list, when the list lands; while open only the priority is updated; closed within the hour when the owner records an outcome, or when the player leaves the list; not reopened for 7 days after it was handled (signals use 7-day windows) |
 | Rate limits | At most 5 event messages per studio channel per day; the rest go into the next email. Players grouped into one message per event type and list, 10 players max per message. In production, also respect Slack's ~1 message per second per channel |
 | Quiet periods | No team messages 21:00–08:00 studio time; events found then are held and sent at 08:00 (and listed in the morning email). Data alerts are not held |
 | Retries | Up to 3 attempts per message with the same key (production: backoff 1 s, 4 s, 16 s). The demo forces two timeouts on the 4 Nov morning email: it goes out on attempt 3 |
@@ -160,9 +177,20 @@ tab; `Player_detail?date=…&player=…` opens the player. Covered by a dashboar
 
 ## 7. Feedback loop: did the lists create value?
 
-`actions` table: `score_date, player_id, list_type, owner, acknowledged_at, action, outcome, is_demo`. Filled from the
-ticket (acknowledge, action, outcome) or the dashboard for engagement campaigns. In the demo, owners act on the top
-players of each list (`is_demo = 1`); actions remove players from escalation and resolved tickets close.
+`actions` table: `score_date, player_id, list_type, owner, acknowledged_at, action, outcome, is_demo`. Each hourly
+run reads what was recorded since the last run; an outcome other than *pending* closes the ticket, and any action
+stops the escalation.
+
+**Feedback inputs (production; in this project the simulation inserts them at the hour they happen):**
+
+| Input | Who | What it records |
+|---|---|---|
+| Ticket updates (webhook from the ticketing system) | Player support, VIP hosts | Assigned / first reply = acknowledged; resolution note = action; a required outcome field on close (resolved, purchase made, no response, not actionable) |
+| Slack buttons on alerts and escalations: Acknowledge · Done · Not actionable | Anyone in the studio channel | Who, when, which player and list |
+| "Record action" form in the dashboard | Live-ops / CRM for engagement campaigns (no ticket) | Campaign and the players added |
+
+Owners report what they did; the **effect** is measured from the data: purchase or return within 7 days, revenue in
+the next 30 days vs the forecast.
 
 What the product analyst tracks per list and week: acknowledgment rate and time to acknowledge, action rate, outcome
 (resolved / purchase made / returned within 7 days), and revenue in the 30 days after the action compared with the
@@ -220,21 +248,32 @@ cannot pass (they are not in the facts). No recommendations are generated: actio
 builds the same structure from the facts and is valid by construction. The email records `summary_source`
 (`llm` or `template`). Tests cover acceptance, each rejection and the fallback.
 
-## 9. Simulation (3–4 Nov)
+## 9. Simulation: every hour, 3 Nov 06:00 → 5 Nov 18:00
 
-| Slot | What happened |
+Lists land at 06:00 the next day (go-live: the 2 Nov list, delivered 3 Nov). Owner feedback is inserted at the hour it
+happens (`is_demo = 1`): each day Player support resolves two friction tickets, a VIP host calls one revenue player
+(and follows up the next day) and messages another (no reply), CRM adds three engagement players to a campaign.
+61 hourly runs; most send nothing.
+
+| Time | What happened |
 |---|---|
-| 3 Nov 06:00 refresh | 1 event (new high-priority player on Revenue decline) found inside quiet hours → held |
-| 3 Nov 08:00 morning | Held alert sent; 17 tickets opened (8 friction, 9 revenue); morning email |
-| 3 Nov 08:00 re-run | Nothing sent: every key already delivered |
-| 3 Nov (demo actions) | Player support resolves the top friction ticket; VIP host calls player 33840; CRM adds 3 engagement players to a campaign |
-| 3 Nov 18:00 evening | Evening email (5 handled); no escalations (day 1) |
-| 4 Nov 08:00 morning | 5 new tickets, 2 closed (players left the list); morning email times out twice, sent on attempt 3 |
-| 4 Nov (demo actions) | 2 friction players worked, VIP follow-up |
-| 4 Nov 18:00 evening | 28 medium/high players with no action for 2 days → 3 escalation messages (friction 4, revenue 7, engagement 17); evening email |
+| 3 Nov 06:00 | 2 Nov list lands: 17 tickets opened (9 friction, 8 revenue) |
+| 3 Nov 08:00 | Morning email (go-live: all 44 new) |
+| 3 Nov 10:00–16:00 | Feedback arrives hourly: 3 tickets closed as handled (2 resolved, 1 no response) |
+| 3 Nov 18:00 | Evening email: 3 closed, 4 in progress, 37 open; no escalation (day 1) |
+| 4 Nov 06:00 | 3 Nov list lands: 1 ticket opened; a new high-priority player found in quiet hours → held |
+| 4 Nov 08:00 | Held Slack alert sent; morning email (34 still open, 2 new) times out twice, sent on attempt 3; a re-run of 08:00 sends nothing |
+| 4 Nov 10:00–16:00 | 4 tickets closed as handled, incl. yesterday's VIP call: "purchase made" |
+| 4 Nov 18:00 | 24 medium/high players with no action by day 2 → 3 escalation messages (friction 4, revenue 4, engagement 16); evening email |
+| 5 Nov 06:00 | 4 Nov list lands: 5 tickets opened, 2 closed (players left the list) |
+| 5 Nov 08:00 | Morning email: 25 still open, 7 new |
+| 5 Nov 18:00 | 16 escalated; evening email: 3 closed, 10 in progress, 25 open |
+
+End state: 23 tickets: 10 closed as handled, 2 closed because the player left the list, 11 open.
 
 ## 10. Before production
 
-Confirm owners, channels, quiet hours and thresholds with each studio; connect the ticketing, Slack and email clients
-(secrets in the secret manager, not `.env`); run the delivery slots from the orchestrator after the refresh job;
+Intraday data (purchase failures, crashes, support tickets as events) so friction can be caught within the hour;
+confirm owners, channels, quiet hours and thresholds with each studio; the three feedback inputs; connect the ticketing, Slack and email clients
+(secrets in the secret manager, not `.env`); schedule the hourly run in the orchestrator, triggered also right after each refresh;
 time zones per studio; SSO on the dashboard; 4-week review of alert volume and action rates; holdout decision.

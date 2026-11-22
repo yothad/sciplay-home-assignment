@@ -61,24 +61,45 @@ def events(date: str, history: pd.DataFrame, run_row: pd.Series | None) -> list[
     return out
 
 
+def stay_start(history: pd.DataFrame, date: str, player_id, list_type: str) -> str:
+    """First list date of the player's current, unbroken stay on this list (counted from go-live)."""
+    dates = sorted(d for d in history["score_date"].unique() if d <= date)
+    on = set(history[(history["player_id"] == player_id) & (history["list_type"] == list_type)]["score_date"])
+    start = date
+    for d in reversed(dates):
+        if d in on:
+            start = d
+        else:
+            break
+    return max(start, C.GO_LIVE)
+
+
+def status(date: str, history: pd.DataFrame, actions: pd.DataFrame) -> pd.DataFrame:
+    """Today's list with each player's state: new (first day), open (carried over, no action), in_progress
+    (an owner acted, outcome pending) or handled (resolved, still showing in the 7-day signals)."""
+    today = history[history["score_date"] == date].copy()
+    rows = []
+    for _, r in today.iterrows():
+        start = stay_start(history, date, r["player_id"], r["list_type"])
+        a = actions[(actions["player_id"] == r["player_id"]) & (actions["list_type"] == r["list_type"])
+                    & (actions["score_date"] >= start)] if len(actions) else actions
+        if len(a) and (a["outcome"] != "pending").any():
+            st = "handled"
+        elif len(a):
+            st = "in_progress"
+        else:
+            st = "new" if start == date else "open"
+        rows.append({**r.to_dict(), "on_list_since": start, "state": st,
+                     "days_on_list": (pd.Timestamp(date) - pd.Timestamp(start)).days + 1})
+    return pd.DataFrame(rows, columns=[*today.columns, "on_list_since", "state", "days_on_list"])
+
+
 def overdue(date: str, history: pd.DataFrame, actions: pd.DataFrame) -> pd.DataFrame:
     """Medium/high-priority players on a list for 2+ days (counting today) with no action recorded in that stay."""
-    dates = sorted(d for d in history["score_date"].unique() if d <= date)
-    if not dates:
-        return pd.DataFrame()
     today = history[history["score_date"] == date]
     rows = []
     for _, r in today[today["priority"].isin(C.ESCALATE_PRIORITIES)].iterrows():
-        h = history[(history["player_id"] == r["player_id"]) & (history["list_type"] == r["list_type"])
-                    & (history["score_date"] <= date)]
-        on = set(h["score_date"])
-        start = date
-        for d in reversed(dates):                      # walk back over consecutive run dates on the same list
-            if d in on:
-                start = d
-            else:
-                break
-        start = max(start, C.GO_LIVE)                  # the team can only act from the day it was told
+        start = stay_start(history, date, r["player_id"], r["list_type"])   # the team can act only once told
         days = (pd.Timestamp(date) - pd.Timestamp(start)).days + 1   # days on the list, counting today
         acted = actions[(actions["player_id"] == r["player_id"]) & (actions["list_type"] == r["list_type"])
                         & (actions["score_date"] >= start) & (actions["score_date"] <= date)] if len(actions) else []

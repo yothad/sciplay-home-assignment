@@ -209,14 +209,14 @@ def run_lists(paths: Paths, date: pd.Timestamp) -> str:
 
 
 def send_alerts(paths: Paths, date: pd.Timestamp) -> str:
-    """Event alerts right after the lists (held in quiet hours; emails go at their own slots). Never fatal."""
+    """One delivery run right after new lists land (alerts held in quiet hours). Never fatal."""
     try:
         from datetime import datetime
 
         from sciplay.delivery import run as DR
         db = paths.log.parent / get_settings().store_db_path.name
-        r = DR.deliver(date, "refresh", hour=datetime.now().hour, db=db, lists_db=db)
-        return f"sent {len(r['sent'])}, held {r.get('held', 0)}, failed {len(r['failed'])}"
+        r = DR.run_hour(datetime.now(), replay=False, db=db, lists_db=db)   # the hourly job does the rest
+        return f"sent {len(r['sent'])}, failed {len(r['failed'])}"
     except Exception as exc:
         return f"alerts failed: {exc}"
 

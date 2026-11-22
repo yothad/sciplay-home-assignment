@@ -57,7 +57,7 @@ def open_ticket(row: dict, path: Path | None = None) -> bool:
         exists = con.execute("SELECT 1 FROM tickets WHERE player_id = ? AND list_type = ? AND status = 'open'",
                              (row["player_id"], row["list_type"])).fetchone()
         cooldown = con.execute(
-            "SELECT 1 FROM tickets WHERE player_id = ? AND list_type = ? AND close_reason = 'resolved by owner' "
+            "SELECT 1 FROM tickets WHERE player_id = ? AND list_type = ? AND close_reason LIKE 'handled%' "
             "AND julianday(?) - julianday(closed_date) < ?",
             (row["player_id"], row["list_type"], row["opened_date"], RESOLVED_COOLDOWN_DAYS)).fetchone()
         if cooldown:                                   # just resolved: signals still in the 7-day window

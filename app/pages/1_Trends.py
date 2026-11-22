@@ -18,13 +18,6 @@ st.caption("Daily values are noisy at sample size (about 30 active players a day
 
 st.plotly_chart(dc.active_by_install_month(rows, f.score_date), width="stretch")
 
-wk = K.weekly(daily)
-cols = st.columns(2)
-for i, key in enumerate(keys):
-    fig = (dc.kpi_trend(daily, K.rolling(daily), key, "7-day average", f.score_date) if view != "Weekly"
-           else dc.weekly_bars(wk, key))
-    cols[i % 2].plotly_chart(fig, width="stretch")
-
 st.markdown("#### Engagement and list volume")
 c = st.columns(2)
 c[0].plotly_chart(dc.engagement_trend(K.engagement_daily(rows), f.score_date), width="stretch")
@@ -34,6 +27,15 @@ if hist.empty:
     c[1].info("No daily lists stored yet (they start on 9 Oct, the first day with LTV scores).")
 else:
     c[1].plotly_chart(dc.list_volume(hist, f.score_date), width="stretch")
+
+st.markdown("#### KPIs")
+
+wk = K.weekly(daily)
+cols = st.columns(2)
+for i, key in enumerate(keys):
+    fig = (dc.kpi_trend(daily, K.rolling(daily), key, "7-day average", f.score_date) if view != "Weekly"
+           else dc.weekly_bars(wk, key))
+    cols[i % 2].plotly_chart(fig, width="stretch")
 
 with st.expander("Weekly table"):
     tbl = wk.reset_index().rename(columns={"DATE": "week starting"})

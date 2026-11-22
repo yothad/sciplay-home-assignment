@@ -160,5 +160,6 @@ def list_volume(hist: pd.DataFrame, score_date: pd.Timestamp | None = None, heig
     if score_date is not None:
         fig.add_vline(x=pd.Timestamp(score_date), line=dict(color=TEXT_SECONDARY, width=1, dash="dot"))
     fig.update_yaxes(rangemode="tozero")
-    fig.update_layout(legend=dict(orientation="h", y=-0.2))
-    return _layout(fig, "List volume", height=height, subtitle="Players on each daily list (latest rules version)")
+    fig = _layout(fig, "List volume", height=height, subtitle="Players on each daily list (latest rules version)")
+    fig.update_layout(legend=dict(orientation="h", yanchor="top", y=-0.32, x=0, xanchor="left"), margin=dict(b=90))
+    return fig

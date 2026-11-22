@@ -97,8 +97,8 @@ def sidebar(data: Prepared, with_filters: bool = True) -> Filters:
             st.session_state["_linked_date"] = qd
         except ValueError:
             pass
-    d = st.sidebar.date_input("As of the end of", value=st.session_state.get("score_date", default),
-                              min_value=first, max_value=last, key="score_date")
+    st.session_state.setdefault("score_date", default)    # the widget reads its value from session state
+    d = st.sidebar.date_input("As of the end of", min_value=first, max_value=last, key="score_date")
     st.sidebar.caption(f"Default: {last:%d %b}, the last data day: every player installed up to 2 Nov has a day-3 LTV "
                        "forecast. 1–4 Nov hold the whole November cohort.")
     platforms, cohorts, payer, countries, acquisition = [], [], K.ALL, [], []

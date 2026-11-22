@@ -6,6 +6,8 @@ Notebook: `notebooks/03_lists.ipynb`. Code: `src/sciplay/lists/`. Thresholds: `s
 
 One primary list per eligible player; every triggered signal is kept as a reason code. **Precedence: Technical or payment friction → Revenue decline → Engagement decline** (first match wins): friction is fixable and often causes the other two; revenue is where the money is; engagement is the broadest.
 
+**Names:** the brief's third list ("Engagement or payment friction") is called **Technical or payment friction** here: it is about technical and purchase problems, and "engagement" would blur it with the Engagement decline list. The brief allows renaming; the three purposes stay distinct.
+
 **Eligible:** not a cheater or legal settlement, at least 3 days old, seen in the last 30 days.
 
 | List | Business meaning | Triggers | Baseline |

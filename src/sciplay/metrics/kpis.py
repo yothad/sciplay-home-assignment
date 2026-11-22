@@ -247,3 +247,58 @@ def cumulative_revenue_per_payer(pday: pd.DataFrame, score_date: pd.Timestamp, m
     out = pd.DataFrame({"days_since_first_purchase": days, "revenue_per_payer": grid.mean().to_numpy(),
                         "payers": grid.notna().sum().to_numpy()})
     return out[out["payers"] >= min_payers].reset_index(drop=True)
+
+
+# --------------------------------------------------------------------------- segments
+
+SEGMENTS = {"Platform": "MAIN_PLATFORM_ID", "Country": "COUNTRY", "Seniority": "seniority",
+            "Acquisition type": "SOURCE_TYPE", "Payer group": "payer_status"}
+SENIORITY_BINS, SENIORITY_LABELS = [-1, 29, 89, 10_000], ["0–29 days", "30–89 days", "90+ days"]
+
+
+def segments(rows: pd.DataFrame, score_date: pd.Timestamp, column: str, lists: pd.DataFrame | None = None,
+             ltv: pd.DataFrame | None = None, window: int = 28, top: int = 8) -> pd.DataFrame:
+    """Compare groups of the player base (seen in the last 30 days) on the score date: activity and revenue over the
+    last `window` days, payer share, predicted LTV365 and how many are on today's lists."""
+    from sciplay.data.asof import snapshot_as_of
+    D = pd.Timestamp(score_date)
+    snap = snapshot_as_of(rows, D)
+    snap = snap[snap["days_since_last_seen"] < 30].copy()
+    if snap.empty:
+        return pd.DataFrame()
+    snap["payer_status"] = np.where(snap["ever_payer"], "Ever-payer", "Non-payer")
+    snap["seniority"] = pd.cut((D - snap["install_date"]).dt.days, SENIORITY_BINS, labels=SENIORITY_LABELS).astype(str)
+    snap[column] = snap[column].astype("string").fillna("— missing")
+    if column == "COUNTRY":                                 # many small countries: keep the largest, pool the rest
+        keep = snap[column].value_counts().index[:top]
+        snap.loc[~snap[column].isin(keep), column] = "Other"
+    recent = rows[(rows["DATE"] > D - pd.Timedelta(days=window)) & (rows["DATE"] <= D)]
+    recent = recent[recent["PLAYER_ID"].isin(snap["PLAYER_ID"])].merge(snap[["PLAYER_ID", column]], on="PLAYER_ID",
+                                                                         suffixes=("_row", ""))
+    g = snap.groupby(column)
+    out = pd.DataFrame({"players": g["PLAYER_ID"].nunique(), "payer_share": g["ever_payer"].mean()})
+    r = recent.groupby(column)
+    out["days_played_per_player"] = r.size() / out["players"]
+    out["revenue_28d"] = r["revenue"].sum()
+    out["revenue_per_player_28d"] = out["revenue_28d"] / out["players"]
+    if ltv is not None and len(ltv):
+        v = snap.merge(ltv[["player_id", "predicted_ltv_365"]], left_on="PLAYER_ID", right_on="player_id", how="left")
+        out["avg_ltv_365"] = v.groupby(column)["predicted_ltv_365"].mean()
+    if lists is not None:
+        on = snap.merge(lists[["player_id", "opportunity_gap"]], left_on="PLAYER_ID", right_on="player_id", how="inner")
+        out["on_a_list"] = on.groupby(column).size()
+        out["value_at_risk"] = on.groupby(column)["opportunity_gap"].sum()
+        out[["on_a_list", "value_at_risk"]] = out[["on_a_list", "value_at_risk"]].fillna(0)
+        out["list_rate"] = out["on_a_list"] / out["players"]
+    out = out.fillna({"days_played_per_player": 0, "revenue_28d": 0, "revenue_per_player_28d": 0})
+    return out.sort_values("players", ascending=False).reset_index().rename(columns={column: "group"})
+
+
+def engagement_daily(rows: pd.DataFrame) -> pd.DataFrame:
+    """Sessions and session minutes per active player, per day."""
+    g = rows.groupby("DATE")
+    out = pd.DataFrame({"active": g["PLAYER_ID"].nunique(), "sessions": g["SESSIONS"].sum(),
+                        "minutes": g["SESSION_MINS"].sum()})
+    out["sessions_per_active"] = out["sessions"] / out["active"]
+    out["minutes_per_active"] = out["minutes"] / out["active"]
+    return out

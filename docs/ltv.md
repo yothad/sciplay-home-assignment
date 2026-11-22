@@ -171,6 +171,16 @@ Device, app and performance columns (load times, latency, FPS, spin length, devi
 
 ## 11. Test results (graded once; 218 players, 6 payers)
 
+**By install month** (a useful segment for a model scored on new players):
+
+| Install month | Test players | Payers | Predicted (30 days) | Actual | Predicted ÷ actual |
+|---|---|---|---|---|---|
+| August | 100 | 2 | $76.22 | $95.44 | 0.80 |
+| September | 100 | 3 | $34.72 | $57.43 | 0.60 |
+| October (1–6) | 18 | 1 | $52.38 | $225.34 | 0.23 (one player) |
+
+**All approaches:**
+
 | Approach | MAE (range) | Payers MAE | Predicted ÷ actual | Dollar recall | Payer recall |
 |---|---|---|---|---|---|
 | Revenue so far | $1.15 ($0.17–2.73) | $41.7 | 0.34 | 94% | 4 of 6 |

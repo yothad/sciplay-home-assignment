@@ -128,3 +128,37 @@ def active_by_install_month(rows: pd.DataFrame, score_date: pd.Timestamp | None 
     fig.update_yaxes(title="Active players per day (weekly average)", rangemode="tozero")
     return _layout(fig, "Active players by install month", height=height,
                    subtitle="Daily actives grow because a new 100-player cohort joins every month, not because the game grows")
+
+
+def engagement_trend(eng: pd.DataFrame, score_date: pd.Timestamp | None = None, height: int = 300) -> go.Figure:
+    """Sessions per active player: faint daily line plus a 7-day average (sums over the window, not mean of ratios)."""
+    roll = eng[["sessions", "active"]].rolling(7, min_periods=1).sum()
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=eng.index, y=eng["sessions_per_active"], mode="lines", name="Daily",
+                             line=dict(color=SERIES[0], width=1), opacity=0.35,
+                             hovertemplate="%{x|%a %d %b}<br>%{y:.2f}<extra>Daily</extra>"))
+    fig.add_trace(go.Scatter(x=roll.index, y=roll["sessions"] / roll["active"], mode="lines", name="7-day average",
+                             line=dict(color=SERIES[0], width=2.5),
+                             hovertemplate="%{x|%d %b}<br>%{y:.2f}<extra>7-day average</extra>"))
+    if score_date is not None:
+        fig.add_vline(x=pd.Timestamp(score_date), line=dict(color=TEXT_SECONDARY, width=1, dash="dot"))
+    fig.update_yaxes(rangemode="tozero")
+    return _layout(fig, "Sessions per active player", height=height, subtitle="Engagement: sessions / active players")
+
+
+def list_volume(hist: pd.DataFrame, score_date: pd.Timestamp | None = None, height: int = 320) -> go.Figure:
+    """Players on each daily list over time."""
+    from sciplay.lists import config as L
+    sizes = (hist.groupby(["score_date", "list_type"]).size().unstack(fill_value=0)
+             .reindex(columns=L.PRECEDENCE, fill_value=0))
+    sizes.index = pd.to_datetime(sizes.index)
+    fig = go.Figure()
+    for i, name in enumerate(L.PRECEDENCE):
+        fig.add_trace(go.Scatter(x=sizes.index, y=sizes[name], mode="lines", name=name,
+                                 line=dict(color=SERIES[i], width=2.5),
+                                 hovertemplate="%{x|%a %d %b}<br>%{y} players<extra>" + name + "</extra>"))
+    if score_date is not None:
+        fig.add_vline(x=pd.Timestamp(score_date), line=dict(color=TEXT_SECONDARY, width=1, dash="dot"))
+    fig.update_yaxes(rangemode="tozero")
+    fig.update_layout(legend=dict(orientation="h", y=-0.2))
+    return _layout(fig, "List volume", height=height, subtitle="Players on each daily list (latest rules version)")

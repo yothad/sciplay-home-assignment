@@ -47,14 +47,14 @@ def test_deep_links_open_the_right_date_list_and_player(processed, monkeypatch):
     from streamlit.testing.v1 import AppTest
 
     monkeypatch.setenv("PROCESSED_DIR", str(processed))
-    at = AppTest.from_file(str(REPO_ROOT / "app" / "pages" / "3_Who_needs_attention.py"), default_timeout=120)
+    at = AppTest.from_file(str(REPO_ROOT / "app" / "pages" / "4_Who_needs_attention.py"), default_timeout=120)
     at.query_params["date"] = "2026-11-03"
     at.query_params["list"] = "Revenue decline"
     at.run()
     assert not at.exception
     assert str(at.session_state["score_date"]) == "2026-11-03"
     assert any("Opened from an alert" in i.value for i in at.info)
-    at = AppTest.from_file(str(REPO_ROOT / "app" / "pages" / "4_Player_detail.py"), default_timeout=120)
+    at = AppTest.from_file(str(REPO_ROOT / "app" / "pages" / "5_Player_detail.py"), default_timeout=120)
     at.query_params["date"] = "2026-11-03"
     at.query_params["player"] = "33840"
     at.run()
@@ -88,3 +88,21 @@ def test_sample_banner_comes_from_the_data(processed):
 
     note = sample_note(json.loads((processed / "manifest.json").read_text()))
     assert "exactly 100 new players per install month" in note
+
+
+def test_segments_cover_the_player_base_once(processed):
+    from sciplay.data.asof import snapshot_as_of
+    from sciplay.metrics import kpis as K
+
+    pday = pd.read_parquet(processed / "player_day.parquet")
+    D = pd.Timestamp("2026-11-04")
+    rows = pday[pday["DATE"] <= D]
+    base = snapshot_as_of(rows, D)
+    n = int((base["days_since_last_seen"] < 30).sum())
+    lists = pd.DataFrame({"player_id": base["PLAYER_ID"].head(5), "opportunity_gap": 1.0})
+    for column in K.SEGMENTS.values():
+        t = K.segments(rows, D, column, lists=lists)
+        assert t["players"].sum() == n                      # every player in exactly one group
+        assert (t["list_rate"] <= 1).all()
+    eng = K.engagement_daily(rows)
+    assert (eng["sessions_per_active"] > 0).all()

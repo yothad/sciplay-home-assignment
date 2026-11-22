@@ -30,6 +30,20 @@ ui.tile(c[3], "Value at risk", lists["opportunity_gap"].sum(), "money",
 ui.tile(c[4], "Eligible players", int(log["eligible"]),
         help="Not a cheater or legal settlement, at least 3 days old, seen in the last 30 days")
 
+from sciplay.delivery.summary import REASON_LABELS                      # one label per reason code
+
+fc = st.columns([1, 2, 1])
+prio = fc[0].multiselect("Priority", ["high", "medium", "low"], default=["high", "medium", "low"])
+codes = sorted(lists["reason_codes"].str.split(";").explode().dropna().unique())
+picked = fc[1].multiselect("Reason (any of)", codes, format_func=lambda c: REASON_LABELS.get(c, c),
+                           placeholder="All reasons")
+lists = lists[lists["priority"].isin(prio)]
+if picked:
+    lists = lists[lists["reason_codes"].str.split(";").apply(lambda cs: any(c in picked for c in cs))]
+fc[2].download_button("Download CSV", order_players(lists).to_csv(index=False).encode(),
+                      file_name=f"lists_{f.score_date:%Y-%m-%d}.csv", mime="text/csv",
+                      help="The filtered lists for this date, all three list types")
+
 cols = ["player_id", "priority", "predicted_ltv_365", "underperformance_score", "opportunity_gap", "ltv_to_date",
         "reason_text", "recommended_action"]                 # in sort order: money first
 linked = st.query_params.get("list")                     # deep link: the alert's list opens first

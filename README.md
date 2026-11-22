@@ -21,7 +21,7 @@ uv run python -m sciplay.run_all --app    # prepare, load model, score, build li
 
 The trained LTV model is in the repo (`models/`), so no training is needed. Checked on a fresh clone: `run_all` took
 **about 1 minute** (prepare 3 s, load model 8 s, score 27 s, lists 26 s) and gives the same lists as the original run;
-all 97 tests pass there. The dashboard opens on 4 Nov 2026.
+all tests pass there. The dashboard opens on 4 Nov 2026.
 
 | Option | What it adds |
 |---|---|
@@ -68,12 +68,12 @@ Configuration is read from `.env` (see `.env.example`): data, store and model pa
 message links. No secrets or machine-specific paths in the code. Stack: Python 3.12, pandas, DuckDB (check),
 LightGBM, SHAP, pydantic, Streamlit, Plotly; all open source and CPU-only.
 
-## Tests (97)
+## Tests (99)
 
 | Area | Tests | What they guarantee |
 |---|---|---|
 | Data, as-of, registry | 15 | No look-ahead columns; null meanings |
-| Refresh, health checks, dashboard | 18 | Health gate, reconciliation to the raw file, every page renders, deep links |
+| Refresh, health checks, dashboard | 20 | Health gate, reconciliation to the raw file, every page renders, deep links, segments |
 | LTV features and scoring | 15 | Features use only the first 3 days; reproducible training; the range holds the forecast |
 | Daily lists | 18 | One list per player, threshold boundaries, reasons, idempotent writes, money-first order |
 | Delivery | 19 | No duplicates, retries, quiet hours, grouping, daily cap, escalation, LLM fallback |
@@ -110,7 +110,8 @@ Full list with evidence and next steps: [`docs/concerns_log.md`](docs/concerns_l
 | [Daily lists](docs/lists.md) | Part 4: rules, priority, reasons, persistence, backtest |
 | [Stakeholder plan](docs/stakeholder_plan.md) | Part 5: recipients, triggers, payloads, reliability, security, feedback, AI summary |
 | [Walkthrough](docs/walkthrough.md) | 20-minute script and likely questions |
-| [Concerns log](docs/concerns_log.md) | Evidence, impact, mitigation, next validation step |
+| [Technical note](docs/technical_note.md) | Two pages: target validity, leakage, validation, list logic, production data needs |
+| [Concerns log](docs/concerns_log.md) | Evidence, impact, mitigation, next validation step, by the brief's concern areas |
 | [AI use disclosure](docs/ai_use_disclosure.md) | Tools used and how output was reviewed |
 | [Presentations](presentation/README.md) | The walkthrough deck and the full results deck |
 

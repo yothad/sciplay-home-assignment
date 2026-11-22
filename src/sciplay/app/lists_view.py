@@ -28,6 +28,14 @@ def lists(score_date) -> pd.DataFrame:
     return _read(str(db), db.stat().st_mtime, pd.Timestamp(score_date).date().isoformat(), R.LISTS)
 
 
+def history() -> pd.DataFrame:
+    """Every stored date of the latest rules version (for list volume over time)."""
+    db = _db()
+    if not db.exists():
+        return pd.DataFrame(columns=R.COLUMNS)
+    return _read(str(db), db.stat().st_mtime, None, R.LISTS)
+
+
 def run_log(score_date) -> pd.Series | None:
     db = _db()
     if not db.exists():

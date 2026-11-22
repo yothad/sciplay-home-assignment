@@ -1,5 +1,9 @@
 # Concerns log
 
+By the brief's concern areas: data definitions and quality C3, C4, C6, C7 · label validity and leakage C1, C3, C8 ·
+model uncertainty C2, C9, C10, C11 · coverage and fairness C13 · privacy and controls C14 · operations and alert
+fatigue C15 · monitoring and learning C12, C16.
+
 | # | Concern | Evidence | Possible impact | Current mitigation | Next validation step |
 |---|---|---|---|---|---|
 | C1 | No mature 365-day label | Oldest player 169 days; `D365_SPEND` = lifetime spend so far | Any LTV365 is an extrapolation | Proxy: validated 30-day forecast × 2.49 (assumed fade), labelled, with a range | Label table from installs at least 365 + 91 days old (maturity slide) |
@@ -14,3 +18,7 @@
 | C10 | Day-365 multiplier is an assumption | Month-to-month ratios come from two players | LTV365 level may be off by a factor | × 2.49 stated everywhere; sensitivity × 2.00–3.29 | Replace with a model on 90/365-day labels |
 | C11 | Device and performance features learned noise | First run: "slower loading → higher value"; did not hold | Misleading reason codes | Removed from LTV features (domain decision); kept for the friction list | Revisit with more payers |
 | C12 | Owner actions are simulated | `actions` filled by a demo (`is_demo = 1`) | Value of the lists is not measured yet | Actions table, evening email, escalation; holdout written as a suggestion | Pilot with one studio for 4 weeks, with a 10% holdout |
+| C13 | Coverage and fairness: list and error rates differ by group | Share of the base on a list, 27 days: ever-payers 67% vs non-payers 20%; seniority 30–89 days 50%, 90+ days 40%, 0–29 days 7% (includes players under 3 days, who are not eligible); platforms 21–23% (android, ios); Mexico 51% on 74 player-days. Model calibration by install month: 0.80 (Aug), 0.60 (Sep), 0.23 (Oct, one player) | Teams' attention goes mostly to payers and established players; new players are under-served | Mostly by design (revenue list needs a payer or high-value player; engagement needs a baseline), shown on the Segments page | Recompute on the full population; review per segment monthly; consider a new-player list or lower thresholds for the first month |
+| C14 | Privacy and controls | Player IDs appear in tickets, Slack and the dashboard | Wrong people see player data; actions without approval | Internal ID only, never in email; private studio channels; any cost needs the owner, above the limit the team lead; no automatic player contact | SSO with per-studio roles; access review with security; retention 90 days (audit) / 13 months (actions) |
+| C15 | Operations and alert fatigue | Thresholds are starting values; ownership rests on studios confirming the teams | Ignored alerts, stale or duplicate messages, unclear owner | Idempotency keys, retries with failure alerts, quiet hours, daily cap, grouping, data-incomplete hold, one named team per list | 4-week pilot: alerts acted on per channel; drop or raise triggers with no action |
+| C16 | Monitoring and learning | Feedback is simulated; no live outcomes | Drift or ineffective rules go unnoticed | Monitoring plan (calibration, drift, coverage, freshness); actions table; monthly champion / challenger | Holdout to measure each list's effect; retire a rule whose flagged players do no worse than comparable players |

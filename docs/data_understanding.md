@@ -138,12 +138,12 @@ Every excluded column and its evidence is in `column_registry.csv` (`use`, `evid
 | **LTV365** | USD per player | Expected gross revenue in the first year after install | Revenue to date + modelled revenue up to day 365; cohort LTV = average |
 | **Active player** | Player on a day | Played that day | Has a row with sessions on D; DAU = count of active players |
 | **Payer** | Player | Ever-payer: paid at least once. Recent payer: paid in the last 4 weeks | Revenue to date > 0; `LAST_4W_REVENUE` > 0 |
-| **Underperformance** | Player on score date D | Clearly less play or spend than expected, for a reason a team can act on | One list per player, in this order, ranked by value at risk |
+| **Underperformance** | Player on score date D | Clearly less play or spend than expected, for a reason a team can act on | One list per player, in this order; ordered by priority (dollar gap first), then predicted LTV365, then score |
 
-**The three lists**
+**The three lists** (as defined in Part 1; the final rules, thresholds and tests are in [`lists.md`](lists.md))
 
-1. **Friction:** technical problems in the last 7 days: failed purchase or store verification, crash, unhandled error, support ticket. Cancelled purchases are not friction (mostly players browsing the store); they are a supporting reason on the other lists.
-2. **Revenue decline:** a payer whose last 4 weeks' spend is at least 50% below the 4 weeks before, or who is well past their usual purchase gap.
-3. **Engagement decline:** plays well below their own 28-day pace or the median player of the same age, or is well past their usual gap.
+1. **Technical or payment friction:** technical or purchase problems in the last 7 days above the player's own usual: crashes, unhandled errors, failed purchases, support tickets, load failures, or repeated purchase attempts with none completed. Single cancelled purchases are not friction (mostly players browsing the store); they are a supporting reason.
+2. **Revenue decline:** a payer whose last 4 weeks' spend is at least 50% below the 4 weeks before, or who is well past their usual purchase gap; a new player well behind their LTV forecast; a high-value non-payer playing less.
+3. **Engagement decline:** plays well below their own pace or the median player of the same age, or is away well past their usual gap.
 
-**Eligibility:** not a cheater or legal settlement (flags normalised to one boolean), at least 3 days since install, seen in the last 30 days (A12). **Value at risk** = predicted LTV365 − revenue to date (USD). Thresholds live in a config file.
+**Eligibility:** not a cheater or legal settlement (flags normalised to one boolean), at least 3 days since install, seen in the last 30 days (A12). **Opportunity gap** = expected value at the player's baseline − revised value now (USD); **value at risk** = the sum over listed players. Thresholds live in a config file.

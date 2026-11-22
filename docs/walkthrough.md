@@ -33,7 +33,7 @@ uv run python -m sciplay.run_all --deliver --app
 This prepares the data (health gate), loads the shipped LTV model, scores 9 Oct – 4 Nov, builds the daily lists,
 replays the hourly delivery into `data/store/outbox/`, and starts the app.
 
-**Optional:** `uv run pytest -q` (97 tests). App only, later: `uv run streamlit run app/Overview.py`.
+**Optional:** `uv run pytest -q` (99 tests). App only, later: `uv run streamlit run app/Overview.py`.
 
 Have open: the walkthrough deck, the dashboard, `data/store/outbox/2026-11-04/`, `docs/concerns_log.md`.
 
@@ -43,12 +43,12 @@ Have open: the walkthrough deck, the dashboard, `data/store/outbox/2026-11-04/`,
 |---|---|---|---|
 | 0–1 | Title, agenda | – | Five parts, one pipeline; the agenda follows the brief |
 | 1–3 | Architecture | `src/sciplay/` | Refresh → health gate → LTV scores → daily lists → hourly delivery; the dashboard reads only stored outputs; bad data is never published |
-| 3–6 | Demo | Terminal: `run_all`; dashboard Overview and Data health on 4 Nov; Player detail 33840 | Score date drives every tile; the 1–4 Nov spike is flagged; totals reconciled with SQL; how one player's value is calculated |
+| 3–6 | Demo | Terminal: `run_all`; dashboard Overview, Segments (payer group) and Data health on 4 Nov; Player detail 33840 | Score date drives every tile; the 1–4 Nov spike is flagged; totals reconciled with SQL; how one player's value is calculated |
 | 6–8 | Target and timing; features | – | No 365-day label (oldest player 169 days), so a 30-day target from the first 3 days, × 2.49 as a stated assumption. 359 features → 114 candidates → 18 in the model; device columns dropped and why |
 | 8–11 | Why LightGBM; error example; results | – | Same pipeline for LightGBM and a GLM; picked by deviance on later training months, rule fixed in advance. On error it ties "revenue so far" (four real players show why); it wins on ranking (91% of test revenue in its $20+ band) |
 | 11–14 | Lists; dashboard | Who needs attention, Revenue decline tab | Three lists, one per player by precedence; priority by the dollar gap; sorted money first; reasons and the owning team's action; player 224283 moving between lists |
 | 14–17 | Delivery; two emails | Outbox: email, Slack alert, VIP ticket; click a deep link | Hourly runs; tickets opened once; quiet hours; retries; no duplicates; escalation after 2 days; AI summary checked by pydantic with a template fallback |
-| 17–18 | Tests | `pytest tests/test_refresh.py -q` | 97 tests by area; a bad extract fails the gate and nothing downstream moves |
+| 17–18 | Tests | `pytest tests/test_refresh.py -q` | 99 tests by area; a bad extract fails the gate and nothing downstream moves |
 | 18–20 | Before production; concerns | `docs/concerns_log.md` | What changes; what evidence and decisions are still needed; the five main concerns |
 
 ## Likely questions (short answers)

@@ -53,6 +53,17 @@ else:
     ui.tile(c[5], "Value at risk", _lists["opportunity_gap"].sum(), "money",
             help=f"Opportunity gap of the {len(_lists)} players on today's lists (see Who needs attention)")
 
+st.markdown("#### Daily lists on the score date (Part 4)")
+if lvl.lists(f.score_date).empty:
+    st.info(lvl.not_run_note(f.score_date))
+else:
+    from sciplay.lists import config as LC
+    c = st.columns(4)
+    for col, name in zip(c, LC.PRECEDENCE):
+        sub = _lists[_lists["list_type"] == name]
+        ui.tile(col, name, len(sub), help=f"High priority: {int((sub['priority'] == 'high').sum())}. See Who needs attention")
+    ui.tile(c[3], "On a list, high priority", int((_lists["priority"] == "high").sum()))
+
 st.markdown("#### Lifetime value on the score date (Part 3)")
 ltv = lv.scores(f.score_date)
 if ltv.empty:

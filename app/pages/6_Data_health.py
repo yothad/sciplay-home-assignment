@@ -4,6 +4,7 @@ import pandas as pd
 import streamlit as st
 
 from sciplay.app import ltv_view as lv
+from sciplay.app import lists_view as lvl
 from sciplay.app import ui
 from sciplay.metrics.health import FAIL, INFO, PASS, WARN, history_band, run_checks
 from sciplay.metrics.reconcile import reconcile, reconcile_day
@@ -61,6 +62,10 @@ st.caption(f"Prepared from {m['source_file']}: {m['raw_rows']:,} raw rows → {m
            f"(one row per player per day played; 7 player-days had two platform rows) · {m['players']} players · "
            f"built {m['built_at'][:16].replace('T', ' ')} UTC")
 lv.model_check()
+_log = lvl.run_log(f.score_date)
+st.caption("Daily lists for this date: " + (f"version `{_log['model_rules_version']}` (LTV model + hash of the rule "
+           f"settings), status **{_log['status']}**, produced {_log['created_at']}" if _log is not None
+           else "none stored (lists start on 9 Oct)."))
 
 st.markdown("#### How values are shown")
 ui.legend()

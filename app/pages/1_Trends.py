@@ -2,6 +2,7 @@
 
 import streamlit as st
 
+from sciplay.app import lists_view as lvl
 from sciplay.app import ui
 from sciplay.metrics import kpis as K
 from sciplay.viz import dashboard_charts as dc
@@ -23,6 +24,16 @@ for i, key in enumerate(keys):
     fig = (dc.kpi_trend(daily, K.rolling(daily), key, "7-day average", f.score_date) if view != "Weekly"
            else dc.weekly_bars(wk, key))
     cols[i % 2].plotly_chart(fig, width="stretch")
+
+st.markdown("#### Engagement and list volume")
+c = st.columns(2)
+c[0].plotly_chart(dc.engagement_trend(K.engagement_daily(rows), f.score_date), width="stretch")
+hist = lvl.history()
+hist = hist[hist["player_id"].isin(rows["PLAYER_ID"].unique())]
+if hist.empty:
+    c[1].info("No daily lists stored yet (they start on 9 Oct, the first day with LTV scores).")
+else:
+    c[1].plotly_chart(dc.list_volume(hist, f.score_date), width="stretch")
 
 with st.expander("Weekly table"):
     tbl = wk.reset_index().rename(columns={"DATE": "week starting"})

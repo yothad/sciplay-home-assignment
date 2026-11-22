@@ -195,3 +195,5 @@ Answer inline; answered questions move into the decision log.
 | 2026-11-22 | Holdout written as a suggestion only | Needs a studio decision |
 | 2026-11-22 | Order in the dashboard, tickets and messages: priority → predicted LTV365 → score; the score stays behaviour-only | Money first; LTV already drives the priority through the gap |
 | 2026-11-22 | Two-dates example: 3 and 4 Nov (consecutive, the same days as the delivery simulation), was 29 Oct | Consistent story |
+| 2026-11-22 | One name per team everywhere: Player support team, VIP team, CRM team (leads: Player support / VIP / CRM lead) | Consistent recipients; actions in the lists use the same names |
+| 2026-11-22 | Trigger thresholds kept as starting values, checked on 26 days of list history (about one alert every 3 days) | Evidence for the values; review after 4 weeks |

@@ -24,15 +24,15 @@ START, END = "2026-11-03 06:00", "2026-11-05 18:00"
 
 # (hour, list, owner, action, outcome, which player: rank among untouched players by priority and value at risk)
 DAILY_PLAN = [
-    (10, L.FRICTION, "Player support", "Checked crash logs, sent apology + bonus coins", "resolved"),
-    (11, L.REVENUE, "VIP host", "Called the player; offer approved by the live-ops lead", "pending"),
-    (13, L.FRICTION, "Player support", "Purchase failed at the store; refund confirmed", "resolved"),
-    (14, L.ENGAGEMENT, "Live-ops / CRM", "Added to the 'we miss you' push campaign", "pending"),
-    (14, L.ENGAGEMENT, "Live-ops / CRM", "Added to the 'we miss you' push campaign", "pending"),
-    (14, L.ENGAGEMENT, "Live-ops / CRM", "Added to the 'we miss you' push campaign", "pending"),
-    (16, L.REVENUE, "VIP host", "Personal message sent; no reply", "no response"),
+    (10, L.FRICTION, "Player support team", "Checked crash logs, sent apology + bonus coins", "resolved"),
+    (11, L.REVENUE, "VIP team", "Called the player; offer approved by the VIP lead", "pending"),
+    (13, L.FRICTION, "Player support team", "Purchase failed at the store; refund confirmed", "resolved"),
+    (14, L.ENGAGEMENT, "CRM team", "Added to the 'we miss you' push campaign", "pending"),
+    (14, L.ENGAGEMENT, "CRM team", "Added to the 'we miss you' push campaign", "pending"),
+    (14, L.ENGAGEMENT, "CRM team", "Added to the 'we miss you' push campaign", "pending"),
+    (16, L.REVENUE, "VIP team", "Personal message sent; no reply", "no response"),
 ]
-FOLLOW_UP = (12, L.REVENUE, "VIP host", "Follow-up: player bought the offer", "purchase made")  # day 2 onwards
+FOLLOW_UP = (12, L.REVENUE, "VIP team", "Follow-up: player bought the offer", "purchase made")  # day 2 onwards
 
 
 def reset(db=None) -> None:

@@ -28,7 +28,7 @@ A low raw value alone never triggers a list: every trigger is relative to a base
 | `predicted_ltv_365`, `ltv_to_date` | From Part 3 (`ltv_scores`) |
 | `opportunity_gap` | Expected value at the player's baseline − revised value now, never below $0. Older players: update-rule LTV at the previous vs the recent 28-day spending pace. Day-3 model players: dollars behind forecast × 2.49 |
 | `reason_codes`, `reason_text` | Every triggered signal, as codes and readable text |
-| `recommended_action` | Set by the list and its main reason (tech support, payments, CRM/VIP offer, lifecycle push) |
+| `recommended_action` | Set by the list and its main reason, addressed to the owning team (Player support team, VIP team, CRM team) |
 | `ltv_source`, `data_incomplete` | Where the LTV came from; 1 if the date's health check failed |
 | `model_rules_version` | LTV model version + hash of the rule config |
 | `created_at` | When the row was written |

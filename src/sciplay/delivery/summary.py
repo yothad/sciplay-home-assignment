@@ -20,7 +20,7 @@ CAUSAL = re.compile(r"\b(because|due to|caused by|as a result of|driven by|led t
 NUMBER = re.compile(r"\$?\d[\d,]*(?:\.\d+)?%?")
 
 PROMPT_TEMPLATE = """You write the opening summary of a daily email for a mobile game studio.
-Readers: studio GM, live-ops lead, player support lead, game economy designer, product analyst.
+Readers: studio GM, Player support / VIP / CRM leads, game economy designer, product analyst.
 
 Use ONLY the facts in the JSON below. Rules:
 - Every number you write must appear in the facts exactly as given (same rounding).

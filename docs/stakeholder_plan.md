@@ -47,16 +47,18 @@ daily refresh (Part 2) ──> LTV scores (Part 3) ──> daily_lists + list_ru
 
 ## 2. Recipients, owners, channels and expected actions
 
-| Recipient | Owns | Channel | Expected action |
-|---|---|---|---|
-| **Player support** (tech + payments, one team) | Technical or payment friction | Ticket in the *Player support queue* (one per player stay on the list) + Slack | Check crash / error logs or the failed purchase, contact the player, compensate within policy; record action and outcome on the ticket |
-| **VIP hosts** (in live-ops / CRM) | Revenue decline | Ticket in the *VIP host queue* + Slack | Personal outreach or a timed offer on the player's usual purchase; any offer with a cost needs live-ops lead approval |
-| **Live-ops / CRM** | Engagement decline | Slack + the list in the dashboard (CRM audience, no ticket per player) | Add players to a win-back push / in-game message campaign; record the campaign |
-| **Live-ops lead / Player support lead** | Escalations | Slack mention | Reassign or act on medium/high players untouched by the evening of their 2nd day |
-| **Studio GM / product lead** | Accountability | Morning and evening email | Read the state of the lists; decide on budget for offers |
-| **Game economy designer** | Offer design | Morning and evening email | Watch revenue decline reasons (overdue purchases, spend drop) and adjust offers / economy |
-| **Product analyst** | Measurement | Email + `actions` table | Track response and outcome rates per list; propose threshold changes |
-| **Data team** | Pipeline | `#data-alerts` | Fix missing data, failed runs, failed deliveries |
+One name per team, used in the lists' actions, tickets, Slack and emails:
+
+| Recipient | Who they are | Owns | Channel | Expected action |
+|---|---|---|---|---|
+| **Player support team** | Customer support, including technical and payment problems | Technical or payment friction | Ticket in the *Player support queue* (one per player stay on the list) + Slack | Check crash / error logs or the failed purchase, contact the player, compensate within policy; record action and outcome on the ticket |
+| **VIP team** | Hosts / account managers for high-value and high-potential players | Revenue decline | Ticket in the *VIP queue* + Slack | Personal outreach or a timed offer on the player's usual purchase; first-purchase offer for high-potential non-payers; any cost approved by the VIP lead |
+| **CRM team** | Lifecycle marketing (push, email, in-game messages), part of live-ops | Engagement decline | Slack + the list in the dashboard (campaign audience, no ticket per player) | Add players to a win-back campaign; record the campaign |
+| **Team leads** (Player support, VIP, CRM) | The three team leads | Escalations | Slack mention | Act on or reassign medium/high players untouched by the evening of their 2nd day |
+| **Studio GM** | Runs the game's studio | Accountability | Morning and evening email | Read the state of the lists; decide on budget for offers |
+| **Game economy designer** | Designs coin economy, prices and offers | Offer design | Morning and evening email | Watch revenue decline reasons (overdue purchases, spend drop) and adjust offers / economy |
+| **Product analyst** | Measures the game and its features | Measurement | Email + `actions` table | Track response and outcome rates per list; propose threshold changes |
+| **Data team** | Owns the pipeline | Pipeline | `#data-alerts` | Fix missing data, failed runs, failed deliveries |
 
 ## 3. Daily digest and event triggers
 
@@ -79,6 +81,18 @@ handled; in progress (acted on, outcome pending); still open; overdue and escala
 | Escalation | Medium/high player, no action recorded by the evening of the 2nd day on the list (counting from go-live) | Slack to the list owner's lead, one message per list, 10 players max + "… N more" |
 | Data incomplete / no lists / failed delivery | Health gate warning, failed run, a message failing 3 times | `#data-alerts` only; team alerts are held until the data is complete |
 
+**Where the thresholds come from.** They are starting values, chosen so each alert is rare, then checked against the
+history of the lists (26 day-to-day changes, 9 Oct – 4 Nov) and reviewed after 4 weeks with the studio:
+
+| Trigger | Evidence | Would have fired |
+|---|---|---|
+| New high-priority player | High = gap ≥ $20 (the Part 4 tier) | 5 of 26 days |
+| Large value at risk, $100 | Gap on entering a list: median $0, 95th percentile $12, 99th $377 (105 entries); $100 picks out only the rare large one | 1 day (2 entries) |
+| List increase, 1.5× and +5 | Daily list sizes vary by about ±2.5 players (friction 4–12, revenue 3–9, engagement 21–31); +5 is about two standard deviations | 0 days |
+| Total value at risk, 2× | Daily total $35–680, median $497; largest day-to-7-day ratio 1.66 after the first week | 2 days (early October, small base) |
+
+About one alert every three days per studio: rare enough to be read, not so rare that a real change is missed.
+
 ## 4. Example payloads (from the dry run, 3–4 Nov)
 
 **Morning email, 4 Nov 08:00** (list of 3 Nov; subject: `[test] Morning · 2026-11-04 · 34 still open, 2 new, $352 at risk`)
@@ -95,9 +109,9 @@ handled; in progress (acted on, outcome pending); still open; overdue and escala
 
 | List | Owner | Players | Still open | New | In progress | Handled | High | Value at risk |
 |---|---|---|---|---|---|---|---|---|
-| Technical or payment friction | Player support | 8 | 7 | 0 | 0 | 1 | 0 | $0.00 |
-| Revenue decline | Live-ops / CRM (VIP hosts) | 9 | 6 | 1 | 1 | 1 | 4 | $352.18 |
-| Engagement decline | Live-ops / CRM | 25 | 21 | 1 | 3 | 0 | 0 | $0.28 |
+| Technical or payment friction | Player support team | 8 | 7 | 0 | 0 | 1 | 0 | $0.00 |
+| Revenue decline | VIP team | 9 | 6 | 1 | 1 | 1 | 4 | $352.18 |
+| Engagement decline | CRM team | 25 | 21 | 1 | 3 | 0 | 0 | $0.28 |
 
 **Still open from yesterday (no action yet):** 34 (friction 7, revenue 6, engagement 21); longest open: 2 days.
 **New overnight:** 2 (revenue 1, engagement 1).
@@ -125,14 +139,14 @@ _Data as of 2026-11-03 · rules-6fa388be. Player IDs are in the tickets and the 
     "url": "http://localhost:8501/Who_needs_attention?date=2026-11-03&list=Revenue+decline"}]}]}
 ```
 
-**Ticket (VIP host queue)**
+**Ticket (VIP queue)**
 
 ```json
-{"ticket_id": "test-REV-33840-2026-11-03", "queue": "VIP host queue", "studio": "Sample studio",
+{"ticket_id": "test-REV-33840-2026-11-03", "queue": "VIP queue", "studio": "Sample studio",
  "title": "Revenue decline: player 33840 (high priority)", "player_id": 33840, "priority": "high",
  "reasons": ["No purchase for 8 days; usually every 1.5 days", "Played 0 of the last 7 days vs 1.5 a week before",
              "0 sessions in the last 7 days vs 9.2 a week before", "Not seen for 8 days; usually plays every day"],
- "recommended_action": "CRM / VIP: timed offer on the player's usual purchase",
+ "recommended_action": "VIP team: timed offer on the player's usual purchase",
  "value": {"opportunity_gap": 266.96, "predicted_ltv_365": 2714.05, "ltv_to_date": 2366.73},
  "needs_approval_before_any_cost": true,
  "link": "http://localhost:8501/Player_detail?date=2026-11-03&player=33840",
@@ -175,7 +189,7 @@ tab; `Player_detail?date=…&player=…` opens the player. Covered by a dashboar
   player from lists, tickets and actions.
 - **Review before any player action.** The system never contacts a player or grants anything. Every ticket says
   `needs_approval_before_any_cost: true`: an offer, compensation or bonus needs the owner's decision, and anything with a
-  cost above the studio's limit needs the live-ops lead. Players excluded in Part 1 (flags, settlements) never reach a
+  cost above the studio's limit needs the team lead. Players excluded in Part 1 (flags, settlements) never reach a
   list. Regulated markets (social casino) follow the studio's responsible-gaming policy before any promotion.
 
 ## 7. Feedback loop: did the lists create value?
@@ -188,9 +202,9 @@ stops the escalation.
 
 | Input | Who | What it records |
 |---|---|---|
-| Ticket updates (webhook from the ticketing system) | Player support, VIP hosts | Assigned / first reply = acknowledged; resolution note = action; a required outcome field on close (resolved, purchase made, no response, not actionable) |
+| Ticket updates (webhook from the ticketing system) | Player support team, VIP team | Assigned / first reply = acknowledged; resolution note = action; a required outcome field on close (resolved, purchase made, no response, not actionable) |
 | Slack buttons on alerts and escalations: Acknowledge · Done · Not actionable | Anyone in the studio channel | Who, when, which player and list |
-| "Record action" form in the dashboard | Live-ops / CRM for engagement campaigns (no ticket) | Campaign and the players added |
+| "Record action" form in the dashboard | CRM team, for campaigns (no ticket) | Campaign and the players added |
 
 Owners report what they did; the **effect** is measured from the data: purchase or return within 7 days, revenue in
 the next 30 days vs the forecast.
@@ -214,7 +228,7 @@ that takes the prompt and returns JSON.
 
 ```text
 You write the opening summary of a daily email for a mobile game studio.
-Readers: studio GM, live-ops lead, player support lead, game economy designer, product analyst.
+Readers: studio GM, Player support / VIP / CRM leads, game economy designer, product analyst.
 
 Use ONLY the facts in the JSON below. Rules:
 - Every number you write must appear in the facts exactly as given (same rounding).
@@ -254,7 +268,7 @@ builds the same structure from the facts and is valid by construction. The email
 ## 9. Simulation: every hour, 3 Nov 06:00 → 5 Nov 18:00
 
 Lists land at 06:00 the next day (go-live: the 2 Nov list, delivered 3 Nov). Owner feedback is inserted at the hour it
-happens (`is_demo = 1`): each day Player support resolves two friction tickets, a VIP host calls one revenue player
+happens (`is_demo = 1`): each day the Player support team resolves two friction tickets, the VIP team calls one revenue player
 (and follows up the next day) and messages another (no reply), CRM adds three engagement players to a campaign.
 61 hourly runs; most send nothing.
 

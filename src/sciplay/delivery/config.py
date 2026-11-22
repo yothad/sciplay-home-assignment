@@ -9,15 +9,14 @@ from sciplay.lists import config as L
 # One studio per game (GAME_ID); the sample has one game.
 STUDIO_NAMES = {"test": "Sample studio"}
 
-OWNERS = {  # list -> owning function in the studio
-    L.FRICTION: "Player support",            # tech and payment problems handled by one team
-    L.REVENUE: "Live-ops / CRM (VIP hosts)",
-    L.ENGAGEMENT: "Live-ops / CRM",
-}
-OWNER_LEADS = {L.FRICTION: "Player support lead", L.REVENUE: "Live-ops lead", L.ENGAGEMENT: "Live-ops lead"}
-TICKET_QUEUES = {L.FRICTION: "Player support queue", L.REVENUE: "VIP host queue"}   # engagement: CRM audience, no ticket
-EMAIL_TO = ["Studio GM / product lead", "Live-ops lead", "Player support lead", "Game economy designer",
-            "Product analyst"]
+# One name per team, used everywhere (lists' actions, tickets, Slack, emails):
+#   Player support team - customer support, including technical and payment problems
+#   VIP team            - hosts / account managers for high-value and high-potential players
+#   CRM team            - lifecycle marketing: push, email and in-game messages (part of live-ops)
+OWNERS = {L.FRICTION: "Player support team", L.REVENUE: "VIP team", L.ENGAGEMENT: "CRM team"}
+OWNER_LEADS = {L.FRICTION: "Player support lead", L.REVENUE: "VIP lead", L.ENGAGEMENT: "CRM lead"}
+TICKET_QUEUES = {L.FRICTION: "Player support queue", L.REVENUE: "VIP queue"}   # CRM team: campaign audience, no ticket
+EMAIL_TO = ["Studio GM", "Player support lead", "VIP lead", "CRM lead", "Game economy designer", "Product analyst"]
 DATA_CHANNEL = "#data-alerts"
 
 

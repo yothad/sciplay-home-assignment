@@ -51,8 +51,8 @@ def test_reasons_are_readable_and_cover_every_signal():
     texts = [t for _, t in rs]
     assert texts[0] == "1 crash in the last 7 days (more than usual)"
     assert "-80%" in texts[2] and texts[3].startswith("1 session in the last 7 days vs 9")
-    assert rules.recommended_action(codes, L.REVENUE).startswith("CRM / VIP")
-    assert rules.recommended_action(codes, L.FRICTION).startswith("Tech support")
+    assert rules.recommended_action(codes, L.REVENUE).startswith("VIP team")
+    assert rules.recommended_action(codes, L.FRICTION).startswith("Player support team")
 
 
 @pytest.mark.parametrize("recent, baseline, triggered", [(50.0, 100.0, True), (50.01, 100.0, False), (0.0, 0.0, False)])

@@ -32,7 +32,7 @@ def ticket(r: dict, game_id: str) -> dict:
         "value": {"opportunity_gap": round(float(r["opportunity_gap"]), 2),
                   "predicted_ltv_365": None if pd.isna(r["predicted_ltv_365"]) else round(float(r["predicted_ltv_365"]), 2),
                   "ltv_to_date": round(float(r["ltv_to_date"]), 2)},
-        "needs_approval_before_any_cost": True,
+        "needs_approval_before_any_cost": True,          # owner decides; above the studio limit, the team lead
         "link": deep_link(r["score_date"], player_id=int(r["player_id"])),
         "rules_version": r["model_rules_version"],
     }

@@ -1,5 +1,10 @@
 # Walkthrough script (≈ 20 minutes)
 
+Brief requirements: ~20 minutes presenting + ~25 minutes of questions; demo raw file → dashboard → LTV score → saved
+daily lists → stakeholder message; architecture and data flow; target, feature timing, validation, model choice,
+baseline; list definitions, conflicts and actions; main tests and one safely handled failure; what changes before
+production and what evidence or decisions are still needed; bring the concerns log.
+
 The brief asks for a demo from raw file to dashboard, LTV score, saved lists and a stakeholder message, plus
 architecture, LTV design, list logic, tests, an edge case and what changes before production. Times are targets.
 

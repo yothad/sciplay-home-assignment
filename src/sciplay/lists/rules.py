@@ -117,20 +117,20 @@ def reasons(r: pd.Series, cfg=L) -> list[tuple[str, str]]:
 
 
 ACTIONS = {
-    "friction_crashes": "Tech support: check crash logs for this player's device and app version; send an apology with bonus coins",
-    "friction_unhandled_errors": "Tech support: check error logs for this player's device and app version; send an apology with bonus coins",
-    "friction_failed_purchases": "Payments: check store and billing logs; contact the player to complete the purchase with a bonus",
-    "friction_incomplete_purchase": "Payments: check store and billing logs for the abandoned purchases; offer help or a bonus to complete",
-    "friction_support_tickets": "Support: follow up on the open ticket within a day",
-    "friction_load_failures": "Tech support: check slot and lobby loading for this player's device, app version and network; send bonus coins",
-    "revenue_spend_drop": "CRM / VIP: personalised offer based on the player's past purchases",
-    "revenue_overdue": "CRM / VIP: timed offer on the player's usual purchase",
-    "revenue_behind_forecast": "CRM: first-purchase offer while the player is still active",
-    "revenue_valuable_losing_activity": "CRM: first-purchase offer plus free coins to bring the player back",
-    "engagement_days_drop": "Lifecycle: re-engagement push or email with free coins",
-    "engagement_sessions_drop": "Lifecycle: re-engagement push or email with free coins",
-    "engagement_young_vs_peers": "Lifecycle: onboarding nudge (push with free coins and a feature tip)",
-    "engagement_overdue_return": "Lifecycle: come-back message with a free-coins bonus timed to the player's usual play days",
+    "friction_crashes": "Player support team: check crash logs for this player's device and app version; send an apology with bonus coins",
+    "friction_unhandled_errors": "Player support team: check error logs for this player's device and app version; send an apology with bonus coins",
+    "friction_failed_purchases": "Player support team (payments): check store and billing logs; contact the player to complete the purchase with a bonus",
+    "friction_incomplete_purchase": "Player support team (payments): check store and billing logs for the abandoned purchases; offer help or a bonus to complete",
+    "friction_support_tickets": "Player support team: follow up on the open ticket within a day",
+    "friction_load_failures": "Player support team: check slot and lobby loading for this player's device, app version and network; send bonus coins",
+    "revenue_spend_drop": "VIP team: personalised offer based on the player's past purchases",
+    "revenue_overdue": "VIP team: timed offer on the player's usual purchase",
+    "revenue_behind_forecast": "VIP team: first-purchase offer while the player is still active",
+    "revenue_valuable_losing_activity": "VIP team: first-purchase offer plus free coins to bring the player back",
+    "engagement_days_drop": "CRM team: re-engagement push or email with free coins",
+    "engagement_sessions_drop": "CRM team: re-engagement push or email with free coins",
+    "engagement_young_vs_peers": "CRM team: onboarding nudge (push with free coins and a feature tip)",
+    "engagement_overdue_return": "CRM team: come-back message with a free-coins bonus timed to the player's usual play days",
 }
 LIST_PREFIX = {L.FRICTION: "friction", L.REVENUE: "revenue", L.ENGAGEMENT: "engagement"}
 

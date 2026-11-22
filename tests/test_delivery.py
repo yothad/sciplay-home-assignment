@@ -166,7 +166,7 @@ def test_feedback_closes_ticket_and_morning_email_splits_open_and_new(db, monkey
     lists_db = _lists(db, {"2026-11-03": [_row("2026-11-03", 1), _row("2026-11-03", 2)],
                            "2026-11-04": [_row("2026-11-04", 1), _row("2026-11-04", 2), _row("2026-11-04", 3)]})
     DR.run_hour(datetime(2026, 11, 4, 6), db=db, lists_db=lists_db)            # 3 Nov list: tickets for 1 and 2
-    S.add_action({"score_date": "2026-11-03", "player_id": 2, "list_type": L.REVENUE, "owner": "VIP host",
+    S.add_action({"score_date": "2026-11-03", "player_id": 2, "list_type": L.REVENUE, "owner": "VIP team",
                   "acknowledged_at": "2026-11-04T11:00", "action": "call", "outcome": "purchase made", "is_demo": 1}, db)
     assert DR.run_hour(datetime(2026, 11, 4, 11), db=db, lists_db=lists_db)["tickets_closed_handled"] == 1
     r = DR.run_hour(datetime(2026, 11, 4, 18), db=db, lists_db=lists_db)

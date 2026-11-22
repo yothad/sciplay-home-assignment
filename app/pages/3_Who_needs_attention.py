@@ -66,7 +66,7 @@ with st.expander("How the lists, scores and priorities work"):
         "least 50% below the 28 before; overdue (no purchase for more than 2× the usual gap); at least 50% and $5 behind "
         "the day-3 forecast; or a high-value non-payer playing less.\n"
         "- **Engagement decline:** days played or sessions in the last 7 days at most 50% of the pace before; players "
-        "under 5 weeks old compared with peers of the same age; or not seen for 7+ days and more than twice their usual "
+        "under 5 weeks old compared with peers of the same age; or away 7–21 days and more than twice their usual "
         "gap between days played.\n"
         "- **Score (0–100):** 0 = at baseline, 100 = play or spend stopped, or severe friction.\n"
         "- **Opportunity gap:** expected value at the player's baseline − revised value now, never below $0.\n"

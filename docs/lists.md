@@ -12,7 +12,7 @@ One primary list per eligible player; every triggered signal is kept as a reason
 |---|---|---|---|
 | **Technical or payment friction** | Blocked by technical or purchase problems | In the last 7 days: crashes, unhandled errors, failed purchases or store-verification failures, support tickets, or 2+ load failures (slot load, slot download or lobby load started but never completed) — more than the player's own previous 28 days; or 2+ purchase attempts with none completed. Single cancellations are a supporting reason only | Own previous 28 days |
 | **Revenue decline** | A payer or valuable player giving less than expected | Payers: last-28-day spend ≤ 50% of the 28 before, or overdue (no purchase for > 2× the usual gap). Day-3 model players: ≥ 50% and ≥ $5 behind forecast. Non-payers in the top 10% of predicted LTV365: playing less | Own history; expected trajectory (LTV forecast) |
-| **Engagement decline** | Losing activity, may churn before value arrives | Days played or sessions in the last 7 days ≤ 50% of the weekly pace in the 28 days before (baseline ≥ 1 day / 2 sessions a week); players under 5 weeks old: ≤ 50% of the median for peers of the same age; **return signal:** not seen for at least 7 days and more than 2× their usual gap between days played (4+ days played) | Own pace; own play rhythm; peer cohort |
+| **Engagement decline** | Losing activity, may churn before value arrives | Days played or sessions in the last 7 days ≤ 50% of the weekly pace in the 28 days before (baseline ≥ 1 day / 2 sessions a week); players under 5 weeks old: ≤ 50% of the median for peers of the same age; **return signal:** not seen for 7–21 days and more than 2× their usual gap between days played (4+ days played); beyond 21 days they leave the list until the 30-day churn rule removes them, so outreach stays early enough to act on | Own pace; own play rhythm; peer cohort |
 
 A low raw value alone never triggers a list: every trigger is relative to a baseline.
 
@@ -55,9 +55,9 @@ History (`sciplay.lists.history`): `changes(date)` (entered, exited, moved list,
 
 ## Threshold analysis (27 dates, 9 Oct – 4 Nov)
 
-Average per day: friction 8, revenue decline 6, engagement decline 32 of ~159 eligible; ~8% of a day's listed players are new vs the day before.
+Average per day: friction 8, revenue decline 6, engagement decline 26 of ~159 eligible.
 
-- Activity drop 30% → 70%: engagement 29 → 35 a day; nothing else moves.
+- Activity drop 30% → 70% moves only the engagement list (by about 6 a day). The return signal's multiple (1.5×–3×) barely matters; limiting it to 7–21 days away cut the engagement list from 32 to 26 a day.
 - Spend drop 30% → 70%: revenue 5.9 → 5.4; overdue 1.5× → 3×: 5.9 → 5.6. The revenue list is small because only 10 eligible players ever paid.
 - 14-day window: friction doubles, engagement drops, lists more stable. **Kept: 7 days, 50%.**
 
@@ -65,18 +65,18 @@ Average per day: friction 8, revenue decline 6, engagement decline 32 of ~159 el
 
 | Signal (compared with) | Days played next 30 | Stopped playing | Payer spend next 30 ÷ last 28 |
 |---|---|---|---|
-| Engagement decline (players with a play baseline) | 4.2 vs 11.0 | 44% vs 25% | – |
+| Engagement decline (players with a play baseline) | 4.5 vs 10.8 | 41% vs 27% | – |
 | Revenue decline (payers and high-value players) | 6.4 vs 9.4 | 23% vs 32% | 0.45 vs 0.59 |
 | Friction (players active 3+ of the last 7 days) | 18.4 vs 14.8 | 5% vs 6% | 0.74 vs 0.53 |
 
-Engagement and revenue signals point at players who then play and spend less: flagged engagement players were almost twice as likely to stop playing (44% vs 25%) and played 4 days instead of 11 (directional; ~176 and ~44 flagged player-days). Friction does not predict decline and is not meant to: it finds a problem to fix.
+Engagement and revenue signals point at players who then play and spend less: flagged engagement players were much more likely to stop playing (41% vs 27%) and played 4.5 days instead of 11 (directional; ~167 and ~44 flagged player-days). Friction does not predict decline and is not meant to: it finds a problem to fix.
 
 ## Two dates and one player
 
 | Date | Friction | Revenue decline | Engagement decline |
 |---|---|---|---|
-| 29 Oct | 7 (6 medium, 1 low) | 7 (3 high, 4 medium) | 36 (31 medium, 5 low) |
-| 4 Nov | 11 (8 medium, 3 low) | 8 (3 high, 5 medium) | 31 (27 medium, 4 low) |
+| 29 Oct | 7 (6 medium, 1 low) | 7 (3 high, 4 medium) | 29 (27 medium, 2 low) |
+| 4 Nov | 11 (8 medium, 3 low) | 8 (3 high, 5 medium) | 24 (20 medium, 4 low) |
 
 **Player 224283** (installed 7 Sep; $14.46 on 19 Sep; played almost daily to 9 Oct, then nothing until 3 Nov; bought again on 4 Nov):
 - 9–14 Oct: **friction, low** — a support ticket in the last 7 days.
@@ -86,4 +86,4 @@ Engagement and revenue signals point at players who then play and spend less: fl
 
 ## Tests (`tests/test_lists.py`)
 
-One primary list and precedence; ineligible players never listed; readable reasons covering every signal and the matching action; threshold boundaries on the functions the flow uses (a drop of exactly 50% triggers, 49.99% does not; overdue only strictly beyond 2× the usual gap and ≥ 7 days; $19.99 is medium); missing inputs; idempotent persistence (same date twice, a rerun where a player left, a new version beside the old); on the real data: one row per player, rerun without duplicates, `no_data` after the data end, `data_incomplete` when the health check fails.
+One primary list and precedence; ineligible players never listed; readable reasons covering every signal and the matching action; threshold boundaries on the functions the flow uses (a drop of exactly 50% triggers, 49.99% does not; the return signal only strictly beyond 2× the usual gap and 7–21 days away; $19.99 is medium); missing inputs; idempotent persistence (same date twice, a rerun where a player left, a new version beside the old); on the real data: one row per player, rerun without duplicates, `no_data` after the data end, `data_incomplete` when the health check fails.

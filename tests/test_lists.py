@@ -61,10 +61,11 @@ def test_spend_drop_boundary_is_inclusive(recent, baseline, triggered):
     assert bool(is_drop([recent], [baseline], L.SPEND_DROP)[0]) is triggered
 
 
-@pytest.mark.parametrize("days, gap, triggered", [(8, 4.0, False), (8.5, 4.0, True), (6, 2.0, False), (np.nan, np.nan, False)])
+@pytest.mark.parametrize("days, gap, triggered", [(8, 4.0, False), (8.5, 4.0, True), (6, 2.0, False), (7, 1.0, True),
+                                                   (21, 1.0, True), (22, 1.0, False), (np.nan, np.nan, False)])
 def test_overdue_return_boundaries(days, gap, triggered):
     from sciplay.lists.signals import is_overdue
-    assert bool(is_overdue([days], [gap], L.RETURN_FACTOR, L.RETURN_MIN_DAYS)[0]) is triggered
+    assert bool(is_overdue([days], [gap], L.RETURN_FACTOR, L.RETURN_MIN_DAYS, L.RETURN_MAX_DAYS)[0]) is triggered
 
 
 def test_missing_inputs_are_handled(monkeypatch):

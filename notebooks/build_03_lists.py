@@ -78,7 +78,7 @@ cells = [
         "A.sweep(data, dates, grid)"
     ),
     md(
-        "Read with the backtest below: a looser threshold mostly adds players to the engagement list (about half of that list comes from the return signal: not seen for longer than usual); the friction and "
+        "Read with the backtest below: a looser threshold mostly adds players to the engagement list (part of that list comes from the return signal: away 7–21 days, longer than usual for the player); the friction and "
         "revenue lists are small at any setting because few players have friction events or have ever paid."
     ),
     md(

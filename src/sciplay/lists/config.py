@@ -36,6 +36,7 @@ MIN_PRIOR_SESSIONS_PER_WEEK = 2.0
 YOUNG_DAYS = 35               # younger players are compared with peers of the same age
 RETURN_FACTOR = 2.0           # not seen for more than 2 x the usual gap between days played ...
 RETURN_MIN_DAYS = 7           # ... and at least 7 days
+RETURN_MAX_DAYS = 21          # ... but at most 21: early enough for a come-back message (decision b)
 MIN_PLAY_DAYS_FOR_GAP = 4     # a usual gap needs at least 4 days played
 
 # Priority by opportunity gap (dollars), set from the gap distribution

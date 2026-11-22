@@ -129,6 +129,7 @@ Approved on 2026-11-21. **Verified** = tested on the sample data. **Assumed** = 
 | D2 | Repeated incomplete purchase attempts are friction; single cancellations are not | Decided | Cancellations are mostly store browsing (Part 1) | Missed or false payment-friction cases |
 | D3 | Priority: dollars first ($20 / $2 tiers), then blocked money or severity ≥ 75 | Decided | Dollar tiers alone make every non-payer list low | Wrong order of work |
 | D4 | A failed health check for the date means late data: publish the list flagged | Decided | – | Lists from incomplete data acted on |
+| D5 | Return signal: away 7–21 days and more than 2× the usual gap between days played | Decided (option b) | Backtest: flagged players stop playing 41% vs 27% | Players lost later than 21 days get no come-back message from this list |
 
 ## Open questions
 

@@ -18,10 +18,11 @@ def is_drop(recent, baseline, share: float) -> pd.Series:
     return (baseline > 0) & (recent <= (1 - share) * baseline + 1e-9)
 
 
-def is_overdue(days_since, usual_gap, factor: float, min_days: float = 0) -> pd.Series:
-    """Longer than `factor` x the usual gap (strictly) and at least `min_days`; needs a usual gap."""
+def is_overdue(days_since, usual_gap, factor: float, min_days: float = 0, max_days: float = np.inf) -> pd.Series:
+    """Longer than `factor` x the usual gap (strictly), and between `min_days` and `max_days`; needs a usual gap."""
     days_since, usual_gap = pd.Series(days_since, dtype=float), pd.Series(usual_gap, dtype=float)
-    return usual_gap.notna() & (days_since > factor * usual_gap) & (days_since >= min_days)
+    return (usual_gap.notna() & (days_since > factor * usual_gap) & (days_since >= min_days)
+            & (days_since <= max_days))
 
 
 def _usual_gap(days_by_player: pd.Series, ids, min_days: int = 2) -> pd.Series:
@@ -155,7 +156,8 @@ def compute(pday: pd.DataFrame, installs: pd.Series, D, ltv: pd.DataFrame, cfg=L
     # Return signal: not seen for longer than usual (days since last login or spin vs the usual gap between days played)
     play_days = rows.groupby("PLAYER_ID")["DATE"].apply(lambda s: sorted(s.unique()))
     out["usual_play_gap"] = _usual_gap(play_days, ids, cfg.MIN_PLAY_DAYS_FOR_GAP)
-    overdue_return = is_overdue(out["days_since_last_seen"], out["usual_play_gap"], cfg.RETURN_FACTOR, cfg.RETURN_MIN_DAYS)
+    overdue_return = is_overdue(out["days_since_last_seen"], out["usual_play_gap"], cfg.RETURN_FACTOR,
+                                cfg.RETURN_MIN_DAYS, cfg.RETURN_MAX_DAYS)
     out["eng_overdue_return"] = overdue_return
     eng = days_drop | sess_drop | young_drop | overdue_return
     base_days = pace_days.where(old, peer_med)

@@ -12,8 +12,8 @@ from dataclasses import dataclass
 import numpy as np
 import pandas as pd
 
-from sciplay.data.loader import KEY_COLUMNS, parse_date_like
 from sciplay.data.field_groups import field_groups
+from sciplay.data.loader import KEY_COLUMNS, parse_date_like
 
 # --------------------------------------------------------------------------- #
 # Overview
@@ -238,11 +238,6 @@ def missingness_by_group(profile: pd.DataFrame) -> pd.DataFrame:
     return out.sort_values("columns", ascending=False).reset_index()
 
 
-def missingness_bands(profile: pd.DataFrame) -> pd.DataFrame:
-    out = profile["null_band"].value_counts().reindex(profile["null_band"].cat.categories)
-    return out.rename("columns").rename_axis("null_share").reset_index()
-
-
 # --------------------------------------------------------------------------- #
 # Data quality issues
 # --------------------------------------------------------------------------- #
@@ -328,16 +323,6 @@ def check_future_dates(df: pd.DataFrame) -> pd.DataFrame:
             }
         )
     return pd.DataFrame(out)
-
-
-def check_compliance_flags(df: pd.DataFrame) -> pd.DataFrame:
-    cols = ["IS_CHEATER", "IS_CHEATER_DETECTED", "CHEATS_DETECTED", "IS_LEGAL_SETTLEMENT"]
-    return pd.DataFrame(
-        {
-            "column": cols,
-            "values": [df[c].astype("string").value_counts(dropna=False).to_dict() for c in cols],
-        }
-    )
 
 
 def check_window_freeze(df: pd.DataFrame) -> dict:

@@ -1,0 +1,12 @@
+{
+  "to": [
+    "Studio GM",
+    "Player support lead",
+    "VIP lead",
+    "CRM lead",
+    "Game economy designer",
+    "Product analyst"
+  ],
+  "subject": "[test] End of day \u00b7 2026-11-03 \u00b7 3 closed, 4 in progress, 37 open, 0 overdue",
+  "body_markdown": "# Sample studio \u00b7 end of day \u00b7 2026-11-03\n\n**Taken care of today:** 7 actions, 3 tickets closed as handled.\n- Technical or payment friction: Player support team \u00b7 Checked crash logs, sent apology + bonus coins \u00b7 outcome: resolved\n- Revenue decline: VIP team \u00b7 Called the player; offer approved by the VIP lead \u00b7 outcome: pending\n- Technical or payment friction: Player support team \u00b7 Purchase failed at the store; refund confirmed \u00b7 outcome: resolved\n- Engagement decline: CRM team \u00b7 Added to the 'we miss you' push campaign \u00b7 outcome: pending\n- Engagement decline: CRM team \u00b7 Added to the 'we miss you' push campaign \u00b7 outcome: pending\n- Engagement decline: CRM team \u00b7 Added to the 'we miss you' push campaign \u00b7 outcome: pending\n- Revenue decline: VIP team \u00b7 Personal message sent; no reply \u00b7 outcome: no response\n\n**In progress (acted on, outcome pending):** 4 (Technical or payment friction: 0, Revenue decline: 1, Engagement decline: 3).\n**Still open (no action yet):** 37 (Technical or payment friction: 7, Revenue decline: 6, Engagement decline: 24).\n\nOpen the lists: http://localhost:8501/Who_needs_attention?date=2026-11-02\n\n_Data as of 2026-11-02 \u00b7 rules-6fa388be._"
+}

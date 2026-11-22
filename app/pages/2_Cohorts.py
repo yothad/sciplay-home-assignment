@@ -1,6 +1,5 @@
 """Cohorts: are newer players as good as older ones?"""
 
-import pandas as pd
 import streamlit as st
 
 from sciplay.app import ui

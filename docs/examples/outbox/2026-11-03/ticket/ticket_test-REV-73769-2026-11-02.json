@@ -1,0 +1,21 @@
+{
+  "ticket_id": "test-REV-73769-2026-11-02",
+  "queue": "VIP queue",
+  "studio": "Sample studio",
+  "title": "Revenue decline: player 73769 (medium priority)",
+  "player_id": 73769,
+  "priority": "medium",
+  "reasons": [
+    "No purchase for 18 days; usually every 2 days",
+    "4 sessions in the last 7 days vs 17.8 a week before"
+  ],
+  "recommended_action": "VIP team: timed offer on the player's usual purchase",
+  "value": {
+    "opportunity_gap": 0.0,
+    "predicted_ltv_365": 172.02,
+    "ltv_to_date": 159.2
+  },
+  "needs_approval_before_any_cost": true,
+  "link": "http://localhost:8501/Player_detail?date=2026-11-02&player=73769",
+  "rules_version": "ltv-d3-lightgbm-6008a0b5-729fa670+rules-6fa388be"
+}

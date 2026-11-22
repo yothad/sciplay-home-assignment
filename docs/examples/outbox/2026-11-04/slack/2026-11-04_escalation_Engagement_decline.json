@@ -1,0 +1,25 @@
+{
+  "channel": "#test-player-alerts",
+  "blocks": [
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "*Escalation to CRM lead: 16 medium/high-priority players on Engagement decline with no action for 2+ days*\n\u2022 Player 64012 \u00b7 medium \u00b7 LTV $0.00 \u00b7 on the list since 2026-11-02 \u00b7 Played 0 of the last 7 days vs 1 a week before\n\u2022 Player 84196 \u00b7 medium \u00b7 LTV $0.00 \u00b7 on the list since 2026-11-02 \u00b7 Not seen for 8 days; usually plays every 2 days\n\u2022 Player 105068 \u00b7 medium \u00b7 LTV $0.00 \u00b7 on the list since 2026-11-02 \u00b7 Played 0 of the last 7 days vs 2.5 a week before\n\u2022 Player 134487 \u00b7 medium \u00b7 LTV $0.00 \u00b7 on the list since 2026-11-02 \u00b7 Not seen for 10 days; usually plays every day\n\u2022 Player 172447 \u00b7 medium \u00b7 LTV $0.00 \u00b7 on the list since 2026-11-02 \u00b7 Played 0 of the last 7 days vs 2.8 a week before\n\u2022 Player 179750 \u00b7 medium \u00b7 LTV $0.00 \u00b7 on the list since 2026-11-02 \u00b7 Played 0 of the last 7 days vs 2 a week before\n\u2022 Player 208444 \u00b7 medium \u00b7 LTV $0.00 \u00b7 on the list since 2026-11-02 \u00b7 Played 0 of the last 7 days vs 2 a week before\n\u2022 Player 211157 \u00b7 medium \u00b7 LTV $0.00 \u00b7 on the list since 2026-11-02 \u00b7 Played 0 of the last 7 days vs 2.2 a week before\n\u2022 Player 212431 \u00b7 medium \u00b7 LTV $0.00 \u00b7 on the list since 2026-11-02 \u00b7 Played 0 of the last 7 days vs 1.2 a week before\n\u2022 Player 224274 \u00b7 medium \u00b7 LTV $0.00 \u00b7 on the list since 2026-11-02 \u00b7 Played 0 of the last 7 days vs 2.2 a week before\n\u2026 and 6 more in the dashboard"
+      }
+    },
+    {
+      "type": "actions",
+      "elements": [
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "text": "Open list"
+          },
+          "url": "http://localhost:8501/Who_needs_attention?date=2026-11-03&list=Engagement+decline"
+        }
+      ]
+    }
+  ]
+}

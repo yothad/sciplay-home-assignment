@@ -1,0 +1,20 @@
+{
+  "ticket_id": "test-TEC-260895-2026-11-02",
+  "queue": "Player support queue",
+  "studio": "Sample studio",
+  "title": "Technical or payment friction: player 260895 (medium priority)",
+  "player_id": 260895,
+  "priority": "medium",
+  "reasons": [
+    "5 purchase attempts in the last 7 days, none completed"
+  ],
+  "recommended_action": "Player support team (payments): check store and billing logs for the abandoned purchases; offer help or a bonus to complete",
+  "value": {
+    "opportunity_gap": 0.12,
+    "predicted_ltv_365": 0.7,
+    "ltv_to_date": 0.0
+  },
+  "needs_approval_before_any_cost": true,
+  "link": "http://localhost:8501/Player_detail?date=2026-11-02&player=260895",
+  "rules_version": "ltv-d3-lightgbm-6008a0b5-729fa670+rules-6fa388be"
+}

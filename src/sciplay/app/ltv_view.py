@@ -8,11 +8,11 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
-from sciplay.config import REPO_ROOT, get_settings
+from sciplay.config import get_settings
 from sciplay.ltv import config as C
 from sciplay.ltv import score as S
 
-MODEL_ROOT = REPO_ROOT / "models" / "ltv"
+MODEL_ROOT = get_settings().model_dir / "ltv"
 SOURCE_LABEL = {"model_d3": "Day-3 LTV model", "update_rule": "Update rule: not from the LTV model",
                 "cold_start": "Too new to forecast"}
 

@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 
 import pandas as pd
@@ -66,6 +65,3 @@ def not_run_note(score_date) -> str:
     return (f"No lists stored for {pd.Timestamp(score_date):%d %b}. Lists exist from 9 Oct (first day with LTV scores). "
             "Run `python -m sciplay.lists.run --date YYYY-MM-DD`.")
 
-
-def sizes_from_log(row) -> dict:
-    return json.loads(row["list_sizes"]) if row is not None and row["list_sizes"] else {}

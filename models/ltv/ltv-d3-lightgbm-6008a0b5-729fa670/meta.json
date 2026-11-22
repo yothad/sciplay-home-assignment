@@ -1,0 +1,51 @@
+{
+  "version": "ltv-d3-lightgbm-6008a0b5-729fa670",
+  "model": "LightGBM",
+  "k": 3,
+  "multiplier": 2.4945580441599997,
+  "r": 0.6,
+  "features": [
+    "revenue_first_k",
+    "MAX_BET_AMOUNT__mean",
+    "MIN_BETS__mean",
+    "DAILY_JEWEL_TASKS_COMPLETED__per_day",
+    "MAX_BETS__mean",
+    "NUM_AUTO_SPIN__sum",
+    "DAILY_JEWEL_TASKS_COMPLETED__max",
+    "MAX_BANKROLL__last",
+    "TOTAL_WARNING_ERROR__sum",
+    "BET_DENOM__mean",
+    "ENDING_BANKROLL__last",
+    "ENDING_SLIB__last",
+    "REGULAR_SPIN__sum",
+    "REGULAR_SPIN__per_day",
+    "ENDING_RUBY_BANKROLL__last",
+    "SESSIONS__sum",
+    "MEDIAN_BET__mean",
+    "PEARL_INFLOW_COINS__sum"
+  ],
+  "setting": {
+    "num_leaves": 4,
+    "min_child_samples": 40,
+    "tweedie_variance_power": 1.2
+  },
+  "n_estimators": 135,
+  "selection_round": 3,
+  "fold_deviance": 2.1844872532,
+  "chosen_by": "rule",
+  "rule": {
+    "multiplier": 1.1096652207763318,
+    "non_payer": 0.7306440677966102
+  },
+  "train_players": 300,
+  "train_fingerprint": "729fa670",
+  "leakage_checks": {
+    "truncation_ok": true,
+    "future_revenue_rows_ahead": 0,
+    "i3_i7_match": {
+      "I3_REVENUE": 1.0,
+      "I7_REVENUE": 0.9986
+    }
+  },
+  "data_end": "2026-11-04"
+}

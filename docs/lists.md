@@ -92,4 +92,10 @@ Engagement and revenue signals point at players who then play and spend less: fl
 
 ## Tests (`tests/test_lists.py`)
 
-One primary list and precedence; ineligible players never listed; readable reasons covering every signal and the matching action; threshold boundaries on the functions the flow uses (a drop of exactly 50% triggers, 49.99% does not; the return signal only strictly beyond 2× the usual gap and 7–21 days away; $19.99 is medium); missing inputs; idempotent persistence (same date twice, a rerun where a player left, a new version beside the old); on the real data: one row per player, rerun without duplicates, `no_data` after the data end, `data_incomplete` when the health check fails.
+- One primary list and precedence; ineligible players never listed.
+- Readable reasons covering every signal, and the matching action.
+- Threshold boundaries on the functions the flow uses: a drop of exactly 50% triggers, 49.99% does not; the return signal only strictly beyond 2× the usual gap and 7–21 days away; $19.99 is medium.
+- Missing inputs.
+- Idempotent persistence: the same date twice, a rerun where a player left, a new version beside the old.
+- Money-first order: priority, then LTV365, then score.
+- On the real data: one row per player, rerun without duplicates, `no_data` after the data end, `data_incomplete` when the health check fails.

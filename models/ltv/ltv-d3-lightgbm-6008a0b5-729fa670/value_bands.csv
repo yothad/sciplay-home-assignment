@@ -1,0 +1,4 @@
+band,players,payers,predicted_total,actual_total,actual_per_player
+$0–1,212,2,8.59,21.89,0.1
+$1–20,3,1,23.5,10.96,3.65
+$20+,3,3,131.22,345.36,115.12

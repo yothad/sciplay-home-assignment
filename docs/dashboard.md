@@ -5,8 +5,8 @@ A local Streamlit app for a manager: current performance, trends, and who needs 
 ## Run
 
 ```bash
-uv run python -m sciplay.pipeline.refresh          # take in new extracts, rebuild, check, publish
-uv run streamlit run app/Overview.py               # opens http://localhost:8501
+uv run python -m sciplay.run_all --app             # everything, then opens http://localhost:8501
+# or only: uv run python -m sciplay.pipeline.refresh, then uv run streamlit run app/Overview.py
 ```
 
 The app opens on 4 Nov, the last data day: every player installed up to 2 Nov has a day-3 LTV forecast by then.
@@ -28,7 +28,7 @@ The app opens on 4 Nov, the last data day: every player installed up to 2 Nov ha
 | Overview | How did we do on the score date? | Seven KPI tiles against the previous 7-day average; player base on the score date (players so far, seen in the last 30 days, churned, revenue to date); value at risk (opportunity gap of today's listed players, Part 4); lifetime value (Part 3): LTV365 from the day-3 model and from the update rule shown separately, players per source, players too new to forecast; last 8 weeks of active players, new players and revenue; the score date split by platform, install month, payer status, region, country and acquisition type |
 | Trends | Better or worse? | Each KPI as a 7-day average or weekly bars; weekly table |
 | Cohorts | Are newer players as good as older ones? | Activity by age heatmap; cumulative revenue per install by age; cohort summary; payers by first-purchase month and their revenue since first purchase |
-| Who needs attention | Who should someone act on today? | List sizes, value at risk and eligible players; one tab per list (priority, score, opportunity gap, LTV, reasons, recommended action); changes since the previous run date; how the rules work; a data-incomplete warning when the date's health check failed |
+| Who needs attention | Who should someone act on today? | List sizes, value at risk and eligible players; one tab per list, sorted money first (priority, LTV365, score, opportunity gap, reasons, the owning team's action); opens on the list named in a message link; changes since the previous run date; how the rules work; a data-incomplete warning when the date's health check failed |
 | Player detail | Why is this player where they are? | As-of snapshot tiles and the days-played timeline; lifetime value panel: source (day-3 model / update rule, not from the model / too new), LTV365 and range, confidence, ahead or behind forecast, the calculation and up to 3 reasons; today's list, reasons and action, and the player's list history |
 | Data health | Is the data for the selected date complete and normal? | 20 checks of the date against the 28 days before it (freshness, volume, missing values, new categories, validity, duplicates); player-days against their normal range; reconciliation; LTV model check (test results with ranges, value bands, by install month, by confidence, selection on training folds, monitoring plan); value-state legend |
 

@@ -1,0 +1,22 @@
+{
+  "ticket_id": "test-REV-224283-2026-11-02",
+  "queue": "VIP queue",
+  "studio": "Sample studio",
+  "title": "Revenue decline: player 224283 (high priority)",
+  "player_id": 224283,
+  "priority": "high",
+  "reasons": [
+    "Spent $0.00 in the last 28 days vs $14.46 in the 28 before (-100%)",
+    "Played 0 of the last 7 days vs 2.8 a week before",
+    "0 sessions in the last 7 days vs 19 a week before"
+  ],
+  "recommended_action": "VIP team: personalised offer based on the player's past purchases",
+  "value": {
+    "opportunity_gap": 23.11,
+    "predicted_ltv_365": 14.46,
+    "ltv_to_date": 14.46
+  },
+  "needs_approval_before_any_cost": true,
+  "link": "http://localhost:8501/Player_detail?date=2026-11-02&player=224283",
+  "rules_version": "ltv-d3-lightgbm-6008a0b5-729fa670+rules-6fa388be"
+}

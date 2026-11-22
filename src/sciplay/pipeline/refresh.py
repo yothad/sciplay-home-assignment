@@ -35,7 +35,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from sciplay.config import REPO_ROOT, get_settings
+from sciplay.config import get_settings
 from sciplay.data.loader import KEY_COLUMNS, load_raw
 from sciplay.metrics.health import FAIL, WARN, run_checks
 from sciplay.pipeline import prepare
@@ -185,11 +185,11 @@ def refresh(paths: Paths | None = None, file: Path | None = None, force: bool = 
 
 def score_ltv(paths: Paths, date: pd.Timestamp) -> str:
     """Score LTV for the newly published date with the active model; a failure is logged, not fatal."""
-    from sciplay.config import REPO_ROOT
-    if not (REPO_ROOT / "models" / "ltv" / "active.json").exists():
+    if not (get_settings().model_dir / "ltv" / "active.json").exists():
         return "no trained LTV model: run python -m sciplay.ltv.train"
     try:
-        from sciplay.ltv import score as S, train as T
+        from sciplay.ltv import score as S
+        from sciplay.ltv import train as T
         data = T.load_data(paths.processed)
         out = S.score(date, data, db_path=paths.log.parent / get_settings().store_db_path.name)
         return f"scored {len(out)} players for {pd.Timestamp(date).date()}"

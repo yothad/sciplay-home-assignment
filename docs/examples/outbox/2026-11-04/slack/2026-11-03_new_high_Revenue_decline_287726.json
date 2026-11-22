@@ -1,0 +1,34 @@
+{
+  "channel": "#test-player-alerts",
+  "blocks": [
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "*New high-priority player on Revenue decline*\n\u2022 Player 287726 \u00b7 high \u00b7 LTV $32.16 \u00b7 gap $21.05 \u00b7 Spent $0.00 vs $8.44 expected by now (day-3 forecast)"
+      }
+    },
+    {
+      "type": "context",
+      "elements": [
+        {
+          "type": "mrkdwn",
+          "text": "Data as of 2026-11-03 \u00b7 rules-6fa388be \u00b7 event `new_high_priority`"
+        }
+      ]
+    },
+    {
+      "type": "actions",
+      "elements": [
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "text": "Open in dashboard"
+          },
+          "url": "http://localhost:8501/Who_needs_attention?date=2026-11-03&list=Revenue+decline"
+        }
+      ]
+    }
+  ]
+}

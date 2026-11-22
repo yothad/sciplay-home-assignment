@@ -17,8 +17,8 @@ from sciplay.delivery import run as DR
 from sciplay.delivery import store as S
 from sciplay.delivery import triggers as TR
 from sciplay.lists import config as L
-from sciplay.lists.rules import order_players
 from sciplay.lists import run as LR
+from sciplay.lists.rules import order_players
 
 START, END = "2026-11-03 06:00", "2026-11-05 18:00"
 

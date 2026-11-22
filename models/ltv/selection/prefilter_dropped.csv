@@ -1,0 +1,259 @@
+feature,dropped_because
+first_purchase_day,non-zero for fewer than 3 players or constant
+purchase_failure_rate,non-zero for fewer than 3 players or constant
+BUY_COINS_REVENUE__sum,non-zero for fewer than 3 players or constant
+INFLOW_JACKPOT_COINS__sum,non-zero for fewer than 3 players or constant
+JACKPOT_WIN__sum,non-zero for fewer than 3 players or constant
+SPECIAL_AWARD__sum,non-zero for fewer than 3 players or constant
+DTC_REVENUE__sum,non-zero for fewer than 3 players or constant
+DTC_NET_FEE_REVENUE__sum,non-zero for fewer than 3 players or constant
+BUY_COINS_REVENUE__per_day,non-zero for fewer than 3 players or constant
+INFLOW_JACKPOT_COINS__per_day,non-zero for fewer than 3 players or constant
+JACKPOT_WIN__per_day,non-zero for fewer than 3 players or constant
+SPECIAL_AWARD__per_day,non-zero for fewer than 3 players or constant
+DTC_REVENUE__per_day,non-zero for fewer than 3 players or constant
+DTC_NET_FEE_REVENUE__per_day,non-zero for fewer than 3 players or constant
+BUY_COINS_REVENUE__max,non-zero for fewer than 3 players or constant
+INFLOW_JACKPOT_COINS__max,non-zero for fewer than 3 players or constant
+JACKPOT_WIN__max,non-zero for fewer than 3 players or constant
+SPECIAL_AWARD__max,non-zero for fewer than 3 players or constant
+DTC_REVENUE__max,non-zero for fewer than 3 players or constant
+DTC_NET_FEE_REVENUE__max,non-zero for fewer than 3 players or constant
+FAILED_PURCHASE__sum,non-zero for fewer than 3 players or constant
+ZENDESK_TICKETS__sum,non-zero for fewer than 3 players or constant
+STORES_VERIFY_PURCHASE_FAILURE__sum,non-zero for fewer than 3 players or constant
+PURCHASE_FAILURES__sum,non-zero for fewer than 3 players or constant
+FAILED_PURCHASE__any,non-zero for fewer than 3 players or constant
+ZENDESK_TICKETS__any,non-zero for fewer than 3 players or constant
+STORES_VERIFY_PURCHASE_FAILURE__any,non-zero for fewer than 3 players or constant
+PURCHASE_FAILURES__any,non-zero for fewer than 3 players or constant
+ISLAND_HOPPING_LOCKED_STATE__share,non-zero for fewer than 3 players or constant
+DTC_TRANSACTIONS__share,non-zero for fewer than 3 players or constant
+MAIN_PLATFORM_ID=Other,non-zero for fewer than 3 players or constant
+share_days_played,correlated > 0.95 with active_days
+last_active_day,correlated > 0.95 with active_days
+never_paid,correlated > 0.95 with revenue_first_k
+revenue_per_session,correlated > 0.95 with revenue_first_k
+store_conversion,correlated > 0.95 with revenue_first_k
+FEATURED_TOTAL_WAGER__sum,correlated > 0.95 with FEATURED_SPINS__sum
+HOT_OFFER_PURCHASE_COMPLETES__sum,correlated > 0.95 with HOT_OFFER_AWARD_IMPRESSIONS__sum
+HOT_OFFER_REVENUE__sum,correlated > 0.95 with HOT_OFFER_AWARD_IMPRESSIONS__sum
+INFLOW_GENERICLEVELUP_COINS__sum,correlated > 0.95 with INFLOW_COINS_GENERIC__sum
+INFLOW_PURCHASED_COINS__sum,correlated > 0.95 with revenue_first_k
+INFLOW_RUBIES__sum,correlated > 0.95 with INFLOW_LEVELUP_COINS__sum
+INFLOW_TIMED_COINS__sum,correlated > 0.95 with HOURLY_BONUS__sum
+INFLOW_TOTAL_COINS__sum,correlated > 0.95 with FREE_COIN_INFLOW__sum
+ISLAND_HOPPING_MIN_STREAK_BONUS__sum,correlated > 0.95 with ISLAND_HOPPING_MAX_STREAK_BONUS__sum
+LEVEL_UPS__sum,correlated > 0.95 with INFLOW_LEVELUP_COINS__sum
+LOGIN_TYPE_FACEBOOK__sum,correlated > 0.95 with FB_LOGGEDIN__sum
+OOC_COIN_VALUE_COLLECTS__sum,correlated > 0.95 with INFLOW_OOC_COIN_VALUE_COINS__sum
+OOC_REVENUE__sum,correlated > 0.95 with OOC_PURCHASE_COMPLETES__sum
+PAID_COIN_INFLOW__sum,correlated > 0.95 with revenue_first_k
+PUSH_ENABLED_DAU__sum,correlated > 0.95 with active_days
+QUALIFYING_JACKPOT_TOTAL_WAGER__sum,correlated > 0.95 with QUALIFYING_JACKPOT_SPIN__sum
+REGULAR_TOTAL_WAGER__sum,correlated > 0.95 with INFLOW_LEVELUP_COINS__sum
+REVENUE__sum,correlated > 0.95 with revenue_first_k
+SESSION_MINS__sum,correlated > 0.95 with REGULAR_SPIN__sum
+SLOT_WIN_COINS__sum,correlated > 0.95 with INFLOW_LEVELUP_COINS__sum
+SPINS_COMPLETED__sum,correlated > 0.95 with REGULAR_SPIN__sum
+SPINS_STARTED__sum,correlated > 0.95 with REGULAR_SPIN__sum
+TOTAL_BET_AMOUNT__sum,correlated > 0.95 with INFLOW_LEVELUP_COINS__sum
+TOTAL_FREE_COINS__sum,correlated > 0.95 with FREE_COIN_INFLOW__sum
+TOTAL_WIN_AMOUNT__sum,correlated > 0.95 with INFLOW_LEVELUP_COINS__sum
+TOTAL_WINS__sum,correlated > 0.95 with REGULAR_SPIN__sum
+TOURNAMENT_WIN_DIALOG_IMPRESSIONS__sum,correlated > 0.95 with INFLOW_TOURNAMENT_COINS__sum
+TRANSACTIONS__sum,correlated > 0.95 with revenue_first_k
+STORES_PURCHASE_BILLED__sum,correlated > 0.95 with revenue_first_k
+STORES_IMPRESSION__sum,correlated > 0.95 with HOT_OFFER_IMPRESSIONS__sum
+PEARL_OUTFLOW_RUBIES__sum,correlated > 0.95 with OUTFLOW_RUBIES__sum
+IS_IN_GAME_EVENT_PLAYED__sum,correlated > 0.95 with INFLOW_IN_GAME_COINS__sum
+FREE_TO_PLAY_IMPRESSIONS__sum,correlated > 0.95 with INFLOW_OOC_COIN_VALUE_COINS__sum
+FREE_TO_PLAY_CLICKS__sum,correlated > 0.95 with INFLOW_OOC_COIN_VALUE_COINS__sum
+STORES_ITEM_CLICKED__sum,correlated > 0.95 with STORES_PURCHASE_STARTED__sum
+STORES_PURCHASE_COMPLETED__sum,correlated > 0.95 with revenue_first_k
+SPLASH_SALE_IMPRESSIONS__sum,correlated > 0.95 with HOT_OFFER_IMPRESSIONS__sum
+TOTAL_OOC__sum,correlated > 0.95 with OOC_CALCULATED__sum
+SUM_BET_MULTIPLIERS__sum,correlated > 0.95 with REGULAR_SPIN__sum
+DAILY_BONUS__sum,correlated > 0.95 with INFLOW_DAILY_COINS__sum
+PURCHASE_STARTS__sum,correlated > 0.95 with STORES_PURCHASE_STARTED__sum
+PURCHASE_COMPLETED__sum,correlated > 0.95 with revenue_first_k
+TIMED_MEGA_BONUS_COUNT__sum,correlated > 0.95 with INFLOW_TIMED_MEGA_COINS__sum
+SUM_LN_BET_AMOUNT__sum,correlated > 0.95 with REGULAR_SPIN__sum
+BUY_COINS_CLICKED_BUYS__per_day,correlated > 0.95 with BUY_COINS_CLICKED_BUYS__sum
+FB_LOGGEDIN__per_day,correlated > 0.95 with FB_LOGGEDIN__sum
+FB_LOGIN__per_day,correlated > 0.95 with FB_LOGIN__sum
+FEATURED_SPINS__per_day,correlated > 0.95 with FEATURED_SPINS__sum
+FEATURED_TOTAL_WAGER__per_day,correlated > 0.95 with FEATURED_SPINS__sum
+FREE_COIN_INFLOW__per_day,correlated > 0.95 with FREE_COIN_INFLOW__sum
+HOT_OFFER_AWARD_IMPRESSIONS__per_day,correlated > 0.95 with HOT_OFFER_AWARD_IMPRESSIONS__sum
+HOT_OFFER_CLICKED_BUYS__per_day,correlated > 0.95 with HOT_OFFER_CLICKED_BUYS__sum
+HOT_OFFER_IMPRESSIONS__per_day,correlated > 0.95 with HOT_OFFER_IMPRESSIONS__sum
+HOT_OFFER_PURCHASE_COMPLETES__per_day,correlated > 0.95 with HOT_OFFER_AWARD_IMPRESSIONS__sum
+HOT_OFFER_REVENUE__per_day,correlated > 0.95 with HOT_OFFER_AWARD_IMPRESSIONS__sum
+INCENTIVIZED_NOTIFS__per_day,correlated > 0.95 with INCENTIVIZED_NOTIFS__sum
+INFLOW_COINS_GENERIC__per_day,correlated > 0.95 with INFLOW_COINS_GENERIC__sum
+INFLOW_FREE_PLAY_COINS__per_day,correlated > 0.95 with INFLOW_FREE_PLAY_COINS__sum
+INFLOW_GENERICLEVELUP_COINS__per_day,correlated > 0.95 with INFLOW_COINS_GENERIC__sum
+INFLOW_IN_GAME_COINS__per_day,correlated > 0.95 with INFLOW_IN_GAME_COINS__sum
+INFLOW_ISLAND_HOPPING_COINS__per_day,correlated > 0.95 with INFLOW_ISLAND_HOPPING_COINS__sum
+INFLOW_NOTIFICATION_TEAK_COINS__per_day,correlated > 0.95 with INFLOW_NOTIFICATION_TEAK_COINS__sum
+INFLOW_OOC_COIN_VALUE_COINS__per_day,correlated > 0.95 with INFLOW_OOC_COIN_VALUE_COINS__sum
+INFLOW_PURCHASED_COINS__per_day,correlated > 0.95 with revenue_first_k
+INFLOW_TIMED_COINS__per_day,correlated > 0.95 with HOURLY_BONUS__per_day
+INFLOW_TIMED_MEGA_COINS__per_day,correlated > 0.95 with INFLOW_TIMED_MEGA_COINS__sum
+INFLOW_TOTAL_COINS__per_day,correlated > 0.95 with FREE_COIN_INFLOW__sum
+INFLOW_TOURNAMENT_COINS__per_day,correlated > 0.95 with INFLOW_TOURNAMENT_COINS__sum
+ISLAND_HOPPING_MAX_STREAK_BONUS__per_day,correlated > 0.95 with ISLAND_HOPPING_MAX_STREAK_BONUS__sum
+ISLAND_HOPPING_MIN_STREAK_BONUS__per_day,correlated > 0.95 with ISLAND_HOPPING_MAX_STREAK_BONUS__sum
+LEVEL_UPS__per_day,correlated > 0.95 with INFLOW_LEVELUP_COINS__per_day
+LOGIN_TYPE_FACEBOOK__per_day,correlated > 0.95 with FB_LOGGEDIN__sum
+NONINCENTIVIZED_NOTIFS__per_day,correlated > 0.95 with NONINCENTIVIZED_NOTIFS__sum
+NUM_AUTO_SPIN__per_day,correlated > 0.95 with NUM_AUTO_SPIN__sum
+OOC_CLICKED_BUYS__per_day,correlated > 0.95 with OOC_CLICKED_BUYS__sum
+OOC_COIN_VALUE_COLLECTS__per_day,correlated > 0.95 with INFLOW_OOC_COIN_VALUE_COINS__sum
+OOC_IMPRESSIONS__per_day,correlated > 0.95 with OOC_IMPRESSIONS__sum
+OOC_PURCHASE_COMPLETES__per_day,correlated > 0.95 with OOC_PURCHASE_COMPLETES__sum
+OOC_REVENUE__per_day,correlated > 0.95 with OOC_PURCHASE_COMPLETES__sum
+OUTFLOW_RUBIES__per_day,correlated > 0.95 with OUTFLOW_RUBIES__sum
+PAID_COIN_INFLOW__per_day,correlated > 0.95 with revenue_first_k
+QUALIFYING_JACKPOT_SPIN__per_day,correlated > 0.95 with QUALIFYING_JACKPOT_SPIN__sum
+QUALIFYING_JACKPOT_TOTAL_WAGER__per_day,correlated > 0.95 with QUALIFYING_JACKPOT_SPIN__sum
+RATE_US_CLAIMED__per_day,correlated > 0.95 with RATE_US_CLAIMED__sum
+RATE_US_RATED__per_day,correlated > 0.95 with RATE_US_RATED__sum
+REGULAR_TOTAL_WAGER__per_day,correlated > 0.95 with INFLOW_LEVELUP_COINS__sum
+REVENUE__per_day,correlated > 0.95 with revenue_first_k
+SPINS_COMPLETED__per_day,correlated > 0.95 with REGULAR_SPIN__sum
+SPINS_STARTED__per_day,correlated > 0.95 with REGULAR_SPIN__sum
+TOTAL_BET_AMOUNT__per_day,correlated > 0.95 with INFLOW_LEVELUP_COINS__sum
+TOTAL_FREE_COINS__per_day,correlated > 0.95 with FREE_COIN_INFLOW__sum
+OOC_CALCULATED__per_day,correlated > 0.95 with OOC_CALCULATED__sum
+TOTAL_WIN_AMOUNT__per_day,correlated > 0.95 with INFLOW_LEVELUP_COINS__per_day
+TOTAL_WINS__per_day,correlated > 0.95 with REGULAR_SPIN__per_day
+TOURNAMENT_COMPLETES__per_day,correlated > 0.95 with TOURNAMENT_COMPLETES__sum
+TOURNAMENT_STARTS__per_day,correlated > 0.95 with TOURNAMENT_STARTS__sum
+TOURNAMENT_WIN_DIALOG_IMPRESSIONS__per_day,correlated > 0.95 with INFLOW_TOURNAMENT_COINS__sum
+TRANSACTIONS__per_day,correlated > 0.95 with revenue_first_k
+STORES_PURCHASE_BILLED__per_day,correlated > 0.95 with revenue_first_k
+STORES_PURCHASE_STARTED__per_day,correlated > 0.95 with STORES_PURCHASE_STARTED__sum
+STORES_IMPRESSION__per_day,correlated > 0.95 with HOT_OFFER_IMPRESSIONS__sum
+INFLOW_DAILY_JEWEL_COINS__per_day,correlated > 0.95 with INFLOW_DAILY_JEWEL_COINS__sum
+PEARL_OUTFLOW_RUBIES__per_day,correlated > 0.95 with OUTFLOW_RUBIES__sum
+PEARL_INFLOW_COINS__per_day,correlated > 0.95 with PEARL_INFLOW_COINS__sum
+TOTAL_PEARL_COLLECTED__per_day,correlated > 0.95 with TOTAL_PEARL_COLLECTED__sum
+TOTAL_PEARL_AWARDED__per_day,correlated > 0.95 with TOTAL_PEARL_AWARDED__sum
+DAILY_JEWEL_TASKS_COLLECTED__per_day,correlated > 0.95 with DAILY_JEWEL_TASKS_COLLECTED__sum
+DAILY_JEWEL_PRIZE_DAY_COMPLETED__per_day,correlated > 0.95 with DAILY_JEWEL_PRIZE_DAY_COMPLETED__sum
+IN_GAME_EVENT_COMPLETIONS__per_day,correlated > 0.95 with IN_GAME_EVENT_COMPLETIONS__sum
+IS_IN_GAME_EVENT_PLAYED__per_day,correlated > 0.95 with INFLOW_IN_GAME_COINS__sum
+FREE_TO_PLAY_IMPRESSIONS__per_day,correlated > 0.95 with INFLOW_OOC_COIN_VALUE_COINS__sum
+FREE_TO_PLAY_CLICKS__per_day,correlated > 0.95 with INFLOW_OOC_COIN_VALUE_COINS__sum
+STORES_ICON_CLICKED__per_day,correlated > 0.95 with STORES_ICON_CLICKED__sum
+STORES_ITEM_CLICKED__per_day,correlated > 0.95 with STORES_PURCHASE_STARTED__sum
+STORES_PURCHASE_COMPLETED__per_day,correlated > 0.95 with revenue_first_k
+SPLASH_SALE_IMPRESSIONS__per_day,correlated > 0.95 with HOT_OFFER_IMPRESSIONS__sum
+TOTAL_OOC__per_day,correlated > 0.95 with OOC_CALCULATED__sum
+PURCHASE_STARTS__per_day,correlated > 0.95 with STORES_PURCHASE_STARTED__sum
+PURCHASE_COMPLETED__per_day,correlated > 0.95 with revenue_first_k
+TIMED_MEGA_BONUS_COUNT__per_day,correlated > 0.95 with INFLOW_TIMED_MEGA_COINS__sum
+SUM_LN_BET_AMOUNT__per_day,correlated > 0.95 with REGULAR_SPIN__sum
+BUY_COINS_CLICKED_BUYS__max,correlated > 0.95 with BUY_COINS_CLICKED_BUYS__sum
+BUY_COINS_IMPRESSIONS__max,correlated > 0.95 with BUY_COINS_IMPRESSIONS__sum
+FB_LOGGEDIN__max,correlated > 0.95 with FB_LOGGEDIN__sum
+FB_LOGIN__max,correlated > 0.95 with FB_LOGIN__sum
+FEATURED_SPINS__max,correlated > 0.95 with FEATURED_SPINS__sum
+FEATURED_TOTAL_WAGER__max,correlated > 0.95 with FEATURED_SPINS__sum
+FREE_COIN_INFLOW__max,correlated > 0.95 with FREE_COIN_INFLOW__sum
+HOT_OFFER_AWARD_IMPRESSIONS__max,correlated > 0.95 with HOT_OFFER_AWARD_IMPRESSIONS__sum
+HOT_OFFER_CLICKED_BUYS__max,correlated > 0.95 with HOT_OFFER_CLICKED_BUYS__sum
+HOT_OFFER_IMPRESSIONS__max,correlated > 0.95 with HOT_OFFER_IMPRESSIONS__sum
+HOT_OFFER_PURCHASE_COMPLETES__max,correlated > 0.95 with HOT_OFFER_AWARD_IMPRESSIONS__sum
+HOT_OFFER_REVENUE__max,correlated > 0.95 with HOT_OFFER_AWARD_IMPRESSIONS__sum
+HOURLY_BONUS__max,correlated > 0.95 with HOURLY_BONUS__sum
+INCENTIVIZED_NOTIFS__max,correlated > 0.95 with INCENTIVIZED_NOTIFS__sum
+INFLOW_COINS_GENERIC__max,correlated > 0.95 with INFLOW_COINS_GENERIC__sum
+INFLOW_DAILY_COINS__max,correlated > 0.95 with INFLOW_DAILY_COINS__sum
+INFLOW_FREE_PLAY_COINS__max,correlated > 0.95 with INFLOW_FREE_PLAY_COINS__sum
+INFLOW_GENERICLEVELUP_COINS__max,correlated > 0.95 with INFLOW_COINS_GENERIC__sum
+INFLOW_IN_GAME_COINS__max,correlated > 0.95 with INFLOW_IN_GAME_COINS__sum
+INFLOW_ISLAND_HOPPING_COINS__max,correlated > 0.95 with INFLOW_ISLAND_HOPPING_COINS__sum
+INFLOW_LEVELUP_COINS__max,correlated > 0.95 with INFLOW_LEVELUP_COINS__sum
+INFLOW_NOTIFICATION_TEAK_COINS__max,correlated > 0.95 with INFLOW_NOTIFICATION_TEAK_COINS__sum
+INFLOW_OOC_COIN_VALUE_COINS__max,correlated > 0.95 with INFLOW_OOC_COIN_VALUE_COINS__sum
+INFLOW_PURCHASED_COINS__max,correlated > 0.95 with revenue_first_k
+INFLOW_RUBIES__max,correlated > 0.95 with INFLOW_RUBIES__per_day
+INFLOW_TIMED_MEGA_COINS__max,correlated > 0.95 with INFLOW_TIMED_MEGA_COINS__sum
+INFLOW_TOTAL_COINS__max,correlated > 0.95 with FREE_COIN_INFLOW__sum
+INFLOW_TOURNAMENT_COINS__max,correlated > 0.95 with INFLOW_TOURNAMENT_COINS__sum
+ISLAND_HOPPING_MAX_STREAK_BONUS__max,correlated > 0.95 with ISLAND_HOPPING_MAX_STREAK_BONUS__sum
+ISLAND_HOPPING_MIN_STREAK_BONUS__max,correlated > 0.95 with ISLAND_HOPPING_MAX_STREAK_BONUS__sum
+LEVEL_UPS__max,correlated > 0.95 with INFLOW_LEVELUP_COINS__sum
+LOGIN_TYPE_FACEBOOK__max,correlated > 0.95 with FB_LOGGEDIN__sum
+NONINCENTIVIZED_NOTIFS__max,correlated > 0.95 with NONINCENTIVIZED_NOTIFS__sum
+NUM_AUTO_SPIN__max,correlated > 0.95 with NUM_AUTO_SPIN__sum
+OOC_CLICKED_BUYS__max,correlated > 0.95 with OOC_CLICKED_BUYS__sum
+OOC_COIN_VALUE_COLLECTS__max,correlated > 0.95 with INFLOW_OOC_COIN_VALUE_COINS__sum
+OOC_IMPRESSIONS__max,correlated > 0.95 with OOC_IMPRESSIONS__sum
+OOC_PURCHASE_COMPLETES__max,correlated > 0.95 with OOC_PURCHASE_COMPLETES__sum
+OOC_REVENUE__max,correlated > 0.95 with OOC_PURCHASE_COMPLETES__sum
+OUTFLOW_RUBIES__max,correlated > 0.95 with OUTFLOW_RUBIES__sum
+PAID_COIN_INFLOW__max,correlated > 0.95 with revenue_first_k
+QUALIFYING_JACKPOT_SPIN__max,correlated > 0.95 with QUALIFYING_JACKPOT_SPIN__sum
+QUALIFYING_JACKPOT_TOTAL_WAGER__max,correlated > 0.95 with QUALIFYING_JACKPOT_SPIN__sum
+RATE_US_CLAIMED__max,correlated > 0.95 with RATE_US_CLAIMED__sum
+RATE_US_RATED__max,correlated > 0.95 with RATE_US_RATED__sum
+REGULAR_SPIN__max,correlated > 0.95 with REGULAR_SPIN__sum
+REGULAR_TOTAL_WAGER__max,correlated > 0.95 with INFLOW_LEVELUP_COINS__sum
+REVENUE__max,correlated > 0.95 with revenue_first_k
+SESSION_MINS__max,correlated > 0.95 with SESSION_MINS__per_day
+SESSIONS__max,correlated > 0.95 with SESSIONS__per_day
+SLOT_WIN_COINS__max,correlated > 0.95 with INFLOW_LEVELUP_COINS__sum
+SPINS_COMPLETED__max,correlated > 0.95 with REGULAR_SPIN__sum
+SPINS_STARTED__max,correlated > 0.95 with REGULAR_SPIN__sum
+TOTAL_BET_AMOUNT__max,correlated > 0.95 with INFLOW_LEVELUP_COINS__sum
+TOTAL_FREE_COINS__max,correlated > 0.95 with FREE_COIN_INFLOW__sum
+OOC_CALCULATED__max,correlated > 0.95 with OOC_CALCULATED__sum
+TOTAL_WIN_AMOUNT__max,correlated > 0.95 with INFLOW_LEVELUP_COINS__sum
+TOTAL_WINS__max,correlated > 0.95 with REGULAR_SPIN__sum
+TOURNAMENT_COMPLETES__max,correlated > 0.95 with TOURNAMENT_COMPLETES__sum
+TOURNAMENT_STARTS__max,correlated > 0.95 with TOURNAMENT_STARTS__sum
+TOURNAMENT_WIN_DIALOG_IMPRESSIONS__max,correlated > 0.95 with INFLOW_TOURNAMENT_COINS__sum
+TRANSACTIONS__max,correlated > 0.95 with revenue_first_k
+STORES_PURCHASE_BILLED__max,correlated > 0.95 with revenue_first_k
+STORES_PURCHASE_STARTED__max,correlated > 0.95 with STORES_PURCHASE_STARTED__sum
+STORES_IMPRESSION__max,correlated > 0.95 with HOT_OFFER_IMPRESSIONS__sum
+INFLOW_DAILY_JEWEL_COINS__max,correlated > 0.95 with INFLOW_DAILY_JEWEL_COINS__sum
+PEARL_OUTFLOW_RUBIES__max,correlated > 0.95 with OUTFLOW_RUBIES__sum
+PEARL_INFLOW_COINS__max,correlated > 0.95 with PEARL_INFLOW_COINS__sum
+TOTAL_PEARL_COLLECTED__max,correlated > 0.95 with TOTAL_PEARL_COLLECTED__sum
+TOTAL_PEARL_AWARDED__max,correlated > 0.95 with TOTAL_PEARL_AWARDED__sum
+DAILY_JEWEL_TASKS_COLLECTED__max,correlated > 0.95 with DAILY_JEWEL_TASKS_COLLECTED__sum
+DAILY_JEWEL_PRIZE_DAY_COMPLETED__max,correlated > 0.95 with DAILY_JEWEL_PRIZE_DAY_COMPLETED__sum
+IN_GAME_EVENT_COMPLETIONS__max,correlated > 0.95 with IN_GAME_EVENT_COMPLETIONS__sum
+IS_IN_GAME_EVENT_PLAYED__max,correlated > 0.95 with INFLOW_IN_GAME_COINS__sum
+FREE_TO_PLAY_IMPRESSIONS__max,correlated > 0.95 with INFLOW_OOC_COIN_VALUE_COINS__sum
+FREE_TO_PLAY_CLICKS__max,correlated > 0.95 with INFLOW_OOC_COIN_VALUE_COINS__sum
+STORES_ICON_CLICKED__max,correlated > 0.95 with STORES_ICON_CLICKED__sum
+STORES_ITEM_CLICKED__max,correlated > 0.95 with STORES_PURCHASE_STARTED__sum
+STORES_PURCHASE_COMPLETED__max,correlated > 0.95 with revenue_first_k
+SPLASH_SALE_IMPRESSIONS__max,correlated > 0.95 with HOT_OFFER_IMPRESSIONS__sum
+TOTAL_OOC__max,correlated > 0.95 with OOC_CALCULATED__sum
+PURCHASE_STARTS__max,correlated > 0.95 with STORES_PURCHASE_STARTED__sum
+PURCHASE_COMPLETED__max,correlated > 0.95 with revenue_first_k
+TIMED_MEGA_BONUS_COUNT__max,correlated > 0.95 with INFLOW_TIMED_MEGA_COINS__sum
+SUM_LN_BET_AMOUNT__max,correlated > 0.95 with REGULAR_SPIN__sum
+END_LEVEL__last,correlated > 0.95 with INFLOW_LEVELUP_COINS__sum
+START_LEVEL_TRACK__last,correlated > 0.95 with END_LEVEL_TRACK__last
+PURCHASE_SLIB__last,correlated > 0.95 with HOURLY_BONUS__sum
+START_LEVEL__change,correlated > 0.95 with START_LEVEL__last
+PURCHASE_CANCELS__sum,correlated > 0.95 with CANCEL_PURCHASES__sum
+CANCEL_PURCHASES__any,correlated > 0.95 with CANCEL_PURCHASES__sum
+CRASHES__any,correlated > 0.95 with CRASHES__sum
+ERROR__any,correlated > 0.95 with ERROR__sum
+ERROR_UNHANDLED__any,correlated > 0.95 with ERROR_UNHANDLED__sum
+TOTAL_WARNING_ERROR__any,correlated > 0.95 with PUSH_ENABLED_DAU__max
+PURCHASE_CANCELS__any,correlated > 0.95 with CANCEL_PURCHASES__sum
+COUNTRY=Other,correlated > 0.95 with COUNTRY=United States
+ATTRIBUTION_TYPE=new_game,correlated > 0.95 with ATTRIBUTION_TYPE=new
+SOURCE_TYPE_FIRST=organic,correlated > 0.95 with SOURCE_FIRST=organic
+SOURCE_TYPE_FIRST=ua,correlated > 0.95 with SOURCE_FIRST=organic
+MAIN_PLATFORM_ID=ios,correlated > 0.95 with MAIN_PLATFORM_ID=android

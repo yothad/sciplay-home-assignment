@@ -1,0 +1,25 @@
+{
+  "channel": "#test-player-alerts",
+  "blocks": [
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "*Escalation to Player support lead: 4 medium/high-priority players on Technical or payment friction with no action for 2+ days*\n\u2022 Player 160890 \u00b7 medium \u00b7 LTV $0.00 \u00b7 on the list since 2026-11-02 \u00b7 9 purchase attempts in the last 7 days, none completed\n\u2022 Player 193261 \u00b7 medium \u00b7 LTV $0.00 \u00b7 on the list since 2026-11-02 \u00b7 2 load failures in the last 7 days (more than usual)\n\u2022 Player 132269 \u00b7 medium \u00b7 LTV $0.00 \u00b7 on the list since 2026-11-02 \u00b7 3 load failures in the last 7 days (more than usual)\n\u2022 Player 109513 \u00b7 medium \u00b7 LTV $0.00 \u00b7 on the list since 2026-11-02 \u00b7 2 purchase attempts in the last 7 days, none completed"
+      }
+    },
+    {
+      "type": "actions",
+      "elements": [
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "text": "Open list"
+          },
+          "url": "http://localhost:8501/Who_needs_attention?date=2026-11-03&list=Technical+or+payment+friction"
+        }
+      ]
+    }
+  ]
+}

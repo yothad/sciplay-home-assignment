@@ -21,8 +21,12 @@ import numpy as np
 import pandas as pd
 
 from sciplay.config import REPO_ROOT, get_settings
+from sciplay.ltv import checks, labels, split
 from sciplay.ltv import config as C
-from sciplay.ltv import checks, features as F, labels, learners as L, model as M, select as S, split
+from sciplay.ltv import features as F
+from sciplay.ltv import learners as L
+from sciplay.ltv import model as M
+from sciplay.ltv import select as S
 
 
 @dataclass
@@ -84,7 +88,7 @@ def run_selection(out_root: Path | None = None) -> Path:
     y = d.lab.loc[train_ids, "target_remainder"]
     y30 = d.lab.loc[train_ids, "revenue_first_30d"]
     first_k = d.lab.loc[train_ids, "revenue_first_k"]
-    out = (out_root or REPO_ROOT / "models" / "ltv") / "selection"
+    out = (out_root or get_settings().model_dir / "ltv") / "selection"
     out.mkdir(parents=True, exist_ok=True)
     logs, bests, imps = [], [], []
     for key, learner in L.LEARNERS.items():
@@ -130,7 +134,7 @@ def _final(learner, Xtr, y, row):
 
 
 def finalize(model_key: str | None = None, out_root: Path | None = None) -> Path:
-    root = out_root or REPO_ROOT / "models" / "ltv"
+    root = out_root or get_settings().model_dir / "ltv"
     best = pd.read_json(root / "selection" / "best_rounds.json")
     winner = model_key or pick_winner(best)
     d = load_data()

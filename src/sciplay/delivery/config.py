@@ -2,8 +2,7 @@
 
 from __future__ import annotations
 
-import os
-
+from sciplay.config import get_settings
 from sciplay.lists import config as L
 
 # One studio per game (GAME_ID); the sample has one game.
@@ -43,4 +42,4 @@ LIST_INCREASE_MIN = 5                    # ... and at least 5 more players
 PLAYER_GAP_ALERT = 100.0                 # one player's opportunity gap at or above $100 (on entry)
 TOTAL_GAP_FACTOR = 2.0                   # total value at risk >= 2 x its 7-day average
 
-DASHBOARD_URL = os.getenv("DASHBOARD_URL", "http://localhost:8501")
+DASHBOARD_URL = get_settings().dashboard_url    # deep links in messages; set in .env

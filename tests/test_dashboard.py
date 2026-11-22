@@ -1,8 +1,6 @@
 """Prepared data, reconciliation and every dashboard page, on the real sample file."""
 
 import glob
-import os
-from pathlib import Path
 
 import pandas as pd
 import pytest

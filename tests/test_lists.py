@@ -1,6 +1,5 @@
 """Daily lists: exclusivity, precedence, reasons, boundary thresholds, idempotent persistence, edge cases."""
 
-import json
 
 import numpy as np
 import pandas as pd

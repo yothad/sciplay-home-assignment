@@ -1,0 +1,34 @@
+{
+  "n_candidates": 114,
+  "train_players": 300,
+  "leakage_checks": {
+    "truncation_ok": true,
+    "future_revenue_rows_ahead": 0,
+    "i3_i7_match": {
+      "I3_REVENUE": 1.0,
+      "I7_REVENUE": 0.9986
+    }
+  },
+  "folds": [
+    [
+      [
+        "2026-05-01",
+        "2026-05-31"
+      ],
+      [
+        "2026-06-01",
+        "2026-06-30"
+      ]
+    ],
+    [
+      [
+        "2026-05-01",
+        "2026-06-30"
+      ],
+      [
+        "2026-07-01",
+        "2026-07-31"
+      ]
+    ]
+  ]
+}

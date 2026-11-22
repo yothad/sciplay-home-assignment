@@ -1,6 +1,5 @@
 """Who needs attention: the daily underperforming-player lists (Part 4)."""
 
-import pandas as pd
 import streamlit as st
 
 from sciplay.app import lists_view as lv

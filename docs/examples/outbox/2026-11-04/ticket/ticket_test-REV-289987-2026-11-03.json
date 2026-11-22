@@ -1,0 +1,20 @@
+{
+  "ticket_id": "test-REV-289987-2026-11-03",
+  "queue": "VIP queue",
+  "studio": "Sample studio",
+  "title": "Revenue decline: player 289987 (low priority)",
+  "player_id": 289987,
+  "priority": "low",
+  "reasons": [
+    "No purchase for 5 days; usually every 2 days"
+  ],
+  "recommended_action": "VIP team: timed offer on the player's usual purchase",
+  "value": {
+    "opportunity_gap": 0.0,
+    "predicted_ltv_365": 486.2,
+    "ltv_to_date": 225.33
+  },
+  "needs_approval_before_any_cost": true,
+  "link": "http://localhost:8501/Player_detail?date=2026-11-03&player=289987",
+  "rules_version": "ltv-d3-lightgbm-6008a0b5-729fa670+rules-6fa388be"
+}

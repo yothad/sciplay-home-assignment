@@ -1,6 +1,5 @@
 """Player detail: one player's history and as-of snapshot."""
 
-import pandas as pd
 import streamlit as st
 
 from sciplay.app import lists_view as lvl

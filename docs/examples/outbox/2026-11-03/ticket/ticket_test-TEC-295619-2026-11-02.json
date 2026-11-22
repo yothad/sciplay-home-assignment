@@ -1,0 +1,20 @@
+{
+  "ticket_id": "test-TEC-295619-2026-11-02",
+  "queue": "Player support queue",
+  "studio": "Sample studio",
+  "title": "Technical or payment friction: player 295619 (medium priority)",
+  "player_id": 295619,
+  "priority": "medium",
+  "reasons": [
+    "3 crashes in the last 7 days (more than usual)"
+  ],
+  "recommended_action": "Player support team: check crash logs for this player's device and app version; send an apology with bonus coins",
+  "value": {
+    "opportunity_gap": 0.0,
+    "predicted_ltv_365": 0.01,
+    "ltv_to_date": 0.0
+  },
+  "needs_approval_before_any_cost": true,
+  "link": "http://localhost:8501/Player_detail?date=2026-11-02&player=295619",
+  "rules_version": "ltv-d3-lightgbm-6008a0b5-729fa670+rules-6fa388be"
+}

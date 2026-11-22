@@ -1,7 +1,6 @@
 """Refresh: first build, incremental merge with restated rows, no new data, health gate."""
 
 import json
-from pathlib import Path
 
 import pandas as pd
 import pytest

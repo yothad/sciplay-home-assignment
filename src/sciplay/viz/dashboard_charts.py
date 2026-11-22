@@ -82,13 +82,6 @@ def player_timeline(rows: pd.DataFrame, score_date: pd.Timestamp | None = None, 
     return _layout(fig, "Days played", height=height, subtitle="Bars only on days with a row; gaps are days not played")
 
 
-def rows_per_day(daily: pd.DataFrame, height: int = 280) -> go.Figure:
-    fig = go.Figure(go.Bar(x=daily.index, y=daily["active_players"], marker_color=SERIES[0],
-                           hovertemplate="%{x|%d %b}: %{y} player-days<extra></extra>"))
-    return _layout(fig, "Player-days per data date", height=height,
-                   subtitle="A day with zero would mean no data landed; there are none in the sample")
-
-
 def health_band(band: pd.DataFrame, score_date: pd.Timestamp, height: int = 320) -> go.Figure:
     """Player-days per day with the trailing mean ± 3 standard deviations; the checked date marked."""
     fig = go.Figure()

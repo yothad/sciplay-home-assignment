@@ -1,13 +1,9 @@
-# Results deck
+# Presentations
 
-`sciplay_results.pptx` – short results deck, updated as each part of the assignment is finished.
+Both decks are Claude Slides decks (they open in the browser and export to PowerPoint or PDF from the deck's
+Export menu). Put exported copies in this folder if a file is needed.
 
-Rebuild after the data or findings change:
-
-```bash
-uv run python presentation/export_deck_data.py   # numbers and chart series -> deck_data.json
-node presentation/build_deck.js                  # needs Node.js and `npm install pptxgenjs`
-```
-
-All numbers come from `sciplay.audit`, so the deck matches the notebook.
-Charts are native PowerPoint charts and can be edited in PowerPoint.
+| Deck | Use |
+|---|---|
+| SciPlay walkthrough – 20 minutes | The interview walkthrough: one slide per item the brief asks to cover |
+| Where is player revenue at risk? – SciPlay results | Full results, all five parts: the backup for questions |

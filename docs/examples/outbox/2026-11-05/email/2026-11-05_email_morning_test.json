@@ -1,0 +1,13 @@
+{
+  "to": [
+    "Studio GM",
+    "Player support lead",
+    "VIP lead",
+    "CRM lead",
+    "Game economy designer",
+    "Product analyst"
+  ],
+  "subject": "[test] Morning \u00b7 2026-11-05 \u00b7 25 still open, 7 new, $331 at risk",
+  "body_markdown": "# Sample studio \u00b7 morning \u00b7 2026-11-05\n\n**43 on the lists: 25 still open from yesterday, 7 new overnight.**\n\n- Technical or payment friction: 11 players, +3 vs yesterday, $0.01 at risk.\n- Revenue decline: 8 players (3 high priority), -1 vs yesterday, $330.72 at risk.\n- Engagement decline: 24 players, -1 vs yesterday, $0.28 at risk.\n- Since last evening: 0 handled by owners, 5 left the lists; $331.01 of value at risk.\n\n| List | Owner | Players | Still open | New | In progress | Handled | High | Value at risk |\n|---|---|---|---|---|---|---|---|---|\n| Technical or payment friction | Player support team | 11 | 4 | 5 | 0 | 2 | 0 | $0.01 |\n| Revenue decline | VIP team | 8 | 5 | 0 | 1 | 2 | 3 | $330.72 |\n| Engagement decline | CRM team | 24 | 16 | 2 | 6 | 0 | 0 | $0.28 |\n\n**Still open from yesterday (no action yet):** 25 (Technical or payment friction: 4, Revenue decline: 5, Engagement decline: 16); longest open: 3 days.\n**New overnight:** 7 (Technical or payment friction: 5, Revenue decline: 0, Engagement decline: 2).\n**Closed overnight:** 5 left the lists on their own; 0 handled by owners since last evening.\n**Top reasons:** away longer than usual (18), fewer sessions than usual (17), fewer active days than usual (16), started a purchase but did not finish (5), crashes (4)\n\nOpen the lists: http://localhost:8501/Who_needs_attention?date=2026-11-04\n\n_Data as of 2026-11-04 \u00b7 rules-6fa388be. Player IDs are in the tickets and the dashboard, not in this email._",
+  "summary_source": "template"
+}

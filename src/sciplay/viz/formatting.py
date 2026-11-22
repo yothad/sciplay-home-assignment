@@ -76,7 +76,3 @@ def fmt(value, unit: str = "count", state: State | None = None, decimals: int | 
     d = 0 if decimals is None else decimals
     return f"{value:,.{d}f}"
 
-
-def html(value, unit: str = "count", state: State | None = None, decimals: int | None = None) -> str:
-    state = state or classify(value)
-    return f'<span style="{STYLE[state]}">{fmt(value, unit, state, decimals)}</span>'

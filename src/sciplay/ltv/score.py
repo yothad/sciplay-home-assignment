@@ -22,12 +22,11 @@ import joblib
 import numpy as np
 import pandas as pd
 
-from sciplay.config import REPO_ROOT, get_settings
+from sciplay.config import get_settings
 from sciplay.data.asof import snapshot_as_of
 from sciplay.ltv import config as C
 from sciplay.ltv import learners as L
 from sciplay.ltv import train as T
-from sciplay.ltv.labels import day_index
 
 TABLE = "ltv_scores"
 COLUMNS = ["score_date", "player_id", "model_version", "feature_date", "install_date", "age_days", "source",
@@ -39,7 +38,7 @@ COLUMNS = ["score_date", "player_id", "model_version", "feature_date", "install_
 # ------------------------------------------------------------------ model artefacts
 
 def load_active(root: Path | None = None) -> tuple[dict, dict]:
-    root = root or REPO_ROOT / "models" / "ltv"
+    root = root or get_settings().model_dir / "ltv"
     version = json.loads((root / "active.json").read_text())["version"]
     meta = json.loads((root / version / "meta.json").read_text())
     return meta, joblib.load(root / version / "model.joblib")

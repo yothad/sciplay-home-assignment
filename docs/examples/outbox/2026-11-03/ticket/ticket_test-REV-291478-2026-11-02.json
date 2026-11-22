@@ -1,0 +1,21 @@
+{
+  "ticket_id": "test-REV-291478-2026-11-02",
+  "queue": "VIP queue",
+  "studio": "Sample studio",
+  "title": "Revenue decline: player 291478 (medium priority)",
+  "player_id": 291478,
+  "priority": "medium",
+  "reasons": [
+    "High predicted value ($1.59 LTV365) and playing less",
+    "Not seen for 18 days; usually plays every day"
+  ],
+  "recommended_action": "VIP team: first-purchase offer plus free coins to bring the player back",
+  "value": {
+    "opportunity_gap": 0.76,
+    "predicted_ltv_365": 1.59,
+    "ltv_to_date": 0.0
+  },
+  "needs_approval_before_any_cost": true,
+  "link": "http://localhost:8501/Player_detail?date=2026-11-02&player=291478",
+  "rules_version": "ltv-d3-lightgbm-6008a0b5-729fa670+rules-6fa388be"
+}

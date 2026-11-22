@@ -17,6 +17,7 @@ class Settings:
     processed_dir: Path
     store_db_path: Path
     model_dir: Path
+    dashboard_url: str
 
 
 def _resolve(value: str) -> Path:
@@ -31,4 +32,5 @@ def get_settings() -> Settings:
         processed_dir=_resolve(os.getenv("PROCESSED_DIR", "data/processed")),
         store_db_path=_resolve(os.getenv("STORE_DB_PATH", "data/store/sciplay.sqlite")),
         model_dir=_resolve(os.getenv("MODEL_DIR", "models")),
+        dashboard_url=os.getenv("DASHBOARD_URL", "http://localhost:8501").rstrip("/"),
     )

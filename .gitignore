@@ -230,7 +230,7 @@ data/processed/*
 !data/processed/.gitkeep
 data/store/*
 !data/store/.gitkeep
-models/
 *.parquet
+!models/**/*.parquet
 *.sqlite
 .streamlit/secrets.toml

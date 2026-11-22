@@ -1,0 +1,25 @@
+{
+  "channel": "#test-player-alerts",
+  "blocks": [
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "*Escalation to VIP lead: 4 medium/high-priority players on Revenue decline with no action for 2+ days*\n\u2022 Player 73769 \u00b7 medium \u00b7 LTV $172.02 \u00b7 on the list since 2026-11-02 \u00b7 No purchase for 19 days; usually every 2 days\n\u2022 Player 40013 \u00b7 medium \u00b7 LTV $12.98 \u00b7 on the list since 2026-11-02 \u00b7 No purchase for 96 days; usually every 5.5 days\n\u2022 Player 255261 \u00b7 medium \u00b7 LTV $7.43 \u00b7 on the list since 2026-11-02 \u00b7 Spent $0.00 in the last 28 days vs $7.43 in the 28 before (-100%)\n\u2022 Player 291478 \u00b7 medium \u00b7 LTV $1.59 \u00b7 on the list since 2026-11-02 \u00b7 High predicted value ($1.59 LTV365) and playing less"
+      }
+    },
+    {
+      "type": "actions",
+      "elements": [
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "text": "Open list"
+          },
+          "url": "http://localhost:8501/Who_needs_attention?date=2026-11-03&list=Revenue+decline"
+        }
+      ]
+    }
+  ]
+}

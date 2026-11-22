@@ -1,68 +1,7 @@
-# 00 · Setup and assumptions
+# Assumptions and decisions
 
-## Setup
-
-### Requirements
-
-- [uv](https://docs.astral.sh/uv/) (installs Python 3.12 itself). Windows: `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"`
-- The sample CSV from SciPlay (not committed)
-
-### Install
-
-```bash
-uv sync                       # creates .venv from uv.lock (Python 3.12)
-cp .env.example .env          # Windows: copy .env.example .env
-```
-
-Put the data file at `data/raw/sample_data.csv` (the path is set by `RAW_DATA_PATH` in `.env`).
-
-In VS Code, select the kernel `.venv\Scripts\python.exe` for notebooks.
-
-### Run
-
-| What | Command |
-|---|---|
-| Tests | `uv run pytest` |
-| Daily refresh (new extracts → merge → rebuild → health gate → publish) | `uv run python -m sciplay.pipeline.refresh` |
-| Rebuild prepared data from the single raw file | `uv run python -m sciplay.pipeline.prepare` |
-| Dashboard | `uv run streamlit run app/Overview.py` |
-| Rebuild the Part 1 notebook | `uv run python notebooks/build_01_data_audit.py` then `uv run jupyter nbconvert --to notebook --execute --inplace notebooks/01_data_audit.ipynb` |
-| Rebuild the PowerPoint backup of the deck | `uv run python presentation/export_deck_data.py` then `node presentation/build_deck.js` (needs Node.js and `pptxgenjs`) |
-
-The results deck itself is in Claude Slides; the PowerPoint is a backup.
-
-### Repository layout
-
-```
-src/sciplay/
-  config.py              paths from .env
-  data/                  data layer
-    loader.py            reads the CSV with light typing; no cleaning
-    field_groups.py      column -> business field group
-    registry.py          column registry: category, as-of availability, null meaning, use, evidence
-    asof.py              as-of policy: player-day rollup, as-of snapshot, policy check
-  audit/
-    checks.py            grain, coverage, missingness, quality checks, inconsistent semantics
-  metrics/
-    kpis.py              dashboard KPI definitions, filters, breakdowns, cohort curves
-    health.py            data health checks for one date against its history
-    reconcile.py         dashboard totals vs independent SQL on the raw file
-  pipeline/
-    prepare.py           raw CSV -> prepared Parquet tables
-    refresh.py           daily refresh: intake, merge, rebuild, health gate, publish, log
-  app/
-    ui.py                shared Streamlit helpers
-  viz/
-    charts.py            interactive Plotly charts (audit)
-    dashboard_charts.py  dashboard charts
-    formatting.py        the four value states
-app/                     Streamlit pages (Overview + pages/)
-tests/                   pytest: as-of policy, registry, smoke tests on the real file
-notebooks/               Part 1 notebook and the script that builds it
-docs/                    this file, data_understanding.md, column_registry.csv, concerns, AI use
-presentation/            PowerPoint backup of the deck and its generator
-data/                    raw / processed / store (gitignored)
-```
+Setup and commands are in the [README](../README.md). This file holds every assumption (with its evidence and the
+impact if wrong) and the dated decision log.
 
 ## Assumptions
 
@@ -197,3 +136,5 @@ Answer inline; answered questions move into the decision log.
 | 2026-11-22 | Two-dates example: 3 and 4 Nov (consecutive, the same days as the delivery simulation), was 29 Oct | Consistent story |
 | 2026-11-22 | One name per team everywhere: Player support team, VIP team, CRM team (leads: Player support / VIP / CRM lead) | Consistent recipients; actions in the lists use the same names |
 | 2026-11-22 | Trigger thresholds kept as starting values, checked on 26 days of list history (about one alert every 3 days) | Evidence for the values; review after 4 weeks |
+| 2026-11-22 | The trained LTV model (`models/ltv/`) and example delivery output (`docs/examples/outbox/`) are committed; raw CSV and brief still are not | Quick setup for reviewers: no training needed; messages visible without running |
+| 2026-11-22 | One command, `python -m sciplay.run_all` (prepare → load or train → score → lists → optional delivery and app) | Brief: one clear command |

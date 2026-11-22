@@ -320,10 +320,11 @@ cells = [
         "|---|---|---|\n"
         "| Grain | Player × platform × active day, aggregated | Roll up to player-day; as-of snapshot for scoring |\n"
         "| Coverage | 180 days; 700 players, 100 new per month; 23 payers; max age 169 days | No mature 365-day outcome; few payers; sample totals |\n"
-        "| Columns | Six categories; 259 candidate features, 37 excluded for leakage or target, 81 with no information | Registry drives feature selection |\n"
+        "| Columns | Six categories; 255 candidate features, 39 excluded for leakage or target, 80 with no information | Registry drives feature selection |\n"
         "| Semantics | 8 fields whose meaning differs from their name | Tested, not assumed; decisions recorded |\n"
         "| As-of policy | Rows ≤ D, columns known by end of D | Enforced in code with `assert_as_of` |\n"
         "| Leakage | D-returner flags = activity n days after D | Excluded; usable later as churn labels |\n"
+        "| Leakage (found in Part 3) | I14/I30_REVENUE show purchases not made yet; I3/I7 duplicate our own sums | Excluded; I3/I7 kept as a check |\n"
         "| Quality | Four themes | LTV365 is a defined proxy; time integrity by policy; sample limits stated |"
     ),
 ]

@@ -3,6 +3,7 @@
 import pandas as pd
 import streamlit as st
 
+from sciplay.app import ltv_view as lv
 from sciplay.app import ui
 from sciplay.data.asof import snapshot_as_of
 from sciplay.metrics import kpis as K
@@ -44,6 +45,29 @@ ui.tile(c[2], "Churned", base["churned"], help="No day played in the last 30 day
 ui.tile(c[3], "Payers seen in 30 days", base["ever_payers_in_base"], help="Ever-payers among the players seen in the last 30 days")
 ui.tile(c[4], "Revenue to date", base["revenue_to_date"], "money", help="Everything players known by the score date have paid")
 ui.tile(c[5], "Value at risk", None, "money", state=State.NOT_YET, help="Needs the LTV model (Part 3) and the daily lists (Part 4)")
+
+st.markdown("#### Lifetime value on the score date (Part 3)")
+ltv = lv.scores(f.score_date)
+if ltv.empty:
+    st.info(lv.not_scored_note(f.score_date))
+else:
+    ltv = ltv[ltv["player_id"].isin(rows["PLAYER_ID"].unique())]
+    by = ltv.groupby("source")
+    model = ltv[ltv["source"] == "model_d3"]
+    rule = ltv[ltv["source"] == "update_rule"]
+    c = st.columns(5)
+    ui.tile(c[0], "LTV365 · day-3 model", model["predicted_ltv_365"].sum(), "money",
+            help="Players installed from 7 Oct, at least 3 days old: 30-day forecast × 2.49 (assumed fade, not validated)")
+    ui.tile(c[1], "Players with a model forecast", len(model))
+    ui.tile(c[2], "LTV365 · update rule", rule["predicted_ltv_365"].sum(), "money",
+            help="NOT from the LTV model. Players installed before 7 Oct: revenue to date + last 30 days × "
+                 "(0.6 + 0.6² + …) until day 365; nothing more if unseen for 30+ days")
+    ui.tile(c[3], "Players on the update rule", len(rule))
+    ui.tile(c[4], "Too new to forecast", int((ltv["source"] == "cold_start").sum()),
+            help="Fewer than 3 days of data: no forecast yet (n/a)")
+    st.caption("The two LTV totals come from different methods and are shown separately on purpose. "
+               "Most of the money sits with older players on the update rule. See *Player detail* for how a "
+               "player's value is calculated.")
 
 st.markdown("#### Last 8 weeks")
 recent = daily.loc[f.score_date - pd.Timedelta(days=55):]

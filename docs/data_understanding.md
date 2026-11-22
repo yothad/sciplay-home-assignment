@@ -63,10 +63,10 @@ Every column is in one of the six categories the brief names. Derived features a
 |---|---|---|
 | Identifiers | 5 | `PLAYER_ID`, `PLATFORM_ID`, `GAME_ID`, `SLOT_ID`, `DATE` |
 | Dimensions | 35 | `COUNTRY`, `SOURCE`, `DEVICE_TYPE`, `LT_PAYER_BIN`, `IS_CHEATER` |
-| Observed measures | 249 | `SESSIONS`, `REVENUE`, `CRASHES`, `LAST_4W_REVENUE`, `LIFETIME_REVENUE` |
+| Observed measures | 245 | `SESSIONS`, `REVENUE`, `CRASHES`, `LAST_4W_REVENUE`, `LIFETIME_REVENUE` |
 | Derived features | 7 | revenue to date, age in days, days since last seen, active on score date, platform count, main platform, install cohort |
-| Targets | 2 | `revenue_next_30d` (training label), `ltv365` (model output) |
-| Excluded | 120 | leakage 26, not a valid target 2, unverified 9, no information 80, redundant 1, freshness metadata 2 |
+| Targets | 2 | `revenue_first_30d` (training label), `ltv365` (model output) |
+| Excluded | 124 | leakage 28, not a valid target 2, unverified 9, no information 80, redundant 3, freshness metadata 2 |
 
 409 file columns + 9 computed = 418 rows.
 
@@ -104,6 +104,8 @@ A column leaks when its value on the row for day D depends on what happens after
 | `NEXT_LOGIN_DATE`, `DAYS_UNTIL_NEXT_PURCHASE`, `CHURNERS*` | Describe what happens after D | **Excluded** |
 | `D365_SPEND`, `D30_SPEND` | Lifetime spend so far, not a fixed window | **Excluded**, not a valid target |
 | `D7/D14/D30_ACTIVE/PURCHASE/SPINS_DAYS` | Window may run past D | **Excluded until verified** |
+| `I14_REVENUE`, `I30_REVENUE` | Revenue in the first 14/30 days after install, written on every early row: early rows show purchases not made yet (player 8520: $15.40 on install day, spent on day 1–2) | **Excluded** (found in Part 3) |
+| `I3_REVENUE`, `I7_REVENUE` | Same pattern; equal to our own sum of `REVENUE` over days 0–2 / 0–6 (99.9% / 99.7%) | **Excluded as features**, kept as a consistency check |
 | `LIFETIME_REVENUE` | Start-of-day value | **Kept**, plus same-day `REVENUE` |
 | `LAST_4W/8W/12W_*`, `DAYS_SINCE_*` | Rolling; window end not documented | **Kept**, used as given (A9) |
 | Spend segments (`LT_PAYER_BIN`, `TOTAL_SPEND_LAST_4W_SEGMENT`) | Built from spend | **Reporting only** |
@@ -116,13 +118,13 @@ Every excluded column and its evidence is in `column_registry.csv` (`use`, `evid
 |---|---|---|---|
 | **Late-arriving data** | Recent rows land ~2 days late; every row changes until 91 days after its date (because `D90_RETURNER` can only be filled on D+90) | Yesterday may be missing; forward-looking flags on recent rows keep changing | Score D only once its rows have landed (freshness check); features only from as-of-safe columns; labels only after their window has passed |
 | **Multiple platforms** | 7 player-days with two rows | Counting rows double counts players and splits a day's play | One row per player per day; main platform + platform count |
-| **Sparse event fields** | No row on days off; `REVENUE` empty on 97% of rows | Days off look like missing data; averages over rows overstate activity; zeros dominate revenue | As-of snapshot carries players forward; empty daily count = 0, empty last-event = not applicable; two-part revenue model |
+| **Sparse event fields** | No row on days off; `REVENUE` empty on 97% of rows | Days off look like missing data; averages over rows overstate activity; zeros dominate revenue | As-of snapshot carries players forward; empty daily count = 0, empty last-event = not applicable; LTV model built for many zeros (Tweedie, Part 3) |
 
 ## 8. Data quality issues
 
 | Theme | Issues | Evidence | Resolved by |
 |---|---|---|---|
-| Target validity | Q1 `D365_SPEND` is lifetime spend so far | 100% equal to `LIFETIME_REVENUE`; max age 169 days | Defining LTV365 ourselves (revenue to date + modelled remaining revenue) |
+| Target validity | Q1 `D365_SPEND` is lifetime spend so far | 100% equal to `LIFETIME_REVENUE`; max age 169 days | Defining LTV365 ourselves: validated 30-day forecast × an assumed multiplier (Part 3) |
 | Revenue definition | Q2 daily and lifetime revenue offset by a day | 90% next-row match vs 9% same row | Revenue to date = `LIFETIME_REVENUE` + `REVENUE` |
 | Time integrity | Q3 rows rewritten for 91 days; Q5 forward-looking fields | `D<n>_RETURNER` = played n days later; `D1_RETURNER` = 1 on 213 install-day rows | As-of policy and registry; training and testing are safe, past lists are audited from the stored list history |
 | Sample limitations | Q4 100 installs per month; Q6 exclusion flags never set | Exact cohort sizes; single-value flags | Rates instead of totals; uncertainty on LTV; eligibility filter built and unit-tested |

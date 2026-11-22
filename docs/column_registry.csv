@@ -85,10 +85,10 @@ HOT_OFFER_PURCHASE_COMPLETES,Observed measures,file,"Store, offers & purchase fu
 HOT_OFFER_PURCHASE_FAILED,Excluded,file,Errors & friction,daily measure,end of day D,zero: no event that day,exclude: no information,False,0.001177856301531213,1.0,friction,,Single value
 HOT_OFFER_REVENUE,Observed measures,file,Revenue & payers,daily measure,end of day D,zero: no event that day,feature,True,0.9875147232037691,39.0,daily measures,,
 HOURLY_BONUS,Observed measures,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,feature,True,0.2021201413427562,16.0,daily measures,,
-I14_REVENUE,Observed measures,file,Revenue & payers,daily measure,end of day D,zero: no event that day,feature,True,0.9969375736160189,13.0,daily measures,,
-I3_REVENUE,Observed measures,file,Revenue & payers,daily measure,end of day D,zero: no event that day,feature,True,0.9976442873969376,10.0,daily measures,,
-I30_REVENUE,Observed measures,file,Revenue & payers,daily measure,end of day D,zero: no event that day,feature,True,0.9962308598351001,16.0,daily measures,,
-I7_REVENUE,Observed measures,file,Revenue & payers,daily measure,end of day D,zero: no event that day,feature,True,0.9974087161366313,11.0,daily measures,,
+I14_REVENUE,Excluded,file,Revenue & payers,label-like,back-filled after D,n/a,exclude: leakage,False,0.9969375736160189,13.0,"install-window revenue, forward",,"Revenue in the first 14/30 days after install, written on every early row: shows purchases not made yet (player 8520 shows $15.40 on install day, spent on day 1-2)"
+I3_REVENUE,Excluded,file,Revenue & payers,snapshot (rolling/lifetime),back-filled after D,n/a,exclude: redundant,False,0.9976442873969376,10.0,"install-window revenue, duplicate",,Revenue in the first 3/7 days: equals our own sum of REVENUE (99.9% / 99.7%) but early rows already show later purchases; kept only as a check
+I30_REVENUE,Excluded,file,Revenue & payers,label-like,back-filled after D,n/a,exclude: leakage,False,0.9962308598351001,16.0,"install-window revenue, forward",,"Revenue in the first 14/30 days after install, written on every early row: shows purchases not made yet (player 8520 shows $15.40 on install day, spent on day 1-2)"
+I7_REVENUE,Excluded,file,Revenue & payers,snapshot (rolling/lifetime),back-filled after D,n/a,exclude: redundant,False,0.9974087161366313,11.0,"install-window revenue, duplicate",,Revenue in the first 3/7 days: equals our own sum of REVENUE (99.9% / 99.7%) but early rows already show later purchases; kept only as a check
 IN_GAME_EVENT_MAXNODE_REACHED,Excluded,file,"Gameplay (spins, bets, features)",daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,daily measures,,All null
 INCENTIVIZED_NOTIFS,Observed measures,file,Social & notifications,daily measure,end of day D,zero: no event that day,feature,True,0.8942285041224971,13.0,daily measures,,
 INFLOW_COINS_CS,Excluded,file,"Game economy (coins, bankroll)",daily measure,end of day D,zero: no event that day,exclude: no information,False,1.0,0.0,daily measures,,All null
@@ -415,5 +415,5 @@ active_on_score_date,Derived features,computed,Computed,snapshot (rolling/lifeti
 n_platforms,Derived features,computed,Computed,daily measure,end of day D,n/a,feature,True,,,computed,,Platforms played on day D
 MAIN_PLATFORM_ID,Derived features,computed,Computed,dimension,end of day D,n/a,feature + segment / reporting,True,,,computed,,Platform with the most sessions on day D
 install_cohort,Derived features,computed,Computed,dimension,static (set at install),n/a,segment / reporting,False,,,computed,,Install month
-revenue_next_30d,Targets,computed,Computed,label-like,future (after D),zero: no event that day,training label,False,,,computed,,"Revenue from D+1 to D+30; no row = $0 (A1, A2). Only for D at least 30 days before the data end"
-ltv365,Targets,computed,Computed,label-like,future (after D),n/a,model output,False,,,computed,,Revenue to date + predicted revenue up to day 365 after install
+revenue_first_30d,Targets,computed,Computed,label-like,future (after D),zero: no event that day,training label,False,,,computed,,Gross revenue on days 0-29 after install; no row = $0. The model predicts days 7-29 and adds the observed days 0-6. Complete only for installs up to 29 days before the data end
+ltv365,Targets,computed,Computed,label-like,future (after D),n/a,model output,False,,,computed,,"30-day forecast x 2.5: assumed fade after day 30, not validated (Part 3)"

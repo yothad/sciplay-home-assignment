@@ -9,7 +9,7 @@ uv run python -m sciplay.pipeline.refresh          # take in new extracts, rebui
 uv run streamlit run app/Overview.py               # opens http://localhost:8501
 ```
 
-The app opens on 31 Oct, the last fully representative day.
+The app opens on 4 Nov, the last data day: every player installed up to 2 Nov has a day-3 LTV forecast by then.
 
 ## Prepared data
 
@@ -25,12 +25,12 @@ The app opens on 31 Oct, the last fully representative day.
 
 | Page | Question | Content |
 |---|---|---|
-| Overview | How did we do on the score date? | Seven KPI tiles against the previous 7-day average; player base on the score date (players so far, seen in the last 30 days, churned, revenue to date); last 8 weeks of active players, new players and revenue; the score date split by platform, install month, payer status, region, country and acquisition type |
+| Overview | How did we do on the score date? | Seven KPI tiles against the previous 7-day average; player base on the score date (players so far, seen in the last 30 days, churned, revenue to date); lifetime value (Part 3): LTV365 from the day-3 model and from the update rule shown separately, players per source, players too new to forecast; last 8 weeks of active players, new players and revenue; the score date split by platform, install month, payer status, region, country and acquisition type |
 | Trends | Better or worse? | Each KPI as a 7-day average or weekly bars; weekly table |
 | Cohorts | Are newer players as good as older ones? | Activity by age heatmap; cumulative revenue per install by age; cohort summary; payers by first-purchase month and their revenue since first purchase |
 | Who needs attention | Who should someone act on today? | Placeholder until Parts 3–4: list sizes and value at risk shown as *not yet available* |
-| Player detail | Why is this player where they are? | As-of snapshot tiles and the days-played timeline |
-| Data health | Is the data for the selected date complete and normal? | 20 checks of the date against the 28 days before it (freshness, volume, missing values, new categories, validity, duplicates); player-days against their normal range; reconciliation; value-state legend |
+| Player detail | Why is this player where they are? | As-of snapshot tiles and the days-played timeline; lifetime value panel: source (day-3 model / update rule, not from the model / too new), LTV365 and range, confidence, ahead or behind forecast, the calculation and up to 3 reasons |
+| Data health | Is the data for the selected date complete and normal? | 20 checks of the date against the 28 days before it (freshness, volume, missing values, new categories, validity, duplicates); player-days against their normal range; reconciliation; LTV model check (test results with ranges, value bands, by install month, by confidence, selection on training folds, monitoring plan); value-state legend |
 
 Filters (sidebar): score date, platform, install month, country, acquisition type, payer status (as of each day).
 

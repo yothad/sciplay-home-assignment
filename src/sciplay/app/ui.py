@@ -36,7 +36,7 @@ class Prepared:
     processed_dir: Path
 
 
-DEFAULT_SCORE_DATE = pd.Timestamp("2026-10-31")  # decision: last fully representative day
+DEFAULT_SCORE_DATE = pd.Timestamp("2026-11-04")  # decision: last data day; every inference player has a day-3 forecast
 
 
 @dataclass
@@ -92,8 +92,8 @@ def sidebar(data: Prepared, with_filters: bool = True) -> Filters:
     default = min(max(DEFAULT_SCORE_DATE.date(), first), last)
     d = st.sidebar.date_input("As of the end of", value=st.session_state.get("score_date", default),
                               min_value=first, max_value=last, key="score_date")
-    st.sidebar.caption(f"Default: 31 Oct, the last fully representative day. Data runs to {last:%d %b}; "
-                       "1–4 Nov hold the whole November cohort.")
+    st.sidebar.caption(f"Default: {last:%d %b}, the last data day: every player installed up to 2 Nov has a day-3 LTV "
+                       "forecast. 1–4 Nov hold the whole November cohort.")
     platforms, cohorts, payer, countries, acquisition = [], [], K.ALL, [], []
     if with_filters:
         st.sidebar.header("Filters")

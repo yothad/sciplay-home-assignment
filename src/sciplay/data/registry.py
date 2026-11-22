@@ -94,6 +94,12 @@ RULES: list[Rule] = [
     Rule("milestone flags", _m(r"^D\d+(_RETURNER|_CONVERTER)?$|^SPENDER_\d+$|^D30_PAYER_BIN$"),
          LABEL_LIKE, BACKFILLED, X_LEAK, NULL_NONE,
          "Forward-looking label: D<n>_RETURNER = played exactly n days after D (Q3, Q5)"),
+    Rule("install-window revenue, forward", _m(r"^I(14|30)_REVENUE$"), LABEL_LIKE, BACKFILLED, X_LEAK,
+         NULL_NONE, "Revenue in the first 14/30 days after install, written on every early row: "
+         "shows purchases not made yet (player 8520 shows $15.40 on install day, spent on day 1-2)"),
+    Rule("install-window revenue, duplicate", _m(r"^I(3|7)_REVENUE$"), SNAPSHOT, BACKFILLED,
+         X_REDUNDANT, NULL_NONE, "Revenue in the first 3/7 days: equals our own sum of REVENUE "
+         "(99.9% / 99.7%) but early rows already show later purchases; kept only as a check"),
     Rule("first-N-days windows", _m(r"^D\d+_(ACTIVE|PURCHASE|SPINS)_DAYS$"), SNAPSHOT, UNCLEAR,
          X_UNVERIFIED, NULL_NONE, "Rebuild from daily rows instead"),
     Rule("install dates", _m(r"^(FIRST_)?INSTALL_DATE$"), TIMESTAMP, STATIC, U_DERIVE, NULL_NONE,
@@ -272,10 +278,11 @@ COMPUTED_COLUMNS = [
     ("MAIN_PLATFORM_ID", DERIVED, DIMENSION, END_OF_D, NULL_NONE, U_FEATURE + " + " + U_SEGMENT,
      "Platform with the most sessions on day D"),
     ("install_cohort", DERIVED, DIMENSION, STATIC, NULL_NONE, U_SEGMENT, "Install month"),
-    ("revenue_next_30d", TARGETS, LABEL_LIKE, FUTURE, NULL_ZERO, "training label",
-     "Revenue from D+1 to D+30; no row = $0 (A1, A2). Only for D at least 30 days before the data end"),
+    ("revenue_first_30d", TARGETS, LABEL_LIKE, FUTURE, NULL_ZERO, "training label",
+     "Gross revenue on days 0-29 after install; no row = $0. The model predicts days 7-29 and adds "
+     "the observed days 0-6. Complete only for installs up to 29 days before the data end"),
     ("ltv365", TARGETS, LABEL_LIKE, FUTURE, NULL_NONE, "model output",
-     "Revenue to date + predicted revenue up to day 365 after install"),
+     "30-day forecast x 2.49: assumed fade after day 30, not validated (Part 3)"),
 ]
 
 

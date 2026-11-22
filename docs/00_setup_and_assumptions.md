@@ -99,7 +99,7 @@ Approved on 2026-11-21. **Verified** = tested on the sample data. **Assumed** = 
 
 | # | Assumption | Status | Impact if wrong |
 |---|---|---|---|
-| B1 | Default score date = 31 Oct, the last fully representative day | Decided | – |
+| B1 | Default score date = 4 Nov, the last data day: every player installed up to 2 Nov has a day-3 LTV forecast (was 31 Oct before Part 3) | Decided | – |
 | B2 | Filters: platform, install month, payer status, country, acquisition type | Decided | – |
 | B3 | A day with no rows is a real zero for counts and revenue; a ratio with a zero denominator is not applicable | Follows A1 | – |
 | B4 | Tiles compare the score date with the average of the previous 7 days | Assumed | Different baseline, different arrows |
@@ -111,7 +111,15 @@ Approved on 2026-11-21. **Verified** = tested on the sample data. **Assumed** = 
 | B11 | A failed health check on the newest date blocks publishing; warnings do not | Assumed | Bad data reaches the dashboard, or good data is held back |
 | B9 | Data health compares the selected date with the 28 days before it; volume is unusual beyond ±3 standard deviations, missing values when more than 10 points worse | Assumed | More or fewer warnings |
 
-LTV-specific assumptions (revenue decay after day 169, the forward window) are added with the LTV part.
+### LTV (Part 3)
+
+| # | Assumption | Status | Evidence | Impact if wrong |
+|---|---|---|---|---|
+| C1 | **Each 30-day block after the first is worth r = 0.6 × the block before, so LTV365 = 30-day forecast × 2.49** | **Assumption, not estimated** | Month-to-month ratios come from two players; without them revenue after month 1 is under $100 a month in the sample | LTV365 level; sensitivity r = 0.5–0.7 gives × 2.00–3.29 |
+| C2 | One multiplier fits every player | Assumption | Too few payers to estimate groups | Ramping payers understated |
+| C3 | The first 3 days are enough to forecast the first 30 | Tested out of time | 39% of 30-day revenue known by day 3; the 3-day rule is better calibrated than "revenue so far" (0.79 vs 0.34) but worse on MAE | Weaker forecasts for new players |
+| C4 | Late-July training labels overlapping August test calendar time is harmless | Accepted risk | No known August event | Slightly optimistic test results |
+| C5 | Recent 30-day labels are final | Assumed | Rows are rewritten up to 91 days later; labels used up to 6 Oct installs | Test labels could still change |
 
 ## Open questions
 
@@ -129,7 +137,7 @@ Answer inline; answered questions move into the decision log.
 | 2026-11-20 | Parquet for prepared data, SQLite for list history | Local, reproducible; primary keys give idempotent reruns |
 | 2026-11-20 | `pyproject.toml` + `uv.lock` are the only dependency files | One source of truth; `uv export` makes a requirements file on demand |
 | 2026-11-21 | Multi-platform player-days: sum daily measures, take lifetime fields once; main platform + platform count | 7 cases; lifetime fields equal across platform rows |
-| 2026-11-21 | Proposed split: train and test end 31 Oct, inference on 1–4 Nov | Shows train → test → daily scoring; November is unseen, like production |
+| 2026-11-21 | Proposed split: train and test end 31 Oct, inference on 1–4 Nov (superseded by the Part 3 split by install date) | Shows train → test → daily scoring; November is unseen, like production |
 | 2026-11-21 | Provided rolling / lifetime columns used as they are (or ignored), not rebuilt | Simplicity |
 | 2026-11-21 | Revenue = gross USD; days = UTC | Not stated in the data |
 | 2026-11-21 | Active on D = has a row with sessions on D; inactive players carried forward | Rows exist only on days played |
@@ -138,7 +146,7 @@ Answer inline; answered questions move into the decision log.
 | 2026-11-21 | Value at risk = predicted LTV365 − revenue to date | Simple, in dollars |
 | 2026-11-21 | Churn cut-off: 30 days without a row | Approved |
 | 2026-11-21 | Claude Slides is the master deck; PowerPoint is a backup | Edited and presented in the browser |
-| 2026-11-21 | Dashboard opens on 31 Oct | Last fully representative day |
+| 2026-11-21 | Dashboard opens on 31 Oct (changed to 29 Oct in Part 3) | Last fully representative day |
 | 2026-11-21 | Filters add country and acquisition type | Answer to Q2 |
 | 2026-11-21 | Both revenue per active player and revenue per paying player shown | Answer to Q5 |
 | 2026-11-21 | No HTML snapshot; a sample of the dashboard on 31 Oct goes into the deck instead | Simpler; the deck is what gets shared |
@@ -146,3 +154,18 @@ Answer inline; answered questions move into the decision log.
 | 2026-11-21 | Refresh command: intake → merge (latest version per key wins) → rebuild in staging → health gate → publish → log | Handles incremental files, restated rows, missing or bad data |
 | 2026-11-21 | Sample banner and Overview tiles reconciled from data: banner computed from installs per month; score-date tiles checked with SQL | Brief: no hard-coded values; reconcile what the manager sees |
 | 2026-11-21 | Production: refresh runs as a job in a data orchestration pipeline with cloud storage | Noted on the deck; out of scope locally |
+| 2026-11-21 | LTV365 (gross USD) stays the target, labelled a proxy; the validated piece is revenue in the first 30 days | Brief's definition; Part 4 value at risk needs a year |
+| 2026-11-21 | Label = revenue on days 0–29 after install; not 90 or 365 days | Too few complete labels for 90/365 (322 / 0 players) |
+| 2026-11-21 | Features from the first 3 days only (7 days considered first, then changed) | 7 days would leave all 100 November installs in cold start; 3 days scores 132 players instead of 79 |
+| 2026-11-21 | Split by install date: train 9 May–31 Jul, test 1 Aug–6 Oct, inference 7 Oct–2 Nov, cold start 3–4 Nov | Players never in two sets; time order respected; test needs complete 30-day labels (installs up to 6 Oct) |
+| 2026-11-21 | Ship the tested model; no refit on test players | Every reported number describes the model in use |
+| 2026-11-21 | LightGBM (Tweedie) is the model; baselines and the simple rule are benchmarks | Brief: compare with a simple baseline |
+| 2026-11-21 | Model predicts revenue on days 3–29; 30-day forecast = observed days 0–2 + prediction | Forecast never below revenue so far; SHAP explains only the future |
+| 2026-11-21 | Feature selection + tuning on two forward folds inside training, by Tweedie deviance; 4 rounds (~150 → 50 → 20 → 10) × 8 settings | Test set used once; MAE rewards predicting $0 |
+| 2026-11-21 | I14/I30_REVENUE excluded (forward-looking); I3/I7 excluded as duplicates, kept as a check | Early rows show later purchases |
+| 2026-11-21 | Confidence from a 50-model bootstrap: interquartile range × 2.49; High/Medium/Low by width ÷ max(forecast, $1) | Brief: uncertainty indicator |
+| 2026-11-21 | Reasons: top 1–3 SHAP effects by absolute size, in dollars, both directions | Stakeholder-readable |
+| 2026-11-21 | Players installed before 7 Oct (too old for the model's window): update rule (revenue to date + last 30 days × remaining decay; $0 after 30 days unseen), labelled "not from the LTV model" | Part 4 needs a value for every eligible player |
+| 2026-11-21 | Model forecasts carried forward with ahead/behind against expected revenue by day d | Brief: updates as behaviour arrives |
+| 2026-11-21 | Scores stored in SQLite (`ltv_scores`) | Unique key makes reruns idempotent |
+| 2026-11-21 | Dashboard default date 4 Nov (briefly 29 Oct while the model used 7 days) | Every inference player has a day-3 forecast by then |

@@ -3,6 +3,7 @@
 import pandas as pd
 import streamlit as st
 
+from sciplay.app import ltv_view as lv
 from sciplay.app import ui
 from sciplay.metrics.health import FAIL, INFO, PASS, WARN, history_band, run_checks
 from sciplay.metrics.reconcile import reconcile, reconcile_day
@@ -59,5 +60,7 @@ m = data.manifest
 st.caption(f"Prepared from {m['source_file']}: {m['raw_rows']:,} raw rows → {m['player_day_rows']:,} player-days "
            f"(one row per player per day played; 7 player-days had two platform rows) · {m['players']} players · "
            f"built {m['built_at'][:16].replace('T', ' ')} UTC")
+lv.model_check()
+
 st.markdown("#### How values are shown")
 ui.legend()

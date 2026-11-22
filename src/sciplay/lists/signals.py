@@ -12,6 +12,27 @@ from sciplay.ltv.score import update_rule_remainder
 PURCHASE_FAIL_COLS = ["FAILED_PURCHASE", "PURCHASE_FAILURES", "STORES_VERIFY_PURCHASE_FAILURE"]
 
 
+def is_drop(recent, baseline, share: float) -> pd.Series:
+    """Decline vs baseline: recent <= (1 - share) x baseline, only where the baseline is above zero (inclusive)."""
+    recent, baseline = pd.Series(recent, dtype=float), pd.Series(baseline, dtype=float)
+    return (baseline > 0) & (recent <= (1 - share) * baseline + 1e-9)
+
+
+def is_overdue(days_since, usual_gap, factor: float, min_days: float = 0) -> pd.Series:
+    """Longer than `factor` x the usual gap (strictly) and at least `min_days`; needs a usual gap."""
+    days_since, usual_gap = pd.Series(days_since, dtype=float), pd.Series(usual_gap, dtype=float)
+    return usual_gap.notna() & (days_since > factor * usual_gap) & (days_since >= min_days)
+
+
+def _usual_gap(days_by_player: pd.Series, ids, min_days: int = 2) -> pd.Series:
+    """Median gap in days between consecutive dates, for players with at least `min_days` dates."""
+    out = pd.Series(np.nan, index=ids)
+    for pid, days in days_by_player.items():
+        if pid in out.index and len(days) >= min_days:
+            out[pid] = float(np.median(np.diff(days).astype("timedelta64[D]").astype(float)))
+    return out
+
+
 def _window(rows, D, start_days, end_days):
     """Rows with D - start_days < DATE <= D - end_days."""
     return rows[(rows["DATE"] > D - pd.Timedelta(days=start_days)) & (rows["DATE"] <= D - pd.Timedelta(days=end_days))]
@@ -69,11 +90,16 @@ def compute(pday: pd.DataFrame, installs: pd.Series, D, ltv: pd.DataFrame, cfg=L
     # ---- friction (recent window vs own baseline)
     f_trig = pd.Series("", index=ids)
     events = pd.Series(0.0, index=ids)
+    def _load_fail(df):
+        return sum((_sum(df, a, ids) - _sum(df, b, ids)).clip(lower=0) for a, b in cfg.LOAD_PAIRS)
     for col, label in [("CRASHES", "crashes"), ("ERROR_UNHANDLED", "unhandled errors"),
-                       ("purchase_failures", "failed purchases"), ("ZENDESK_TICKETS", "support tickets")]:
+                       ("purchase_failures", "failed purchases"), ("ZENDESK_TICKETS", "support tickets"),
+                       ("load_failures", "load failures")]:
         if col == "purchase_failures":
             r = sum(_sum(recent, c, ids) for c in PURCHASE_FAIL_COLS)
             p = sum(_sum(prior, c, ids) for c in PURCHASE_FAIL_COLS)
+        elif col == "load_failures":
+            r, p = _load_fail(recent), _load_fail(prior)
         else:
             r, p = _sum(recent, col, ids), _sum(prior, col, ids)
         out[f"recent_{label.replace(' ', '_')}"] = r
@@ -95,13 +121,8 @@ def compute(pday: pd.DataFrame, installs: pd.Series, D, ltv: pd.DataFrame, cfg=L
     prev28 = _sum(_window(rev, D, 2 * cfg.SPEND_DAYS, cfg.SPEND_DAYS), "R", ids)
     out["spend_last_28d"], out["spend_prev_28d"] = last28, prev28
     paid_days = rev[rev["R"] > 0].groupby("PLAYER_ID")["DATE"].apply(lambda s: sorted(s.unique()))
-    usual_gap, since_purchase = pd.Series(np.nan, index=ids), pd.Series(np.nan, index=ids)
-    for pid, days in paid_days.items():
-        if pid not in usual_gap.index:
-            continue
-        since_purchase[pid] = (D - days[-1]).days
-        if len(days) >= 2:
-            usual_gap[pid] = float(np.median(np.diff(days).astype("timedelta64[D]").astype(float)))
+    usual_gap = _usual_gap(paid_days, ids, 2)
+    since_purchase = pd.Series({pid: (D - days[-1]).days for pid, days in paid_days.items()}, dtype=float).reindex(ids)
     out["usual_purchase_gap"], out["days_since_purchase"] = usual_gap, since_purchase
     payer = out["ltv_to_date"] > 0
     elig_ltv = out.loc[out["eligible"], "predicted_ltv_365"].dropna()
@@ -109,8 +130,8 @@ def compute(pday: pd.DataFrame, installs: pd.Series, D, ltv: pd.DataFrame, cfg=L
     valuable_np = (~payer) & (out["predicted_ltv_365"] >= top_cut) & (out["predicted_ltv_365"] > 0)
     out["valuable"] = np.select([payer, valuable_np], ["payer", "high predicted value"], "")
 
-    drop = (prev28 > 0) & (last28 <= (1 - cfg.SPEND_DROP) * prev28)
-    overdue = usual_gap.notna() & (since_purchase > cfg.OVERDUE_FACTOR * usual_gap)
+    drop = is_drop(last28, prev28, cfg.SPEND_DROP)
+    overdue = is_overdue(since_purchase, usual_gap, cfg.OVERDUE_FACTOR)
     expected = lt["expected_by_today"]
     behind_amt = (expected - out["ltv_to_date"]).where(out["source"] == "model_d3")
     behind = (behind_amt >= cfg.BEHIND_MIN_DOLLARS) & (out["ltv_to_date"] <= (1 - cfg.BEHIND_SHARE) * expected)
@@ -125,13 +146,18 @@ def compute(pday: pd.DataFrame, installs: pd.Series, D, ltv: pd.DataFrame, cfg=L
     out["days_played_7d"], out["baseline_days_per_week"] = r_days, pace_days
     out["sessions_7d"], out["baseline_sessions_per_week"] = r_sess, pace_sess
     old = out["age_days"] >= cfg.YOUNG_DAYS
-    days_drop = old & (pace_days >= cfg.MIN_PRIOR_DAYS_PER_WEEK) & (r_days <= cfg.ACTIVITY_DROP * pace_days)
-    sess_drop = old & (pace_sess >= cfg.MIN_PRIOR_SESSIONS_PER_WEEK) & (r_sess <= cfg.ACTIVITY_DROP * pace_sess)
+    days_drop = old & (pace_days >= cfg.MIN_PRIOR_DAYS_PER_WEEK) & is_drop(r_days, pace_days, 1 - cfg.ACTIVITY_DROP)
+    sess_drop = old & (pace_sess >= cfg.MIN_PRIOR_SESSIONS_PER_WEEK) & is_drop(r_sess, pace_sess, 1 - cfg.ACTIVITY_DROP)
     peers = peer_activity(pday, installs, D)
     peer_med = out["age_days"].map(peers)
     out["peer_days_7d"] = peer_med
-    young_drop = (~old) & peer_med.notna() & (peer_med >= 1) & (r_days <= cfg.ACTIVITY_DROP * peer_med)
-    eng = days_drop | sess_drop | young_drop
+    young_drop = (~old) & peer_med.notna() & (peer_med >= 1) & is_drop(r_days, peer_med, 1 - cfg.ACTIVITY_DROP)
+    # Return signal: not seen for longer than usual (days since last login or spin vs the usual gap between days played)
+    play_days = rows.groupby("PLAYER_ID")["DATE"].apply(lambda s: sorted(s.unique()))
+    out["usual_play_gap"] = _usual_gap(play_days, ids, cfg.MIN_PLAY_DAYS_FOR_GAP)
+    overdue_return = is_overdue(out["days_since_last_seen"], out["usual_play_gap"], cfg.RETURN_FACTOR, cfg.RETURN_MIN_DAYS)
+    out["eng_overdue_return"] = overdue_return
+    eng = days_drop | sess_drop | young_drop | overdue_return
     base_days = pace_days.where(old, peer_med)
     out["activity_drop_share"] = (1 - r_days / base_days).where(base_days > 0).clip(lower=0)
     out["eng_days_drop"], out["eng_sessions_drop"], out["eng_young_vs_peers"] = days_drop, sess_drop, young_drop

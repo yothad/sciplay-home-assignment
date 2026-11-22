@@ -9,14 +9,12 @@ from sciplay.lists import run as R
 PRIO = {"high": 3, "medium": 2, "low": 1}
 
 
-def history(db_path=None, version: str | None = None) -> pd.DataFrame:
-    h = R.read(None, db_path)
-    if version:
-        h = h[h["model_rules_version"] == version]
-    return h.sort_values(["player_id", "score_date"])
+def history(db_path=None, version: str | None = "latest") -> pd.DataFrame:
+    """All stored list rows of one model + rules version (default: the latest), by player and date."""
+    return R.read(None, db_path, version=version).sort_values(["player_id", "score_date"])
 
 
-def changes(score_date, db_path=None, version: str | None = None) -> pd.DataFrame:
+def changes(score_date, db_path=None, version: str | None = "latest") -> pd.DataFrame:
     """What changed on this date compared with the previous run date: entered, exited, moved list, priority up/down."""
     h = history(db_path, version)
     dates = sorted(h["score_date"].unique())
@@ -41,7 +39,7 @@ def changes(score_date, db_path=None, version: str | None = None) -> pd.DataFram
     return pd.DataFrame(rows, columns=["player_id", "change", "before", "after"])
 
 
-def spells(db_path=None, version: str | None = None) -> pd.DataFrame:
+def spells(db_path=None, version: str | None = "latest") -> pd.DataFrame:
     """Each continuous stay on a list: player, list, first and last date, days, priorities seen."""
     h = history(db_path, version)
     if h.empty:

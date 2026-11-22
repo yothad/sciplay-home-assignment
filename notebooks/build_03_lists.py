@@ -78,7 +78,7 @@ cells = [
         "A.sweep(data, dates, grid)"
     ),
     md(
-        "Read with the backtest below: a looser threshold mostly adds players to the engagement list; the friction and "
+        "Read with the backtest below: a looser threshold mostly adds players to the engagement list (about half of that list comes from the return signal: not seen for longer than usual); the friction and "
         "revenue lists are small at any setting because few players have friction events or have ever paid."
     ),
     md(
@@ -119,7 +119,7 @@ cells = [
         "`list_runs` logs status, list sizes and ineligible players by reason.\n\n"
         "**Underperformance score (0–100):** 0 = at the player's baseline; 100 = spend or play stopped, or severe friction. "
         "Friction: 25 points per event in the last 7 days. Revenue: the largest of spend drop %, overdue, % behind forecast, "
-        "activity drop % for high-value non-payers. Engagement: the largest drop in days played or sessions."
+        "activity drop % for high-value non-payers. Engagement: the largest drop in days played or sessions, or time away."
     ),
     code(
         "from sciplay.lists import history as H, run as R\n"

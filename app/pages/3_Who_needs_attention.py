@@ -59,13 +59,15 @@ with tabs[-1]:
 with st.expander("How the lists, scores and priorities work"):
     st.markdown(
         "- **Eligible:** not a cheater or legal settlement, at least 3 days old, seen in the last 30 days.\n"
-        "- **Technical or payment friction:** in the last 7 days, more crashes, unhandled errors, failed purchases or "
-        "support tickets than the player's own previous 28 days, or 2+ purchase attempts with none completed.\n"
+        "- **Technical or payment friction:** in the last 7 days, more crashes, unhandled errors, failed purchases, "
+        "support tickets or load failures (2+) than the player's own previous 28 days, or 2+ purchase attempts with "
+        "none completed.\n"
         "- **Revenue decline** (payers, or non-payers in the top 10% of predicted LTV): spend in the last 28 days at "
         "least 50% below the 28 before; overdue (no purchase for more than 2× the usual gap); at least 50% and $5 behind "
         "the day-3 forecast; or a high-value non-payer playing less.\n"
         "- **Engagement decline:** days played or sessions in the last 7 days at most 50% of the pace before; players "
-        "under 5 weeks old compared with peers of the same age.\n"
+        "under 5 weeks old compared with peers of the same age; or not seen for 7+ days and more than twice their usual "
+        "gap between days played.\n"
         "- **Score (0–100):** 0 = at baseline, 100 = play or spend stopped, or severe friction.\n"
         "- **Opportunity gap:** expected value at the player's baseline − revised value now, never below $0.\n"
         "- **Priority:** high if the gap is ≥ $20; medium if ≥ $2, money blocked by a purchase problem, or score ≥ 75; low otherwise.")

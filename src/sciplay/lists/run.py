@@ -5,7 +5,10 @@ Run:  python -m sciplay.lists.run --date 2026-11-04
 Call: from sciplay.lists.run import run; run("2026-11-04")
 
 Edge cases
+- Missing inputs (no prepared data or no trained LTV model): nothing is written; status "missing_input".
 - No data for the date (after the data end): nothing is written; the run is logged as "no_data".
+- No new data: rerunning a date gives the same rows (replaced, not duplicated); the refresh only builds lists for a
+  newly published date.
 - Late or incomplete data (the health check for that date fails): the list is written with data_incomplete = 1.
 - No LTV scores for the date: they are computed and stored first.
 - Ineligible players: not listed; counted by reason in `list_runs`.
@@ -101,7 +104,14 @@ def write(lists: pd.DataFrame, run_row: dict, db_path: Path | None = None) -> No
                     tuple(run_row[c] for c in RUN_COLUMNS))
 
 
-def read(score_date=None, db_path: Path | None = None, table: str = LISTS) -> pd.DataFrame:
+def latest_version(db_path: Path | None = None) -> str | None:
+    """The model + rules version of the most recent run (the one the dashboard and history show)."""
+    runs = _read_table(RUNS, None, db_path)
+    runs = runs[runs["model_rules_version"].astype(str) != ""]
+    return None if runs.empty else runs.sort_values("created_at").iloc[-1]["model_rules_version"]
+
+
+def _read_table(table: str, score_date, db_path) -> pd.DataFrame:
     db = Path(db_path or get_settings().store_db_path)
     cols = COLUMNS if table == LISTS else RUN_COLUMNS
     if not db.exists():
@@ -115,13 +125,29 @@ def read(score_date=None, db_path: Path | None = None, table: str = LISTS) -> pd
             return pd.DataFrame(columns=cols)
 
 
+def read(score_date=None, db_path: Path | None = None, table: str = LISTS, version: str | None = "latest") -> pd.DataFrame:
+    """Stored lists (or runs). By default only the latest model + rules version; pass version=None for all."""
+    t = _read_table(table, score_date, db_path)
+    if version == "latest":
+        version = latest_version(db_path)
+    if version is not None and len(t):
+        t = t[t["model_rules_version"] == version]
+    return t
+
+
 def run(score_date, data: T.Data | None = None, store: bool = True, db_path: Path | None = None, cfg=L) -> dict:
     """Run the lists for one date. Returns the run record (status, sizes, ...) and the list frame."""
     D = pd.Timestamp(score_date).normalize()
-    d = data or T.load_data()
-    meta, _ = S.load_active()
-    version = rules_version(meta["version"], cfg)
     now = pd.Timestamp.now(tz="UTC").isoformat(timespec="seconds")
+    try:                                   # missing inputs: no prepared data or no trained LTV model
+        d = data or T.load_data()
+        meta, _ = S.load_active()
+    except (FileNotFoundError, OSError, KeyError) as exc:
+        return {"score_date": D.date().isoformat(), "model_rules_version": "", "status": "missing_input",
+                "message": f"Missing input, nothing listed: {exc}. Build the data (prepare / refresh) and train the "
+                           "LTV model first.", "created_at": now, "eligible": 0, "listed": 0, "list_sizes": "{}",
+                "ineligible": "{}", "failed_checks": "[]", "data_incomplete": 0, "lists": pd.DataFrame(columns=COLUMNS)}
+    version = rules_version(meta["version"], cfg)
     base = {"score_date": D.date().isoformat(), "model_rules_version": version, "created_at": now,
             "eligible": 0, "listed": 0, "list_sizes": "{}", "ineligible": "{}", "failed_checks": "[]",
             "data_incomplete": 0, "message": ""}

@@ -35,7 +35,9 @@ def severity(sig: pd.DataFrame, list_type: pd.Series, cfg=L) -> pd.Series:
     behind = _pct((1 - sig["ltv_to_date"] / (sig["ltv_to_date"] + sig["behind_forecast_dollars"])).where(sig["rev_behind_forecast"]))
     spend = _pct(sig["spend_drop_share"].where(sig["rev_spend_drop"]))
     sess_drop = (1 - sig["sessions_7d"] / sig["baseline_sessions_per_week"]).where(sig["eng_sessions_drop"])
-    activity = pd.concat([_pct(sig["activity_drop_share"].where(sig["any_engagement"])), _pct(sess_drop)], axis=1).max(axis=1)
+    away = _pct((sig["days_since_last_seen"] / (2 * cfg.RETURN_FACTOR * sig["usual_play_gap"])).where(sig["eng_overdue_return"]))
+    activity = pd.concat([_pct(sig["activity_drop_share"].where(sig["eng_days_drop"] | sig["eng_young_vs_peers"])),
+                          _pct(sess_drop), away], axis=1).max(axis=1)
     revenue = pd.concat([spend, overdue, behind, activity.where(sig["rev_valuable_losing_activity"], 0)], axis=1).max(axis=1)
     score = np.select([list_type == L.FRICTION, list_type == L.REVENUE, list_type == L.ENGAGEMENT],
                       [friction, revenue, activity], np.nan)
@@ -65,7 +67,8 @@ def _n(v) -> str:
 
 
 SINGULAR = {"crashes": "crash", "unhandled errors": "unhandled error", "failed purchases": "failed purchase",
-            "support tickets": "support ticket", "sessions": "session", "cancelled purchases": "cancelled purchase"}
+            "support tickets": "support ticket", "sessions": "session", "cancelled purchases": "cancelled purchase",
+            "load failures": "load failure"}
 
 
 def _count(n, noun: str) -> str:
@@ -89,8 +92,8 @@ def reasons(r: pd.Series, cfg=L) -> list[tuple[str, str]]:
             out.append(("revenue_spend_drop", f"Spent {_money(r['spend_last_28d'])} in the last 28 days vs {_money(r['spend_prev_28d'])} "
                                               f"in the 28 before ({-r['spend_drop_share']:.0%})"))
         if r["rev_overdue"]:
-            out.append(("revenue_overdue", f"No purchase for {_n(r['days_since_purchase'])} days; usually every "
-                                           f"{_n(r['usual_purchase_gap'])} days"))
+            every = "day" if float(r["usual_purchase_gap"]) == 1 else f"{_n(r['usual_purchase_gap'])} days"
+            out.append(("revenue_overdue", f"No purchase for {_n(r['days_since_purchase'])} days; usually every {every}"))
         if r["rev_behind_forecast"]:
             exp = r["ltv_to_date"] + r["behind_forecast_dollars"]
             out.append(("revenue_behind_forecast", f"Spent {_money(r['ltv_to_date'])} vs {_money(exp)} expected by now (day-3 forecast)"))
@@ -104,6 +107,9 @@ def reasons(r: pd.Series, cfg=L) -> list[tuple[str, str]]:
         if r["eng_sessions_drop"]:
             out.append(("engagement_sessions_drop", f"{_count(r['sessions_7d'], 'sessions')} in the last {cfg.RECENT_DAYS} days vs "
                                                     f"{_n(r['baseline_sessions_per_week'])} a week before"))
+        if r["eng_overdue_return"]:
+            every = "day" if float(r["usual_play_gap"]) == 1 else f"{_n(r['usual_play_gap'])} days"
+            out.append(("engagement_overdue_return", f"Not seen for {_n(r['days_since_last_seen'])} days; usually plays every {every}"))
         if r["eng_young_vs_peers"]:
             out.append(("engagement_young_vs_peers", f"Played {_n(r['days_played_7d'])} of the last {cfg.RECENT_DAYS} days; "
                                                      f"players of the same age typically {_n(r['peer_days_7d'])}"))
@@ -116,6 +122,7 @@ ACTIONS = {
     "friction_failed_purchases": "Payments: check store and billing logs; contact the player to complete the purchase with a bonus",
     "friction_incomplete_purchase": "Payments: check store and billing logs for the abandoned purchases; offer help or a bonus to complete",
     "friction_support_tickets": "Support: follow up on the open ticket within a day",
+    "friction_load_failures": "Tech support: check slot and lobby loading for this player's device, app version and network; send bonus coins",
     "revenue_spend_drop": "CRM / VIP: personalised offer based on the player's past purchases",
     "revenue_overdue": "CRM / VIP: timed offer on the player's usual purchase",
     "revenue_behind_forecast": "CRM: first-purchase offer while the player is still active",
@@ -123,6 +130,7 @@ ACTIONS = {
     "engagement_days_drop": "Lifecycle: re-engagement push or email with free coins",
     "engagement_sessions_drop": "Lifecycle: re-engagement push or email with free coins",
     "engagement_young_vs_peers": "Lifecycle: onboarding nudge (push with free coins and a feature tip)",
+    "engagement_overdue_return": "Lifecycle: come-back message with a free-coins bonus timed to the player's usual play days",
 }
 LIST_PREFIX = {L.FRICTION: "friction", L.REVENUE: "revenue", L.ENGAGEMENT: "engagement"}
 

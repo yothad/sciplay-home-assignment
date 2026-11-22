@@ -20,6 +20,7 @@ def _sig(n=4, **cols):
         "eng_days_drop": False, "eng_sessions_drop": False, "eng_young_vs_peers": False, "days_played_7d": 0.0,
         "baseline_days_per_week": 0.0, "sessions_7d": 0.0, "baseline_sessions_per_week": 0.0, "peer_days_7d": np.nan,
         "activity_drop_share": np.nan, "opportunity_gap": 0.0, "source": "update_rule",
+        "eng_overdue_return": False, "days_since_last_seen": 0.0, "usual_play_gap": np.nan,
     }
     df = pd.DataFrame({k: [v] * n for k, v in base.items()}, index=pd.Index(range(1, n + 1), name="player_id"))
     for k, v in cols.items():
@@ -54,9 +55,25 @@ def test_reasons_are_readable_and_cover_every_signal():
     assert rules.recommended_action(codes, L.FRICTION).startswith("Tech support")
 
 
-@pytest.mark.parametrize("last, prev, triggered", [(50.0, 100.0, True), (50.01, 100.0, False)])
-def test_spend_drop_boundary_is_inclusive(last, prev, triggered):
-    assert ((prev > 0) and (last <= (1 - L.SPEND_DROP) * prev)) is triggered
+@pytest.mark.parametrize("recent, baseline, triggered", [(50.0, 100.0, True), (50.01, 100.0, False), (0.0, 0.0, False)])
+def test_spend_drop_boundary_is_inclusive(recent, baseline, triggered):
+    from sciplay.lists.signals import is_drop
+    assert bool(is_drop([recent], [baseline], L.SPEND_DROP)[0]) is triggered
+
+
+@pytest.mark.parametrize("days, gap, triggered", [(8, 4.0, False), (8.5, 4.0, True), (6, 2.0, False), (np.nan, np.nan, False)])
+def test_overdue_return_boundaries(days, gap, triggered):
+    from sciplay.lists.signals import is_overdue
+    assert bool(is_overdue([days], [gap], L.RETURN_FACTOR, L.RETURN_MIN_DAYS)[0]) is triggered
+
+
+def test_missing_inputs_are_handled(monkeypatch):
+    from sciplay.ltv import train as T
+    def boom(*a, **k):
+        raise FileNotFoundError("player_day.parquet")
+    monkeypatch.setattr(T, "load_data", boom)
+    res = R.run("2026-11-04", store=False)
+    assert res["status"] == "missing_input" and res["lists"].empty
 
 
 def test_priority_dollars_first_then_severity():
@@ -74,13 +91,17 @@ def test_persistence_is_idempotent(tmp_path):
     row.update(score_date="2026-11-04", player_id=1, list_type=L.ENGAGEMENT, priority="low", model_rules_version="v")
     lists = pd.DataFrame([row, {**row, "player_id": 2}])[R.COLUMNS]
     run_row = {c: None for c in R.RUN_COLUMNS}
-    run_row.update(score_date="2026-11-04", model_rules_version="v", status="ok", list_sizes="{}")
+    run_row.update(score_date="2026-11-04", model_rules_version="v", status="ok", list_sizes="{}", created_at="a")
     R.write(lists, run_row, db)
     R.write(lists, run_row, db)                         # same date and version twice
     assert len(R.read("2026-11-04", db)) == 2
     R.write(lists.iloc[[0]], run_row, db)               # a rerun where player 2 left the list
     assert R.read("2026-11-04", db)["player_id"].tolist() == [1]
     assert len(R.read(None, db, table=R.RUNS)) == 1
+    run_v2 = {**run_row, "model_rules_version": "v2", "created_at": "z"}       # a new rules version
+    R.write(lists.assign(model_rules_version="v2"), run_v2, db)
+    assert R.read("2026-11-04", db)["model_rules_version"].unique().tolist() == ["v2"]   # latest version shown
+    assert len(R.read("2026-11-04", db, version=None)) == 3                             # history per version kept
 
 
 from sciplay.config import REPO_ROOT, get_settings  # noqa: E402

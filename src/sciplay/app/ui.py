@@ -90,6 +90,13 @@ def sidebar(data: Prepared, with_filters: bool = True) -> Filters:
     first, last = pday["DATE"].min().date(), pday["DATE"].max().date()
     st.sidebar.header("Score date")
     default = min(max(DEFAULT_SCORE_DATE.date(), first), last)
+    qd = st.query_params.get("date")                     # deep link from a Slack / email / ticket message
+    if qd and st.session_state.get("_linked_date") != qd:
+        try:
+            st.session_state["score_date"] = min(max(pd.Timestamp(qd).date(), first), last)
+            st.session_state["_linked_date"] = qd
+        except ValueError:
+            pass
     d = st.sidebar.date_input("As of the end of", value=st.session_state.get("score_date", default),
                               min_value=first, max_value=last, key="score_date")
     st.sidebar.caption(f"Default: {last:%d %b}, the last data day: every player installed up to 2 Nov has a day-3 LTV "

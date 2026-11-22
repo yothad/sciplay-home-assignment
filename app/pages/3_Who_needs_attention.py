@@ -33,8 +33,12 @@ ui.tile(c[4], "Eligible players", int(log["eligible"]),
 order = {"high": 0, "medium": 1, "low": 2}
 cols = ["player_id", "priority", "underperformance_score", "opportunity_gap", "predicted_ltv_365", "ltv_to_date",
         "reason_text", "recommended_action"]
-tabs = st.tabs([f"{n} ({int((lists['list_type'] == n).sum())})" for n in L.PRECEDENCE] + ["Changes since previous day"])
-for tab, name in zip(tabs, L.PRECEDENCE):
+linked = st.query_params.get("list")                     # deep link: the alert's list opens first
+tab_order = ([linked] if linked in L.PRECEDENCE else []) + [n for n in L.PRECEDENCE if n != linked]
+if linked in L.PRECEDENCE:
+    st.info(f"Opened from an alert: **{linked}** is the first tab.")
+tabs = st.tabs([f"{n} ({int((lists['list_type'] == n).sum())})" for n in tab_order] + ["Changes since previous day"])
+for tab, name in zip(tabs, tab_order):
     with tab:
         sub = lists[lists["list_type"] == name].copy()
         if sub.empty:

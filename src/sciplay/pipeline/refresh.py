@@ -77,6 +77,7 @@ class RunResult:
     message: str = ""
     ltv: str = ""  # result of scoring LTV for the new data end (never blocks publishing)
     lists: str = ""  # result of the daily lists for the new data end (never blocks publishing)
+    alerts: str = ""  # event alerts for the new lists, dry run to the outbox (never blocks publishing)
 
 
 def _stamp() -> str:
@@ -177,6 +178,7 @@ def refresh(paths: Paths | None = None, file: Path | None = None, force: bool = 
     res.message = f"Published data through {res.data_end}" + (f" with {len(res.warnings)} warning(s)" if res.warnings else "")
     res.ltv = score_ltv(paths, newest) if ltv else "skipped"
     res.lists = run_lists(paths, newest) if ltv and res.ltv.startswith("scored") else "skipped"
+    res.alerts = send_alerts(paths, newest) if res.lists.startswith("ok") else "skipped"
     _log(paths, res)
     return res
 
@@ -204,6 +206,19 @@ def run_lists(paths: Paths, date: pd.Timestamp) -> str:
         return f"{res['status']}: {res['list_sizes']}"
     except Exception as exc:
         return f"lists failed: {exc}"
+
+
+def send_alerts(paths: Paths, date: pd.Timestamp) -> str:
+    """Event alerts right after the lists (held in quiet hours; emails go at their own slots). Never fatal."""
+    try:
+        from datetime import datetime
+
+        from sciplay.delivery import run as DR
+        db = paths.log.parent / get_settings().store_db_path.name
+        r = DR.deliver(date, "refresh", hour=datetime.now().hour, db=db, lists_db=db)
+        return f"sent {len(r['sent'])}, held {r.get('held', 0)}, failed {len(r['failed'])}"
+    except Exception as exc:
+        return f"alerts failed: {exc}"
 
 
 def main(argv: list[str] | None = None) -> int:

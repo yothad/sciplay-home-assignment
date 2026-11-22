@@ -183,3 +183,11 @@ Answer inline; answered questions move into the decision log.
 | 2026-11-22 | Valuable = payer or top 10% predicted LTV365; LTV feeds the behind-forecast trigger and the opportunity gap | Brief: "payer or valuable player"; LTV is good at ranking |
 | 2026-11-22 | Opportunity gap = expected value at baseline − revised value (not LTV − revenue to date) | LTV − revenue to date lowers the priority of players whose spending dropped |
 | 2026-11-22 | Daily lists in SQLite (`daily_lists`, `list_runs`), key (date, player, model + rules version) | Idempotent reruns; history per version |
+| 2026-11-22 | Part 5 built as a dry run: messages rendered to an outbox, full audit; no real Slack / email / ticket clients | Brief: implementation optional; swapping the writer for clients is the only change |
+| 2026-11-22 | One studio per game (GAME_ID); payments and tech support = one Player support team; economy designer and product analyst on the emails | Owners as discussed; one team handles friction |
+| 2026-11-22 | Tickets for friction and revenue lists (opened once per stay); engagement goes to CRM campaigns, no ticket | Ticket per player only where a person acts on one player |
+| 2026-11-22 | Emails at 08:00 (open now) and 18:00 (handled today, still open); Slack for events; quiet hours 21–08 | Fewer, predictable messages |
+| 2026-11-22 | Escalation: medium/high player with no action by the evening of the 2nd day on the list, counted from go-live | Agreed rule; teams can only act from the day they are told |
+| 2026-11-22 | Event alerts grouped per list, max 5 per channel per day; retries ×3 with one idempotency key | Alert fatigue; safe re-runs |
+| 2026-11-22 | AI summary: prompt template + desired result + pydantic validation + template fallback; no LLM API connected | Brief: paid model not required |
+| 2026-11-22 | Holdout written as a suggestion only | Needs a studio decision |

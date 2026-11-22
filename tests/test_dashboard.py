@@ -45,6 +45,24 @@ def test_every_page_renders(processed, page, monkeypatch):
     assert not at.exception, [e.value for e in at.exception]
 
 
+def test_deep_links_open_the_right_date_list_and_player(processed, monkeypatch):
+    from streamlit.testing.v1 import AppTest
+
+    monkeypatch.setenv("PROCESSED_DIR", str(processed))
+    at = AppTest.from_file(str(REPO_ROOT / "app" / "pages" / "3_Who_needs_attention.py"), default_timeout=120)
+    at.query_params["date"] = "2026-11-03"
+    at.query_params["list"] = "Revenue decline"
+    at.run()
+    assert not at.exception
+    assert str(at.session_state["score_date"]) == "2026-11-03"
+    assert any("Opened from an alert" in i.value for i in at.info)
+    at = AppTest.from_file(str(REPO_ROOT / "app" / "pages" / "4_Player_detail.py"), default_timeout=120)
+    at.query_params["date"] = "2026-11-03"
+    at.query_params["player"] = "33840"
+    at.run()
+    assert not at.exception and at.selectbox[0].value == 33840
+
+
 def test_health_checks_flag_the_november_spike_and_pass_on_31_october(processed):
     from sciplay.metrics.health import FAIL, WARN, run_checks
 

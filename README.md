@@ -32,6 +32,8 @@ Pipeline and app commands will be added here as they are built:
 | Train the LTV model (select on training folds, then fit, bootstrap, grade on test) | `uv run python -m sciplay.ltv.train select` then `uv run python -m sciplay.ltv.train finalize` |
 | Score LTV for a date (or a range) | `uv run python -m sciplay.ltv.score --date 2026-11-04` (`--from 2026-10-09 --to 2026-11-04`) |
 | Generate daily lists for a date (or a range) | `uv run python -m sciplay.lists.run --date 2026-11-04` (`--from 2026-10-09 --to 2026-11-04`) |
+| Deliver the lists (dry run to `data/store/outbox`) | `uv run python -m sciplay.delivery.run --date 2026-11-04` (`--slot refresh/morning/evening`) |
+| Delivery demo, 3–4 Nov with simulated owner actions | `uv run python -m sciplay.delivery.simulate` |
 | Start dashboard | `uv run streamlit run app/Overview.py` |
 | Run everything | _TBD_ |
 
@@ -40,7 +42,7 @@ Don't have uv? Install it with `pip install uv` (or see the uv docs). If you nee
 ## Repository layout
 
 ```
-├── src/sciplay/        # package: data/ (loader, registry, as-of), audit/, viz/
+├── src/sciplay/        # package: data/, audit/, pipeline/, metrics/, ltv/, lists/, delivery/, app/, viz/
 ├── tests/              # pytest tests
 ├── notebooks/          # Part 1 notebook and its builder
 ├── presentation/       # PowerPoint backup of the results deck
@@ -68,5 +70,9 @@ Don't have uv? Install it with `pip install uv` (or see the uv docs). If you nee
 | [Data understanding](docs/data_understanding.md) | Part 1: grain, coverage, fields, registry, as-of policy, leakage audit, late data, quality issues, definitions |
 | [Dashboard](docs/dashboard.md) | Part 2: pages, metrics, value states, data health checks, reconciliation |
 | [Column registry](docs/column_registry.csv) | Every column with its category, as-of availability, null meaning, use and evidence |
+| [LTV](docs/ltv.md) | Part 3: target, split, features, model, validation, scoring |
+| [Daily lists](docs/lists.md) | Part 4: list rules, priority, reasons, persistence, backtest |
+| [Stakeholder plan](docs/stakeholder_plan.md) | Part 5: recipients, triggers, payloads, reliability, security, feedback loop, AI summary |
+| [Walkthrough](docs/walkthrough.md) | 20-minute demo script and likely questions |
 | [Concerns log](docs/concerns_log.md) | Evidence, impact, mitigation, next validation step |
 | [AI use disclosure](docs/ai_use_disclosure.md) | Tools used and how output was reviewed |

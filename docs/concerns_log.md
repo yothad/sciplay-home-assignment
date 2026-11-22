@@ -13,3 +13,4 @@
 | C9 | Six paying test players | 218 test players, 6 payers | Test metrics are directional; model choice within noise | Bootstrap ranges; tie rule; benchmark comparison | Re-test with more matured cohorts |
 | C10 | Day-365 multiplier is an assumption | Month-to-month ratios come from two players | LTV365 level may be off by a factor | × 2.49 stated everywhere; sensitivity × 2.00–3.29 | Replace with a model on 90/365-day labels |
 | C11 | Device and performance features learned noise | First run: "slower loading → higher value"; did not hold | Misleading reason codes | Removed from LTV features (domain decision); kept for the friction list | Revisit with more payers |
+| C12 | Owner actions are simulated | `actions` filled by a demo (`is_demo = 1`) | Value of the lists is not measured yet | Actions table, evening email, escalation; holdout written as a suggestion | Pilot with one studio for 4 weeks, with a 10% holdout |

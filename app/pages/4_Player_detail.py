@@ -19,7 +19,9 @@ if snap.empty:
     st.info("No players known on this date.")
     st.stop()
 options = snap["PLAYER_ID"].tolist()
-pid = st.selectbox("Player (sorted by revenue to date)", options,
+qp = st.query_params.get("player")                       # deep link from a ticket / Slack message
+linked = int(qp) if qp and qp.isdigit() and int(qp) in options else None
+pid = st.selectbox("Player (sorted by revenue to date)", options, index=options.index(linked) if linked else 0,
                    format_func=lambda p: f"{p} · ${snap.set_index('PLAYER_ID').loc[p, 'revenue_to_date']:,.2f}")
 s = snap.set_index("PLAYER_ID").loc[pid]
 paid = s["revenue_to_date"] > 0

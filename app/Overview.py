@@ -3,6 +3,7 @@
 import pandas as pd
 import streamlit as st
 
+from sciplay.app import lists_view as lvl
 from sciplay.app import ltv_view as lv
 from sciplay.app import ui
 from sciplay.data.asof import snapshot_as_of
@@ -44,7 +45,13 @@ ui.tile(c[1], "Seen in last 30 days", base["active_base"], help="Played at least
 ui.tile(c[2], "Churned", base["churned"], help="No day played in the last 30 days")
 ui.tile(c[3], "Payers seen in 30 days", base["ever_payers_in_base"], help="Ever-payers among the players seen in the last 30 days")
 ui.tile(c[4], "Revenue to date", base["revenue_to_date"], "money", help="Everything players known by the score date have paid")
-ui.tile(c[5], "Value at risk", None, "money", state=State.NOT_YET, help="Needs the LTV model (Part 3) and the daily lists (Part 4)")
+_lists = lvl.lists(f.score_date)
+if _lists.empty:
+    ui.tile(c[5], "Value at risk", None, "money", state=State.NOT_YET, help="No daily lists stored for this date")
+else:
+    _lists = _lists[_lists["player_id"].isin(rows["PLAYER_ID"].unique())]
+    ui.tile(c[5], "Value at risk", _lists["opportunity_gap"].sum(), "money",
+            help=f"Opportunity gap of the {len(_lists)} players on today's lists (see Who needs attention)")
 
 st.markdown("#### Lifetime value on the score date (Part 3)")
 ltv = lv.scores(f.score_date)

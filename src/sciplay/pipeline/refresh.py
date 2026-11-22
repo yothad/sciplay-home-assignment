@@ -16,6 +16,7 @@ Steps
               yesterday's tables.
   5. Publish  Staged files replace the published ones.
   6. LTV      Score the new date with the active LTV model (stored in SQLite); never blocks publishing.
+  7. Lists    Build the daily lists for the new date; never blocks publishing.
   6. Log      Every run is appended to data/store/refresh_log.jsonl.
 
 Exit codes: 0 published, 1 blocked by the health gate, 2 no new data, 3 no input.
@@ -75,6 +76,7 @@ class RunResult:
     warnings: list[str] = field(default_factory=list)
     message: str = ""
     ltv: str = ""  # result of scoring LTV for the new data end (never blocks publishing)
+    lists: str = ""  # result of the daily lists for the new data end (never blocks publishing)
 
 
 def _stamp() -> str:
@@ -174,6 +176,7 @@ def refresh(paths: Paths | None = None, file: Path | None = None, force: bool = 
     res.status, res.exit_code = "published", 0
     res.message = f"Published data through {res.data_end}" + (f" with {len(res.warnings)} warning(s)" if res.warnings else "")
     res.ltv = score_ltv(paths, newest) if ltv else "skipped"
+    res.lists = run_lists(paths, newest) if ltv and res.ltv.startswith("scored") else "skipped"
     _log(paths, res)
     return res
 
@@ -190,6 +193,17 @@ def score_ltv(paths: Paths, date: pd.Timestamp) -> str:
         return f"scored {len(out)} players for {pd.Timestamp(date).date()}"
     except Exception as exc:  # the dashboard data is already published; LTV can be rerun on its own
         return f"LTV scoring failed: {exc}"
+
+
+def run_lists(paths: Paths, date: pd.Timestamp) -> str:
+    """Daily lists for the newly published date; a failure is logged, not fatal."""
+    try:
+        from sciplay.lists import run as LR
+        from sciplay.ltv import train as T
+        res = LR.run(date, T.load_data(paths.processed), db_path=paths.log.parent / get_settings().store_db_path.name)
+        return f"{res['status']}: {res['list_sizes']}"
+    except Exception as exc:
+        return f"lists failed: {exc}"
 
 
 def main(argv: list[str] | None = None) -> int:

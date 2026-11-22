@@ -25,11 +25,11 @@ The app opens on 4 Nov, the last data day: every player installed up to 2 Nov ha
 
 | Page | Question | Content |
 |---|---|---|
-| Overview | How did we do on the score date? | Seven KPI tiles against the previous 7-day average; player base on the score date (players so far, seen in the last 30 days, churned, revenue to date); lifetime value (Part 3): LTV365 from the day-3 model and from the update rule shown separately, players per source, players too new to forecast; last 8 weeks of active players, new players and revenue; the score date split by platform, install month, payer status, region, country and acquisition type |
+| Overview | How did we do on the score date? | Seven KPI tiles against the previous 7-day average; player base on the score date (players so far, seen in the last 30 days, churned, revenue to date); value at risk (opportunity gap of today's listed players, Part 4); lifetime value (Part 3): LTV365 from the day-3 model and from the update rule shown separately, players per source, players too new to forecast; last 8 weeks of active players, new players and revenue; the score date split by platform, install month, payer status, region, country and acquisition type |
 | Trends | Better or worse? | Each KPI as a 7-day average or weekly bars; weekly table |
 | Cohorts | Are newer players as good as older ones? | Activity by age heatmap; cumulative revenue per install by age; cohort summary; payers by first-purchase month and their revenue since first purchase |
-| Who needs attention | Who should someone act on today? | Placeholder until Parts 3–4: list sizes and value at risk shown as *not yet available* |
-| Player detail | Why is this player where they are? | As-of snapshot tiles and the days-played timeline; lifetime value panel: source (day-3 model / update rule, not from the model / too new), LTV365 and range, confidence, ahead or behind forecast, the calculation and up to 3 reasons |
+| Who needs attention | Who should someone act on today? | List sizes, value at risk and eligible players; one tab per list (priority, score, opportunity gap, LTV, reasons, recommended action); changes since the previous run date; how the rules work; a data-incomplete warning when the date's health check failed |
+| Player detail | Why is this player where they are? | As-of snapshot tiles and the days-played timeline; lifetime value panel: source (day-3 model / update rule, not from the model / too new), LTV365 and range, confidence, ahead or behind forecast, the calculation and up to 3 reasons; today's list, reasons and action, and the player's list history |
 | Data health | Is the data for the selected date complete and normal? | 20 checks of the date against the 28 days before it (freshness, volume, missing values, new categories, validity, duplicates); player-days against their normal range; reconciliation; LTV model check (test results with ranges, value bands, by install month, by confidence, selection on training folds, monitoring plan); value-state legend |
 
 Filters (sidebar): score date, platform, install month, country, acquisition type, payer status (as of each day).
@@ -85,6 +85,7 @@ uv run python -m sciplay.pipeline.refresh
 | Gate | Health checks on the newest date; any failed check, or no newer date, stops the run and the dashboard keeps yesterday's tables |
 | Publish | Staged files replace the published ones; the app reloads on the next browser refresh |
 | LTV | The new date is scored with the active LTV model into `ltv_scores` (SQLite); a failure is logged, never blocks publishing |
+| Lists | The daily lists for the new date are built into `daily_lists`; a failure is logged, never blocks publishing |
 | Log | Every run appended to `data/store/refresh_log.jsonl` |
 
 Exit codes: 0 published, 1 blocked by the gate, 2 no new data, 3 no input. Tested in `tests/test_refresh.py`. In production the same steps would run as a scheduled job in a data orchestration pipeline (for example Airflow or Dagster) with storage in the cloud.

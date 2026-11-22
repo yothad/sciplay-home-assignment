@@ -121,6 +121,15 @@ Approved on 2026-11-21. **Verified** = tested on the sample data. **Assumed** = 
 | C4 | Late-July training labels overlapping August test calendar time is harmless | Accepted risk | No known August event | Slightly optimistic test results |
 | C5 | Recent 30-day labels are final | Assumed | Rows are rewritten up to 91 days later; labels used up to 6 Oct installs | Test labels could still change |
 
+### Daily lists (Part 4)
+
+| # | Assumption | Status | Evidence | Impact if wrong |
+|---|---|---|---|---|
+| D1 | Thresholds (7-day window vs the previous 28; 50% drops; 2× usual purchase gap; ≥ 50% and $5 behind forecast) are reasonable starting values | Starting values, tunable | Sweep: only the activity threshold moves list sizes much | Lists too long or too short |
+| D2 | Repeated incomplete purchase attempts are friction; single cancellations are not | Decided | Cancellations are mostly store browsing (Part 1) | Missed or false payment-friction cases |
+| D3 | Priority: dollars first ($20 / $2 tiers), then blocked money or severity ≥ 75 | Decided | Dollar tiers alone make every non-payer list low | Wrong order of work |
+| D4 | A failed health check for the date means late data: publish the list flagged | Decided | – | Lists from incomplete data acted on |
+
 ## Open questions
 
 Answer inline; answered questions move into the decision log.
@@ -169,3 +178,7 @@ Answer inline; answered questions move into the decision log.
 | 2026-11-21 | Model forecasts carried forward with ahead/behind against expected revenue by day d | Brief: updates as behaviour arrives |
 | 2026-11-21 | Scores stored in SQLite (`ltv_scores`) | Unique key makes reruns idempotent |
 | 2026-11-21 | Dashboard default date 4 Nov (briefly 29 Oct while the model used 7 days) | Every inference player has a day-3 forecast by then |
+| 2026-11-22 | Lists: Technical or payment friction → Revenue decline → Engagement decline (precedence) | Fixable first, money next, broadest last |
+| 2026-11-22 | Valuable = payer or top 10% predicted LTV365; LTV feeds the behind-forecast trigger and the opportunity gap | Brief: "payer or valuable player"; LTV is good at ranking |
+| 2026-11-22 | Opportunity gap = expected value at baseline − revised value (not LTV − revenue to date) | LTV − revenue to date lowers the priority of players whose spending dropped |
+| 2026-11-22 | Daily lists in SQLite (`daily_lists`, `list_runs`), key (date, player, model + rules version) | Idempotent reruns; history per version |

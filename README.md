@@ -31,7 +31,7 @@ Pipeline and app commands will be added here as they are built:
 | Refresh data (new extracts → rebuild → health gate → publish) | `uv run python -m sciplay.pipeline.refresh` |
 | Train the LTV model (select on training folds, then fit, bootstrap, grade on test) | `uv run python -m sciplay.ltv.train select` then `uv run python -m sciplay.ltv.train finalize` |
 | Score LTV for a date (or a range) | `uv run python -m sciplay.ltv.score --date 2026-11-04` (`--from 2026-10-09 --to 2026-11-04`) |
-| Generate daily lists for a date | _TBD_ |
+| Generate daily lists for a date (or a range) | `uv run python -m sciplay.lists.run --date 2026-11-04` (`--from 2026-10-09 --to 2026-11-04`) |
 | Start dashboard | `uv run streamlit run app/Overview.py` |
 | Run everything | _TBD_ |
 
